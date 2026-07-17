@@ -1,0 +1,8 @@
+[submodule "submodules/h3dnas"]
+	path = submodules/h3dnas
+	url = https://github.com/anchitmulye/h3dnas.git
+	branch = main
+[submodule "submodules/vision-onnx-models"]
+	path = submodules/vision-onnx-models
+	url = https://github.com/anchitmulye/Vision-ONNX-Models.git
+	branch = main
