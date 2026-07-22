@@ -1,0 +1,19 @@
+# Local workspace config — each machine has its own
+workspace.yaml
+
+# NAS outputs — all regenerable
+artifacts/
+
+# Large datasets — local only
+data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Editors
+.vscode/
+.idea/
+*.swp
+.DS_Store
