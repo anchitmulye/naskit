@@ -1,0 +1,58 @@
+{
+  "mode": "two_stage",
+  "base_acc": 90.13,
+  "stage1_best_acc": 33.36,
+  "stage1_pareto_size": 9,
+  "stage2_variants": 9,
+  "unified_pareto_size": 5,
+  "best_stage1": "main_graph_w1.00_p0.27_pr30",
+  "best_stage2_ghost": "main_graph_w1.00_p0.27_pr30_ghost\u00d70",
+  "best_overall": "main_graph_w1.00_p0.27_pr30_ghost\u00d71",
+  "unified_pareto": [
+    {
+      "name": "main_graph_w1.00_p0.27_pr30_ghost\u00d71",
+      "accuracy": 33.36,
+      "params": 105853,
+      "flops_red": 32.251438366960905,
+      "latency_ms": 0.030458002584055066,
+      "ghost_count": 1,
+      "swap_score": -324.0323782703609
+    },
+    {
+      "name": "main_graph_w1.00_p0.27_pr30_ghost\u00d71",
+      "accuracy": 33.36,
+      "params": 105853,
+      "flops_red": 32.251438366960905,
+      "latency_ms": 0.030062015866860747,
+      "ghost_count": 1,
+      "swap_score": -324.0323782703609
+    },
+    {
+      "name": "main_graph_w1.00_p0.05_pr30_ghost\u00d71",
+      "accuracy": 33.36,
+      "params": 105853,
+      "flops_red": 32.251438366960905,
+      "latency_ms": 0.029791495762765408,
+      "ghost_count": 1,
+      "swap_score": -324.0323782703609
+    },
+    {
+      "name": "main_graph_w1.00_p0.20_pr30_ghost\u00d71",
+      "accuracy": 33.36,
+      "params": 105853,
+      "flops_red": 32.251438366960905,
+      "latency_ms": 0.02995799877680838,
+      "ghost_count": 1,
+      "swap_score": -324.0323782703609
+    },
+    {
+      "name": "main_graph_w1.00_p0.20_pr30_ghost\u00d71",
+      "accuracy": 33.36,
+      "params": 105853,
+      "flops_red": 32.251438366960905,
+      "latency_ms": 0.029958493541926146,
+      "ghost_count": 1,
+      "swap_score": -324.0323782703609
+    }
+  ]
+}

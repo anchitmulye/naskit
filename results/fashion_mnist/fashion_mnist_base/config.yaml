@@ -1,0 +1,20 @@
+model: fashion_mnist
+mode: two_stage
+candidates: 100
+prune_ratios:
+- 0.05
+- 1.0
+- 0.15
+- 0.2
+- 0.25
+- 0.3
+width_multipliers:
+- 0.5
+- 0.75
+- 1.0
+strategy: evolutionary
+eval_samples: 10000
+seed: 42
+artifact_path: /Users/anchitmulye/Documents/IITJ/MTP/Code/naskit/artifacts/fashion_mnist/artifacts/fashion_mnist_base
+command: python submodules/h3dnas/examples/fashion_mnist/run_nas.py --mode two_stage
+  --candidates 100 --eval-samples 10000 --seed 42 --run-name fashion_mnist_base
