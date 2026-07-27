@@ -1,0 +1,63 @@
+{
+  "base": {
+    "name": "pointnet_cls_c10_n1024",
+    "top1_accuracy": 89.09691629955947,
+    "per_class_acc": {
+      "bathtub": 76.0,
+      "bed": 93.0,
+      "chair": 97.0,
+      "desk": 82.56,
+      "dresser": 88.37,
+      "monitor": 98.0,
+      "night_stand": 79.07,
+      "sofa": 93.0,
+      "table": 76.0,
+      "toilet": 99.0
+    },
+    "flops": 870852096,
+    "parameters": 3451859,
+    "model_size_mb": 13.291214942932129,
+    "latency_ms_p50": 2.9325210489332676,
+    "latency_ms_p95": 2.9541264520958066,
+    "latency_ms_p99": 2.9813618422485892,
+    "throughput_fps": 341.0035199453247,
+    "memory_mb": 13.167797088623047,
+    "eval_time_s": 3.1143558025360107
+  },
+  "nas": {
+    "name": "best_overall_finetuned",
+    "top1_accuracy": 89.31718061674009,
+    "per_class_acc": {
+      "bathtub": 72.0,
+      "bed": 94.0,
+      "chair": 99.0,
+      "desk": 80.23,
+      "dresser": 83.72,
+      "monitor": 98.0,
+      "night_stand": 80.23,
+      "sofa": 96.0,
+      "table": 81.0,
+      "toilet": 97.0
+    },
+    "flops": 692236378,
+    "parameters": 2700408,
+    "model_size_mb": 10.358743667602539,
+    "latency_ms_p50": 5.74302050517872,
+    "latency_ms_p95": 8.185270498506723,
+    "latency_ms_p99": 9.91644319030457,
+    "throughput_fps": 174.1244000606055,
+    "memory_mb": 10.301239013671875,
+    "eval_time_s": 2.624837875366211
+  },
+  "accuracy_delta_pp": 0.22026431718062156,
+  "param_reduction_pct": 21.769458138353855,
+  "flops_reduction_pct": 20.510453935911524,
+  "size_reduction_pct": 22.06322964394606,
+  "latency_speedup_x": 0.5106234683106027,
+  "throughput_gain_x": 0.5106234683106028,
+  "compression_ratio": 1.2782731350225596,
+  "pareto_efficiency": 0.20561159631673975,
+  "jetson_feasible": null,
+  "constraint_violations": {},
+  "constraint_headroom": {}
+}
