@@ -33,6 +33,26 @@ def load_notes(run_dir: Path) -> str:
     return ""
 
 
+def load_strategy(run_dir: Path) -> str:
+    """Read search strategy from config.yaml, else fall back to analysis.json, else 'random'."""
+    config_file = run_dir / "config.yaml"
+    if config_file.exists():
+        for line in config_file.read_text().splitlines():
+            line = line.strip()
+            if line.startswith("strategy:"):
+                return line.split(":", 1)[1].strip()
+    # Check analysis.json for strategy field
+    analysis_file = run_dir / "analysis.json"
+    if analysis_file.exists():
+        try:
+            data = json.loads(analysis_file.read_text())
+            if "strategy" in data:
+                return data["strategy"]
+        except Exception:
+            pass
+    return "random"
+
+
 def fmt(val, decimals=2, suffix=""):
     if val is None:
         return "—"
@@ -61,12 +81,14 @@ def collect_rows() -> list[dict]:
 
             b = data.get("base", {})
             n = data.get("nas", {})
-            notes = load_notes(run_dir)
+            notes    = load_notes(run_dir)
+            strategy = load_strategy(run_dir)
 
             rows.append({
                 "model":        model,
                 "run":          run,
                 "notes":        notes,
+                "strategy":     strategy,
                 "base_acc":     b.get("top1_accuracy"),
                 "nas_acc":      n.get("top1_accuracy"),
                 "delta_pp":     data.get("accuracy_delta_pp"),
@@ -90,11 +112,11 @@ def render_table(rows: list[dict]) -> str:
 
     lines = []
     header = (
-        "| Model | Run | Base acc | NAS acc | Δ (pp) | "
+        "| Model | Run | Strategy | Base acc | NAS acc | Δ (pp) | "
         "Param↓ | FLOPs↓ | Base lat | NAS lat | Speedup | Jetson | Notes |"
     )
     sep = (
-        "|---|---|---|---|---|---|---|---|---|---|---|---|"
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|"
     )
     lines.append(header)
     lines.append(sep)
@@ -113,6 +135,7 @@ def render_table(rows: list[dict]) -> str:
         line = (
             f"| {r['model']} "
             f"| {r['run']} "
+            f"| {r['strategy']} "
             f"| {fmt(r['base_acc'])}% "
             f"| {fmt(r['nas_acc'])}% "
             f"| {delta_str} "
@@ -143,6 +166,7 @@ def render_per_model(rows: list[dict]) -> str:
             if r["notes"]:
                 sections.append(f"_{r['notes']}_")
             sections.append("")
+            sections.append(f"- Strategy: `{r['strategy']}`")
             sections.append(
                 f"- Base: {fmt(r['base_acc'])}%  "
                 f"| {r['base_params']:,} params  "
