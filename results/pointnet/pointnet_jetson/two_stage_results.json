@@ -1,0 +1,1997 @@
+{
+  "mode": "two_stage",
+  "base_acc": 89.09691629955947,
+  "stage1_best_acc": 45.37444933920705,
+  "stage1_pareto_size": 247,
+  "stage2_variants": 9,
+  "unified_pareto_size": 248,
+  "best_stage1": "main_graph_w0.75_p0.30_pr30",
+  "best_stage2_ghost": "main_graph_w0.75_p0.20_pr30_ghost\u00d72",
+  "best_overall": "main_graph_w0.75_p0.30_pr20",
+  "unified_pareto": [
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 1.958666485734284,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.025854540988803,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.0934579661116004,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.1539374720305204,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.1675624884665012,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.1703336387872696,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.171395579352975,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.180770505219698,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.1811046171933413,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.184250042773783,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.1857500541955233,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.1984794875606894,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.261208021081984,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.2800209699198604,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.2833754774183035,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.2843119222670794,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.2854164708405733,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.28660402353853,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.28758342564106,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.2933335276320577,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.2942289942875504,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.2952710278332233,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.2955209715291858,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.297666505910456,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.301312517374754,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.304729074239731,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.4241250939667225,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.4262915831059217,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.4288330459967256,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.432436915114522,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.4344794219359756,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.5958118494600058,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.5964375818148255,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.6014370378106833,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.6055416092276573,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.6121664559468627,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.819708432070911,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.823999966494739,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.8243125416338444,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.8259793762117624,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.8284159488976,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.828791970387101,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.8315619565546513,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.8331460198387504,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.8348329942673445,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.836978994309902,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr20",
+      "accuracy": 51.3215859030837,
+      "params": 1981411,
+      "flops_red": 40.74493816226631,
+      "latency_ms": 2.8372914530336857,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr30_ghost\u00d73",
+      "accuracy": 45.37444933920705,
+      "params": 1717620,
+      "flops_red": 48.379072167956295,
+      "latency_ms": 4.345958470366895,
+      "ghost_count": 3
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.6147081041708589,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.6616040375083685,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.707937684841454,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.7229994991794229,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.772708143107593,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.7734579741954803,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.7755413427948952,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.7810624558478594,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.7842705128714442,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.7848334973677993,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8703334499150515,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8740419764071703,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8762500258162618,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8764164997264743,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8771254690364003,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8776454962790012,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8777704099193215,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8798538949340582,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8807084998115897,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8823124701157212,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8865416059270501,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8870625644922256,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8931248923763633,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.8943753093481064,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.895978464744985,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.987729105167091,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.9916875753551722,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.9926665117964149,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.9968125270679593,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 1.9995415350422263,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.124062506482005,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.1308755967766047,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.1316868951544166,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.132083522155881,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.1371665643528104,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.1617080783471465,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.3125834995880723,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.312770579010248,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.312875003553927,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.3135620867833495,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.3144579026848078,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.314687008038163,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.3149169282987714,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.316166996024549,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.3194795940071344,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.324895584024489,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr40",
+      "accuracy": 39.86784140969163,
+      "params": 1463271,
+      "flops_red": 55.64076864781411,
+      "latency_ms": 2.3258329601958394,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.4318539761006832,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.4823125675320625,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.5198535984382033,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.5298540238291025,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.585250487551093,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.5860829735174775,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.5866041649132967,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.5913540264591575,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.5924795297905803,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6043330542743206,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6622290713712573,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6625835560262203,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.666437485255301,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6690626507624984,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6693335492163897,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6706460155546665,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6717505641281605,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6719584818929434,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6721044667065144,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6725625609979033,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.672603888437152,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6727501060813665,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6738544218242168,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6759579302743077,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.6793754184618592,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.7646044725552201,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.7690830864012241,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.7707080114632845,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.7734374850988388,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.8907708581537008,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.8925209296867251,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.8988754600286484,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.9002710469067097,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.902291551232338,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 1.9394790288060904,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.0541041158139706,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.056812518276274,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.0581461722031236,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.0589580526575446,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.40_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.0600209245458245,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.060187514871359,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.060374477878213,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.0604999735951424,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.50_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.0613119704648852,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.063375082798302,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.30_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.0659170113503933,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.75_p0.20_pr50",
+      "accuracy": 32.158590308370044,
+      "params": 1203099,
+      "flops_red": 63.39600519259703,
+      "latency_ms": 2.3174580419436097,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.3781040906906128,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.3868125388398767,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.3869579415768385,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.469500013627112,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.4722084160894156,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.4769374392926693,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.526416977867484,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.5278750797733665,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.5308544971048832,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.549437060020864,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.6055414453148842,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.6063544899225235,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.6083124792203307,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.6106670955196023,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.613957923837006,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.6144579276442528,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.6153744654729962,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.6162284882739186,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.6174375778064132,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.6175414202734828,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.617937465198338,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.619020476937294,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.620520488359034,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.622374402359128,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.7066459404304624,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.7067498993128538,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.707687508314848,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.709125004708767,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.7095839139074087,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.709874952211976,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.7148955957964063,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.8310204613953829,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.831291476264596,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.8316664500162005,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.8322084797546268,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.8343330593779683,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.8349795136600733,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.835271017625928,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.8367290031164885,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.8386665033176541,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9835209241136909,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9853335106745362,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9858540035784245,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9876881269738078,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9880629843100905,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9893123535439372,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.989520969800651,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9897505408152938,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9899581093341112,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9904999062418938,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.991208060644567,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 1.9959380151703954,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr30",
+      "accuracy": 13.656387665198238,
+      "params": 1125075,
+      "flops_red": 65.69496411937212,
+      "latency_ms": 2.074312069453299,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.1450619203969836,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.1556874960660934,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.1804795358330011,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.2123540509492159,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.2174370931461453,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.2189580593258142,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.2635624734684825,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.2699579820036888,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.2727080611512065,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.2772498885169625,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.2796670198440552,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3256045058369637,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3326664920896292,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3336039846763015,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3337915297597647,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3338546268641949,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3368125073611736,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3371045934036374,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3384583871811628,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.339187496341765,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3400415191426873,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3404374476522207,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3416250003501773,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.3423544587567449,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.4143330045044422,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.4156668912619352,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.4158119447529316,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.4176248805597425,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.4178539859130979,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.420791377313435,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.5139374881982803,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.5143954660743475,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.5145414508879185,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.5153534477576613,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.5158954774960876,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.516624353826046,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.5189999248832464,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.522624515928328,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.5235625905916095,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.527082989923656,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.642958028241992,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.6430419636890292,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.6447501257061958,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.6458960017189384,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.6463539795950055,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.50_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.6468960093334317,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.40_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.64741650223732,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.6478336183354259,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.64899998344481,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.649125013500452,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.6496040625497699,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.20_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 1.6501036006957293,
+      "ghost_count": 0
+    },
+    {
+      "name": "main_graph_w0.50_p0.30_pr50",
+      "accuracy": 13.215859030837004,
+      "params": 791747,
+      "flops_red": 75.7055158996827,
+      "latency_ms": 3.2480625668540597,
+      "ghost_count": 0
+    }
+  ]
+}
