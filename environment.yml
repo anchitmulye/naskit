@@ -1,0 +1,49 @@
+# naskit conda environment
+# Recreate with: conda env create -f environment.yml
+# Activate with: conda activate naskit
+#
+# Note: torch-scatter and spconv require matching torch+CUDA versions.
+# For CPU-only: pip install torch-scatter (no CUDA suffix needed)
+# For GPU/Docker: see Dockerfile for the correct wheel URL
+
+name: naskit
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+
+  - pip:
+    # Core deep learning
+    - torch==2.1.0
+    - torchvision==0.16.0
+
+    # ONNX stack
+    - onnx==1.15.0
+    - onnxruntime==1.17.0       # CPU; use onnxruntime-gpu on GPU machines
+    - onnx2torch==1.5.15
+    - onnxsim==0.4.36
+
+    # NAS / analysis
+    - scikit-learn
+    - scipy
+    - numpy
+
+    # Model deps
+    - h5py
+    - einops
+    - addict
+    - timm
+    - tqdm
+    - pyyaml
+
+    # Point cloud extras (install separately — wheel depends on torch+CUDA version)
+    # CPU:  pip install torch-scatter
+    # GPU:  pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.0+cu128.html
+    # torch-scatter
+
+    # h3dnas — install editable from submodule
+    # pip install -e submodules/h3dnas
