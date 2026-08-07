@@ -1,0 +1,18 @@
+services:
+  nas:
+    build: .
+    image: naskit:latest
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - .:/workspace
+      - ./artifacts:/workspace/artifacts
+      - ./results:/workspace/results
+    working_dir: /workspace
+    ipc: host
+    shm_size: '8gb'
+    stdin_open: true
+    tty: true
+    command: sleep infinity
