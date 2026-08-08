@@ -13,17 +13,17 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.11
+  - python=3.12
   - pip
 
   - pip:
     # Core deep learning
-    - torch==2.1.0
-    - torchvision==0.16.0
+    - torch==2.12.0
+    - torchvision==0.27.0
 
     # ONNX stack
-    - onnx==1.15.0
-    - onnxruntime==1.17.0       # CPU; use onnxruntime-gpu on GPU machines
+    - onnx==1.21.0
+    - onnxruntime==1.26.0       # CPU; use onnxruntime-gpu on GPU machines
     - onnx2torch==1.5.15
     - onnxsim==0.4.36
 
@@ -44,6 +44,3 @@ dependencies:
     # CPU:  pip install torch-scatter
     # GPU:  pip install torch-scatter -f https://data.pyg.org/whl/torch-2.7.0+cu128.html
     # torch-scatter
-
-    # h3dnas — install editable from submodule
-    # pip install -e submodules/h3dnas
