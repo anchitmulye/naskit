@@ -1,0 +1,72 @@
+{
+  "base": {
+    "name": "fashion_mnist",
+    "top1_accuracy": 92.06,
+    "per_class_acc": {
+      "T-shirt": 87.8,
+      "Trouser": 98.4,
+      "Pullover": 85.7,
+      "Dress": 95.1,
+      "Coat": 90.2,
+      "Sandal": 98.5,
+      "Shirt": 74.1,
+      "Sneaker": 97.9,
+      "Bag": 97.6,
+      "Ankle boot": 95.3
+    },
+    "flops": 2436096,
+    "parameters": 206922,
+    "model_size_mb": 0.7909746170043945,
+    "latency_ms_p50": 0.07505342364311218,
+    "latency_ms_p95": 0.07957592606544495,
+    "latency_ms_p99": 0.08269153535366058,
+    "throughput_fps": 13323.842557204547,
+    "memory_mb": 0.7893447875976562,
+    "eval_time_s": 1.6605229377746582
+  },
+  "nas": {
+    "name": "best_overall_finetuned",
+    "top1_accuracy": 91.84,
+    "per_class_acc": {
+      "T-shirt": 87.6,
+      "Trouser": 97.6,
+      "Pullover": 87.7,
+      "Dress": 92.4,
+      "Coat": 88.3,
+      "Sandal": 98.5,
+      "Shirt": 75.1,
+      "Sneaker": 96.9,
+      "Bag": 97.9,
+      "Ankle boot": 96.4
+    },
+    "flops": 1194240,
+    "parameters": 91416,
+    "model_size_mb": 0.35063838958740234,
+    "latency_ms_p50": 0.055670738220214844,
+    "latency_ms_p95": 0.05961991846561432,
+    "latency_ms_p99": 0.06218120455741883,
+    "throughput_fps": 17962.758029978588,
+    "memory_mb": 0.348724365234375,
+    "eval_time_s": 1.2708680629730225
+  },
+  "accuracy_delta_pp": -0.21999999999999886,
+  "param_reduction_pct": 55.821034012816426,
+  "flops_reduction_pct": 50.97730138713745,
+  "size_reduction_pct": 55.67008320502727,
+  "latency_speedup_x": 1.348166488222698,
+  "throughput_gain_x": 1.348166488222698,
+  "compression_ratio": 2.263520609083749,
+  "pareto_efficiency": 0.5085547859433743,
+  "cdg": {
+    "rho_f": 0.9708,
+    "n_free": 1,
+    "n_constrained": 3,
+    "n_total": 4,
+    "ceiling_pct": 97.08,
+    "achieved_pct": 55.82,
+    "ceiling_respected": true
+  },
+  "jetson_feasible": null,
+  "constraint_violations": {},
+  "constraint_headroom": {}
+}

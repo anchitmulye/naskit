@@ -1,0 +1,25 @@
+model: pointnet
+mode: two_stage
+candidates: 15
+prune_ratios:
+- 0.05
+- 0.1
+- 0.15
+- 0.2
+- 0.25
+- 0.3
+- 0.4
+- 0.5
+width_multipliers:
+- 0.5
+- 0.625
+- 0.75
+- 1.0
+strategy: evolutionary
+use_sensitivity: false
+eval_samples: 908
+seed: 105
+base_onnx: /workspace/submodules/vision-onnx-models/submodules/pointnet_pointnet2/log/classification/pointnet_c40/onnx/pointnet_cls_c40_n1024.onnx
+artifact_path: /workspace/artifacts/pointnet/artifacts/pointnet_base
+command: python submodules/h3dnas/examples/pointnet/run_nas.py --mode two_stage --candidates
+  15 --eval-samples 908 --seed 105 --run-name pointnet_base
