@@ -54,8 +54,8 @@ models:
     notes: PointNet 
 
   pointnet2:
-    base_onnx:   models/pointnet2/pointnet2_cls_ssg_onnx_c40_n1024.onnx
-    nas_onnx:    models/pointnet2/pointnet2_cls_ssg_onnx_c40_n1024_h3dnas.onnx
+    base_onnx:   models/pointnet2/pointnet2_cls_ssg_c40_n1024.onnx
+    nas_onnx:    models/pointnet2/pointnet2_cls_ssg_c40_n1024_h3dnas.onnx
     dataloader:
       module:    submodules/h3dnas/examples/pointnet2/datamodule.py
       class:     ModelNetDataModule
