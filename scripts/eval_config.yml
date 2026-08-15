@@ -54,32 +54,18 @@ models:
     notes: PointNet 
 
   pointnet2:
-    base_onnx:   submodules/vision-onnx-models/submodules/pointnet_pointnet2/log/classification/pointnet2_ssg_c10/onnx/pointnet2_cls_ssg_c10_n1024_opset13_nofold.onnx
-    nas_onnx:    artifacts/pointnet2/paper_run_nofold/models/best_stage1_finetuned.onnx
+    base_onnx:   models/pointnet2/pointnet2_cls_ssg_onnx_c40_n1024.onnx
+    nas_onnx:    models/pointnet2/pointnet2_cls_ssg_onnx_c40_n1024_h3dnas.onnx
     dataloader:
-      module:    submodules/h3dnas/examples/pointnet/datamodule.py
-      class:     ModelNetDataModule
-      args:
-        data_root:   submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
-        model_repo:  submodules/vision-onnx-models/submodules/pointnet_pointnet2
-        num_classes: 10
-        seed:        42
-    results_name: final_eval
-    notes: PointNet++ SSG two-stage Stage 1 finetuned paper result
-
-  pointnet_c40:
-    base_onnx:   submodules/vision-onnx-models/exported_models/pointnet/pointnet_cls_c40_n1024.onnx
-    nas_onnx:    artifacts/pointnet_c40/paper_evo_final/models/best_stage1_finetuned.onnx
-    dataloader:
-      module:    submodules/h3dnas/examples/pointnet/datamodule.py
+      module:    submodules/h3dnas/examples/pointnet2/datamodule.py
       class:     ModelNetDataModule
       args:
         data_root:   submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
         model_repo:  submodules/vision-onnx-models/submodules/pointnet_pointnet2
         num_classes: 40
-        seed:        42
+        seed:        105
     results_name: final_eval
-    notes: PointNet c40 ModelNet40 two-stage evolutionary final paper result
+    notes: PointNet++ SSG
 
   pointmlp:
     base_onnx:   submodules/vision-onnx-models/exported_models/pointmlp/pointmlp_c40_n1024.onnx
@@ -89,9 +75,9 @@ models:
       class:     PointMLPDataModule
       args:
         pointmlp_dir: submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40
-        seed: 42
+        seed: 105
     results_name: final_eval
-    notes: PointMLP two-stage paper result CDG-L2
+    notes: PointMLP 
 
   mobilenet_v2:
     base_onnx:   submodules/h3dnas/examples/mobilenet/mobilenet_v2.onnx
@@ -103,6 +89,6 @@ models:
         val_dir:      submodules/h3dnas/examples/mobilenet/data/imagenet/val
         eval_samples: 10000
         batch_size:   16
-        seed:         42
+        seed:         105
     results_name: final_eval
     notes: MobileNetV2 two-stage evolutionary Stage 1 finetuned paper result

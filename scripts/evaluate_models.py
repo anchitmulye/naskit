@@ -182,7 +182,7 @@ def main():
             "  python evaluate.py --config custom.yaml --dry-run\n"
         ),
     )
-    p.add_argument("--config",   default="eval_config.yaml",
+    p.add_argument("--config",   default=_NASKIT/"scripts/eval_config.yml",
                    help="YAML config file (default: eval_config.yaml)")
     p.add_argument("--models",   nargs="+", default=None,
                    help="Model keys to evaluate (default: all in config)")
