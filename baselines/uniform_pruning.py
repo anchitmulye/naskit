@@ -17,8 +17,8 @@ and sensitivity-guided allocation are justified.
 This is a fair comparison because:
   - same topology constraint detection (TopologyAnalyser)
   - same ORT evaluation
-  - same fine-tuning setup (Adam, cosine LR, 15 epochs)
-  - same dataset (ModelNet10, 908 test samples)
+  - same fine-tuning setup (AdamW, warmup+cosine LR, 50 epochs)
+  - same dataset (ModelNet40, 2468 test samples)
 """
 
 from __future__ import annotations
@@ -124,66 +124,104 @@ def uniform_prune_onnx(base_onnx: Path, prune_ratio: float) -> "ONNXModel":
 # ---------------------------------------------------------------------------
 
 
-def finetune(pruned_model_path: Path, prune_ratio: float,
-             epochs: int = 15, lr: float = 5e-4, batch_size: int = 24,
-             out_path: Path = None) -> dict:
-    """Fine-tune a pruned ONNX via PyTorch and return accuracy metrics."""
+def finetune(pruned_model_path: Path, epochs: int = 50,
+             lr: float = 3e-4, batch_size: int = 24,
+             out_path: Path = None, seed: int = 42) -> dict:
+    """Fine-tune a pruned ONNX via onnx2torch — no source code needed."""
     import torch
     import torch.nn.functional as F
+    import onnx
+    import onnx2torch
+    import onnxruntime as ort
+    from data_utils.ModelNetDataLoader import ModelNetDataLoader
+    from torch.utils.data import DataLoader
+    import argparse as _ap
 
-    sys.path.insert(0, str(H3DNAS_ROOT / "examples/pointnet"))
-    from finetune_nas_best import (
-        PrunedPointNet, load_onnx_weights_into_model,
-        get_loaders, evaluate, export_onnx, evaluate_ort,
-        feature_transform_regularizer
-    )
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    device = "cpu"
-    model = PrunedPointNet(num_classes=10, prune_ratio=prune_ratio)
-    model = load_onnx_weights_into_model(model, pruned_model_path)
-    model = model.to(device)
+    proto = onnx.load(str(pruned_model_path))
+    model = onnx2torch.convert(proto).to(device)
 
-    train_loader, test_loader = get_loaders(batch_size)
-    pre_acc = evaluate(model, test_loader, device)
-    logger.info(f"  Zero-shot accuracy: {pre_acc:.2f}%")
+    ns = _ap.Namespace(num_point=1024, use_uniform_sample=False,
+                       use_normals=False, num_category=40)
+    train_ds = ModelNetDataLoader(root=str(MODELNET_DATA), args=ns,
+                                  split="train", process_data=False)
+    test_ds  = ModelNetDataLoader(root=str(MODELNET_DATA), args=ns,
+                                  split="test",  process_data=False)
+    g = torch.Generator(); g.manual_seed(seed)
+    train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True,
+                              num_workers=0, generator=g)
+    test_loader  = DataLoader(test_ds,  batch_size=batch_size, shuffle=False,
+                              num_workers=0)
 
-    opt   = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
-    sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=epochs)
+    def eval_pt(m, loader):
+        m.eval(); correct = total = 0
+        with torch.no_grad():
+            for pts, labels in loader:
+                if pts.ndim == 3 and pts.shape[2] == 3:
+                    pts = pts.permute(0, 2, 1)
+                out = m(pts.float().to(device))
+                if isinstance(out, (list, tuple)): out = out[0]
+                correct += out.argmax(1).eq(labels.view(-1).long().to(device)).sum().item()
+                total   += labels.size(0)
+        return 100. * correct / total
+
+    pre_acc = eval_pt(model, test_loader)
+    logger.info(f"  Zero-shot: {pre_acc:.2f}%")
+
+    # Warmup + cosine LR
+    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-5)
+    warmup = min(3, epochs // 5)
+    def lr_lambda(ep):
+        if ep < warmup: return (ep + 1) / max(warmup, 1)
+        return 0.5 * (1 + np.cos(np.pi * (ep - warmup) / max(epochs - warmup, 1)))
+    sched = torch.optim.lr_scheduler.LambdaLR(opt, lr_lambda)
+
     best_acc = pre_acc
-    best_state = None
+    best_state = {k: v.clone() for k, v in model.state_dict().items()}
 
     for ep in range(1, epochs + 1):
-        model.train()
-        t0 = time.time()
-        loss_sum = corr = tot = 0
+        model.train(); t0 = time.time()
         for pts, labels in train_loader:
-            pts    = pts.transpose(2, 1).to(device)
-            labels = labels.long().to(device)
-            opt.zero_grad()
-            pred, tf = model(pts)
-            loss = F.nll_loss(pred, labels) + feature_transform_regularizer(tf) * 0.001
-            loss.backward()
+            if pts.ndim == 3 and pts.shape[2] == 3:
+                pts = pts.permute(0, 2, 1)
+            out = model(pts.float().to(device))
+            if isinstance(out, (list, tuple)): out = out[0]
+            loss = F.cross_entropy(out, labels.view(-1).long().to(device))
+            opt.zero_grad(); loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
-            loss_sum += loss.item()
-            corr += pred.argmax(1).eq(labels).sum().item()
-            tot  += labels.size(0)
         sched.step()
-        val_acc = evaluate(model, test_loader, device)
-        if val_acc > best_acc:
-            best_acc = val_acc
+        val = eval_pt(model, test_loader)
+        if val > best_acc:
+            best_acc = val
             best_state = {k: v.clone() for k, v in model.state_dict().items()}
-        logger.info(f"  Ep {ep:3d}/{epochs} | Loss={loss_sum/len(train_loader):.4f} | "
-                    f"Train={100.*corr/tot:.1f}% | Val={val_acc:.2f}% | Best={best_acc:.2f}% | "
-                    f"({time.time()-t0:.0f}s)")
+        logger.info(f"  Ep {ep:3d}/{epochs} | val={val:.2f}% | best={best_acc:.2f}% | ({time.time()-t0:.0f}s)")
 
-    if best_state:
-        model.load_state_dict(best_state)
+    model.load_state_dict(best_state)
+    model.eval()
 
+    ort_acc = best_acc
     if out_path:
-        export_onnx(model, out_path)
-        ort_acc = evaluate_ort(out_path, test_loader)
-    else:
-        ort_acc = best_acc
+        dummy = torch.zeros(1, 3, 1024)
+        torch.onnx.export(model.cpu(), dummy, str(out_path),
+                          export_params=True, opset_version=13,
+                          do_constant_folding=False, dynamo=False,
+                          input_names=["point_cloud"], output_names=["logits"],
+                          dynamic_axes={"point_cloud": {0: "batch"}, "logits": {0: "batch"}})
+        opts = ort.SessionOptions(); opts.intra_op_num_threads = 1
+        sess = ort.InferenceSession(str(out_path), sess_options=opts,
+                                    providers=["CPUExecutionProvider"])
+        inp = sess.get_inputs()[0].name
+        correct = total = 0
+        for pts, labels in test_loader:
+            pts_np = pts.numpy().astype(np.float32)
+            if pts_np.ndim == 3 and pts_np.shape[2] == 3:
+                pts_np = pts_np.transpose(0, 2, 1)
+            preds = np.argmax(sess.run(None, {inp: pts_np})[0], axis=1)
+            correct += int((preds == labels.numpy().ravel()).sum())
+            total   += len(labels)
+        ort_acc = 100. * correct / total
 
     return {"pre_acc": pre_acc, "best_acc": best_acc, "ort_acc": ort_acc}
 
@@ -214,7 +252,8 @@ def main(base_onnx: Path, prune_ratio: float, epochs: int,
 
     # Step 2 — fine-tune
     ft_path = out_dir / f"uniform_finetuned_pr{int(prune_ratio*100):02d}.onnx"
-    metrics = finetune(pruned_path, prune_ratio, epochs, lr, batch_size, ft_path)
+    metrics = finetune(pruned_path, epochs=epochs, lr=lr,
+                       batch_size=batch_size, out_path=ft_path)
     param_red = (1 - pruned_model.parameters / base_params) * 100
     flops_red = (1 - pruned_model.flops / base_flops) * 100 if base_flops else 0
 
@@ -247,9 +286,9 @@ def main(base_onnx: Path, prune_ratio: float, epochs: int,
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description="Uniform L1 pruning baseline")
     p.add_argument("--onnx",        type=Path, required=True)
-    p.add_argument("--prune-ratio", type=float, default=0.1)
-    p.add_argument("--epochs",      type=int,   default=15)
-    p.add_argument("--lr",          type=float, default=5e-4)
+    p.add_argument("--prune-ratio", type=float, default=0.32)
+    p.add_argument("--epochs",      type=int,   default=50)
+    p.add_argument("--lr",          type=float, default=3e-4)
     p.add_argument("--batch-size",  type=int,   default=24)
     p.add_argument("--out-dir",     type=Path,  default=Path("baselines/outputs"))
     args = p.parse_args()

@@ -320,8 +320,8 @@ def main(base_onnx: Path, prune_ratio: float, epochs: int,
 
     sys.path.insert(0, str(Path(__file__).parent))
     from uniform_pruning import finetune
-    ft_path = out_dir / f"hrank_finetuned_pr{int(prune_ratio*100):02d}.onnx"
-    metrics = finetune(pruned_path, prune_ratio, epochs, lr, batch_size, ft_path)
+    ft_path = out_dir / f"activation_rank_finetuned_pr{int(prune_ratio*100):02d}.onnx"
+    metrics = finetune(pruned_path, epochs, lr, batch_size, ft_path)
 
     param_red = (1 - pruned_model.parameters / base_params) * 100
     flops_red = (1 - pruned_model.flops / base_flops) * 100 if base_flops else 0
