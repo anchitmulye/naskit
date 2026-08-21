@@ -74,9 +74,7 @@ models:
       module:    submodules/h3dnas/examples/pointmlp/datamodule.py
       class:     PointMLPDataModule
       args:
-        data_root:  submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/data/
-        model_repo: submodules/vision-onnx-models/submodules/pointmlp/
-        num_classes: 40
+        pointmlp_dir: submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40
         seed: 105
     results_name: final_eval
     notes: PointMLP 
