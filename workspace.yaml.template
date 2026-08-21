@@ -7,25 +7,45 @@
 # Resolved by: utils/workspace.py → load_workspace()
  
 models:
- 
+
   fashion_mnist:
-    # Self-contained — downloads data automatically, no paths to set.
     base_onnx:    submodules/h3dnas/examples/fashion_mnist/fashion_mnist.onnx
     nas_onnx:     artifacts/fashion_mnist/nas/best.onnx
     finetuned:    artifacts/fashion_mnist/nas/best_finetuned.onnx
-    artifacts:    artifacts/fashion_mnist/
+    artifacts:    artifacts/fashion_mnist/artifacts
     num_classes:  10
     input_shape:  [1, 1, 28, 28]
     task:         classification
- 
+
   pointnet:
-    base_onnx:    submodules/vision-onnx-models/submodules/pointnet_pointnet2/log/classification/pointnet_c10/onnx/pointnet_cls_c10_n1024_opset13.onnx
+    base_onnx:    submodules/vision-onnx-models/submodules/pointnet_pointnet2/log/classification/pointnet_c40/onnx/pointnet_cls_c40_n1024.onnx
     nas_onnx:     artifacts/pointnet/nas/best.onnx
     finetuned:    artifacts/pointnet/nas/best_finetuned.onnx
-    artifacts:    artifacts/pointnet/
+    artifacts:    artifacts/pointnet/artifacts
     model_repo:   submodules/vision-onnx-models/submodules/pointnet_pointnet2
     dataset:      submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
-    num_classes:  10
+    num_classes:  40
     input_shape:  [1, 3, 1024]
     task:         classification
- 
+
+  pointnet2:
+    base_onnx:    submodules/vision-onnx-models/submodules/pointnet_pointnet2/log/classification/pointnet2_cls_ssg/onnx/pointnet_cls_ssg_onnx_c40_n1024.onnx
+    nas_onnx:     artifacts/pointnet2/nas/best.onnx
+    finetuned:    artifacts/pointnet2/nas/best_finetuned.onnx
+    artifacts:    artifacts/pointnet2/artifacts
+    model_repo:   submodules/vision-onnx-models/submodules/pointnet_pointnet2
+    dataset:      submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
+    num_classes:  40
+    input_shape:  [1, 3, 1024]
+    task:         classification
+
+  pointmlp:
+    base_onnx:    submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/checkpoints/pointMLP/pointmlp_c40_n1024.onnx
+    nas_onnx:     artifacts/pointmlp/nas/best.onnx
+    finetuned:    artifacts/pointmlp/nas/best_finetuned.onnx
+    artifacts:    artifacts/pointmlp/artifacts
+    model_repo:   submodules/vision-onnx-models/submodules/pointmlp
+    dataset:      submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/data/
+    num_classes:  40
+    input_shape:  [1, 3, 1024]
+    task:         classification
