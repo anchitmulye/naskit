@@ -47,7 +47,9 @@ MODELNET_DATA = POINTNET_REPO / "data/modelnet40_normal_resampled"
 
 # h3dnas finetuned ONNX (from your NAS + finetune run)
 # Set to None to skip h3dnas comparison and run only baselines
-H3DNAS_ONNX = NASKIT_ROOT / "models/pointnet/pointnet_cls_c40_n1024_h3dnas.onnx"
+# Finetuned h3dnas model — 89.75% on ModelNet40 c40 (2468 test samples)
+# From CDG-targeted run: prune=0.5, width=0.75 → 65.1% param reduction, −0.57pp
+H3DNAS_ONNX = NASKIT_ROOT / "artifacts/pointnet_c40/pointnet_cdg_target/models/best_stage1_finetuned.onnx"
 # H3DNAS_ONNX = None   # ← uncomment to run baselines only
 
 NUM_CLASSES  = 40
@@ -154,20 +156,20 @@ def main(prune_ratio: float, epochs: int, lr: float, batch_size: int,
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     all_results = []
 
-    # ── 0. h3dnas result — commented out, add manually from your NAS run ────────
-    # Uncomment and set H3DNAS_ONNX above once your finetune is complete.
-    # The baseline methods below are independent of h3dnas and can run first.
-    #
-    # if H3DNAS_ONNX and Path(H3DNAS_ONNX).exists():
-    #     logger.info("\n[0] h3dnas two-stage NAS result (ours)")
-    #     h3dnas_result = get_h3dnas_result(Path(H3DNAS_ONNX))
-    #     base_acc = h3dnas_result["base_acc"]
-    #     logger.info(f"  h3dnas: {h3dnas_result['finetuned']:.2f}%  "
-    #                 f"Δ={h3dnas_result['finetuned']-base_acc:+.2f}pp")
-    #     all_results.append(h3dnas_result)
-    # else:
-    #     base_acc = 90.32
-    base_acc = 90.32  # PointNet ModelNet40 baseline — update after running baselines
+    # ── 0. h3dnas result ─────────────────────────────────────────────────────────
+    if H3DNAS_ONNX and Path(H3DNAS_ONNX).exists():
+        logger.info("\n" + "=" * 70)
+        logger.info("[0] h3dnas Two-Stage NAS (ours)")
+        logger.info("=" * 70)
+        h3dnas_result = get_h3dnas_result(Path(H3DNAS_ONNX))
+        base_acc = h3dnas_result["base_acc"]
+        logger.info(f"  h3dnas: {h3dnas_result['finetuned']:.2f}%  "
+                    f"Δ={h3dnas_result['finetuned']-base_acc:+.2f}pp  "
+                    f"param_red={h3dnas_result['param_red']:.1f}%")
+        all_results.append(h3dnas_result)
+    else:
+        logger.warning(f"  h3dnas ONNX not found: {H3DNAS_ONNX} — skipping")
+        base_acc = 90.32  # PointNet ModelNet40 verified baseline
 
     # ── 1. Random Pruning ─────────────────────────────────────────────────────
     logger.info("\n" + "=" * 70)

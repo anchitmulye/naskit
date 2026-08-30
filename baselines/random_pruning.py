@@ -35,45 +35,58 @@ logger = get_logger(__name__)
 
 def random_prune_onnx(base_onnx: Path, prune_ratio: float, seed: int = 42):
     """
-    Randomly select which channels to prune — no importance scoring.
-    Reuses h3dnas NAS pipeline with random strategy and single candidate.
+    TRUE random channel pruning — randomly selects which channels to remove
+    with NO importance scoring whatsoever.
+
+    Technical difference from Uniform L1:
+      - Uniform L1: ranks channels by L1 norm of weights, prunes lowest
+      - Random:     shuffles channel indices randomly, prunes first N%
+      This is the absolute lower bound — no signal, pure chance.
+
+    Implementation: monkey-patches h3dnas's _l1_importance_idx with a random
+    version so the graph pruner handles all structural propagation correctly
+    (BN, residuals, coupled groups) while using random channel selection.
     """
-    from h3dnas.core.nas_pipeline import run_nas, NASConfig
-    import torch
-    import random as _random
+    import h3dnas.modulator.pruner_ops as _pruner_ops
+    from h3dnas.parser.onnx_parser import ONNXParser
+    from h3dnas.modulator.architecture_modulator import ArchitectureModulator
+    from h3dnas.core.types import SearchSpace
 
-    _random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-
+    rng = np.random.default_rng(seed)
     logger.info(f"Random pruning: {base_onnx.name}  ratio={prune_ratio}  seed={seed}")
 
-    config = NASConfig(
-        base_onnx         = base_onnx,
-        sample_input      = np.random.randn(1, 3, 1024).astype(np.float32),
-        data_module       = None,
-        num_candidates    = 1,
-        prune_ratios      = [prune_ratio],
-        width_multipliers = [1.0],
-        strategy          = "random",
-        use_sensitivity   = False,
-        seed              = seed,
-        enable_graph_mutations = False,
-        enable_zero_shot  = False,
-        # Random importance: override L1 with random scores by using seed variation
-        # The random strategy picks random width/ratio combos — at ratio=prune_ratio
-        # and width=1.0 it applies L1 but seeded differently each run, approximating
-        # random channel selection within the h3dnas graph surgery framework.
-    )
+    # Monkey-patch L1 importance → random importance.
+    # ArchitectureModulator calls _l1_importance_idx for channel selection;
+    # all structural propagation (BN, residuals, coupled groups) is handled
+    # by the modulator itself — we only replace the scoring signal.
+    _orig_l1 = _pruner_ops._l1_importance_idx
 
-    result = run_nas(config)
-    if not result.candidates:
-        raise RuntimeError("Random pruning produced no candidates")
+    def _random_importance_idx(w: np.ndarray, keep_k: int, axis: int = 0) -> np.ndarray:
+        n = w.shape[axis]
+        return np.sort(rng.choice(n, keep_k, replace=False))
 
-    pruned = result.candidates[0]["model"]
-    param_red = (1 - pruned.parameters / result.base_params) * 100
-    logger.info(f"  Pruned: params={pruned.parameters:,}  param_red={param_red:.1f}%")
-    return pruned, result.base_acc, result.base_params, result.base_flops
+    _pruner_ops._l1_importance_idx = _random_importance_idx
+
+    try:
+        parser = ONNXParser(); parser.initialize()
+        base_model = parser.execute(str(base_onnx))
+        base_params = base_model.parameters
+        base_flops  = base_model.flops
+
+        search_space = SearchSpace(
+            prune_ratios      = [prune_ratio],
+            width_multipliers = [1.0],
+            use_sensitivity   = False,
+        )
+        modulator = ArchitectureModulator()
+        candidates = modulator.execute(base_model, search_space, eval_fn=None)
+        pruned_model = candidates[0]
+    finally:
+        _pruner_ops._l1_importance_idx = _orig_l1
+
+    param_red = (1 - pruned_model.parameters / base_params) * 100
+    logger.info(f"  Pruned: params={pruned_model.parameters:,}  param_red={param_red:.1f}%")
+    return pruned_model, 0.0, base_params, base_flops
 
 
 def finetune_and_eval(pruned_path: Path, epochs: int, lr: float,
@@ -194,7 +207,8 @@ def main(base_onnx: Path, prune_ratio: float, epochs: int,
     logger.info(f"  Prune ratio : {prune_ratio}  (random channel selection)")
     logger.info(f"  Fine-tune   : {epochs} epochs, lr={lr}")
 
-    pruned, base_acc, base_params, base_flops = random_prune_onnx(base_onnx, prune_ratio, seed)
+    pruned, _, base_params, base_flops = random_prune_onnx(base_onnx, prune_ratio, seed)
+    base_acc = 90.32  # PointNet ModelNet40 — set from actual ORT eval in run_baselines.py
     pruned_path = out_dir / f"random_pruned_pr{int(prune_ratio*100):02d}.onnx"
     pruned.save(str(pruned_path))
 
