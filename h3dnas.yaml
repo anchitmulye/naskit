@@ -1,0 +1,54 @@
+# h3dnas: the one configuration file.
+
+root: .
+
+paths:
+  models:  models/base                            # base ONNX files: <model name>.onnx
+  runs:    artifacts                              # outputs: <name>/<settings hash>_seed<N>/ (models, REPORT.md)
+
+data:
+  fashion_mnist:  data/fashion_mnist
+
+defaults:
+  seed: 0
+  device: null                    # a `devices` entry: its limits become the search budget
+  objective: {max_drop: 1.0}      # accuracy points the selected model may lose against the base
+  search:
+    strategy: group_evolutionary  # or uniform
+    ratios: [0.2, 0.3, 0.4, 0.5]  # uniform candidates; each sets one search budget
+    budgets: null                 # or fractions of the base MACs, e.g. [0.7, 0.5, 0.35, 0.25]
+    budget: macs                  # macs | params
+    fitness: val_accuracy         # val_accuracy | agreement (label-free)
+    ghost: 0                      # GhostConv variants of the best k candidates
+    population: 16
+    generations: 10
+    channel_multiple: 1           # kept channels rounded up to a multiple (a device can set 8)
+  finetune: {candidates: 4, device: cpu}     # candidates fine-tuned per run; torch device
+  latency: {threads: 4, rounds: 5, runs_per_round: 20, warmup: 10}
+  runtime:                                   # ONNX Runtime per stage: cpu | cuda | tensorrt
+    search:   {provider: cpu, device_id: 0, threads: null, precision: fp32}
+    evaluate: {provider: cpu, device_id: 0, threads: null, precision: fp32}
+    latency:  {provider: cpu, device_id: 0, threads: null, precision: fp32}
+
+devices:
+  edge_small: {max_macs: 2_000_000_000, max_parameters: 20_000_000, max_model_size_mb: 80}
+  edge_large: {max_macs: 8_000_000_000, max_parameters: 60_000_000, max_model_size_mb: 250}
+  jetson_orin_nano: {channel_multiple: 8}
+
+models:
+
+  classification/2d:
+      # -- Fashion-MNIST (sanity) -------------------------------------------------------
+    fashion_mnist:
+      description: Small CNN on Fashion-MNIST, trained here (models/scripts/fashion_mnist.py)
+      dataset: {type: fashion_mnist, root: "${data.fashion_mnist}", val_per_class: 200}
+      reported: {top1: null, source: trained here}
+      finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
+  
+  classification/3d:
+
+  classification/text:
+
+  segmentation/2d:
+
+  segmentation/3d:

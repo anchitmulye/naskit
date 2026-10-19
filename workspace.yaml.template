@@ -1,51 +1,208 @@
-# naskit workspace configuration template
-# ─────────────────────────────────────────
-# Copy this file to workspace.yaml and fill in the paths marked ← SET THIS.
-# workspace.yaml is gitignored — every collaborator has their own copy.
-#
-# All paths are relative to this file (naskit/ root) unless absolute.
-# Resolved by: utils/workspace.py → load_workspace()
- 
+# h3dnas: the one configuration file.
+
+root: .
+
+paths:
+  models:  models/base                            # base ONNX files: <model name>.onnx
+  runs:    artifacts                              # outputs: <name>/<settings hash>_seed<N>/ (models, REPORT.md)
+
+data:
+  fashion_mnist:  data/fashion_mnist
+  cifar10:        data/cifar10
+  modelnet40:     submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
+  modelnet40_h5:  submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/data/modelnet40_ply_hdf5_2048
+  scanobjectnn:   data/scanobjectnn/h5_files
+  sst2_dev:       data/sst2/validation.parquet
+  sst2_tokenizer: data/sst2/tokenizer.json
+  imagenet_val:   data/imagenet/val
+  imagenet_train: data/imagenet/train
+  imagenetv2:     data/imagenetv2
+  voc2012:        data/voc/VOC2012
+  shapenetpart:   data/shapenetcore_partanno_segmentation_benchmark_v0_normal
+  s3dis:          data/s3dis/stanford_indoor3d
+
+defaults:
+  seed: 0
+  device: null                    # a `devices` entry: its limits become the search budget
+  objective: {max_drop: 1.0}      # accuracy points the selected model may lose against the base
+  search:
+    strategy: group_evolutionary  # or uniform
+    ratios: [0.2, 0.3, 0.4, 0.5]  # uniform candidates; each sets one search budget
+    budgets: null                 # or fractions of the base MACs, e.g. [0.7, 0.5, 0.35, 0.25]
+    budget: macs                  # macs | params
+    fitness: val_accuracy         # val_accuracy | agreement (label-free)
+    ghost: 0                      # GhostConv variants of the best k candidates
+    population: 16
+    generations: 10
+    channel_multiple: 1           # kept channels rounded up to a multiple (a device can set 8)
+  finetune: {candidates: 4, device: cpu}     # candidates fine-tuned per run; torch device
+  latency: {threads: 4, rounds: 5, runs_per_round: 20, warmup: 10}
+  runtime:                                   # ONNX Runtime per stage: cpu | cuda | tensorrt
+    search:   {provider: cpu, device_id: 0, threads: null, precision: fp32}
+    evaluate: {provider: cpu, device_id: 0, threads: null, precision: fp32}
+    latency:  {provider: cpu, device_id: 0, threads: null, precision: fp32}
+
+devices:
+  edge_small: {max_macs: 2_000_000_000, max_parameters: 20_000_000, max_model_size_mb: 80}
+  edge_large: {max_macs: 8_000_000_000, max_parameters: 60_000_000, max_model_size_mb: 250}
+  jetson_orin_nano: {channel_multiple: 8}
+
 models:
 
-  fashion_mnist:
-    base_onnx:    submodules/h3dnas/examples/fashion_mnist/fashion_mnist.onnx
-    nas_onnx:     artifacts/fashion_mnist/nas/best.onnx
-    finetuned:    artifacts/fashion_mnist/nas/best_finetuned.onnx
-    artifacts:    artifacts/fashion_mnist/artifacts
-    num_classes:  10
-    input_shape:  [1, 1, 28, 28]
-    task:         classification
+  classification/2d:
+      # -- Fashion-MNIST (sanity) -------------------------------------------------------
+    fashion_mnist:
+      description: Small CNN on Fashion-MNIST, trained here (models/scripts/fashion_mnist.py)
+      dataset: {type: fashion_mnist, root: "${data.fashion_mnist}", val_per_class: 200}
+      reported: {top1: null, source: trained here}
+      finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
 
-  pointnet:
-    base_onnx:    submodules/vision-onnx-models/submodules/pointnet_pointnet2/log/classification/pointnet_c40/onnx/pointnet_cls_c40_n1024.onnx
-    nas_onnx:     artifacts/pointnet/nas/best.onnx
-    finetuned:    artifacts/pointnet/nas/best_finetuned.onnx
-    artifacts:    artifacts/pointnet/artifacts
-    model_repo:   submodules/vision-onnx-models/submodules/pointnet_pointnet2
-    dataset:      submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
-    num_classes:  40
-    input_shape:  [1, 3, 1024]
-    task:         classification
+    # -- CIFAR-10: validation = 200/class of the official test set -----------------
+    cifar_resnet56:
+      description: ResNet-56 on CIFAR-10, chenyaofo/pytorch-cifar-models weights
+      dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
+      reported: {top1: 94.37, source: chenyaofo/pytorch-cifar-models}
+      finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
+    cifar_vgg16:
+      description: VGG-16-BN on CIFAR-10, chenyaofo/pytorch-cifar-models weights
+      dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
+      reported: {top1: 94.16, source: chenyaofo/pytorch-cifar-models}
+      finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
+    cifar_resnet18:
+      description: ResNet-18 on CIFAR-10 (ONNXPruner's protocol), edadaltocg/resnet18_cifar10 weights
+      dataset:
+        type: cifar10
+        root: "${data.cifar10}"
+        mean: [0.4914, 0.4822, 0.4465]
+        std: [0.2471, 0.2435, 0.2616]
+        val_per_class: 200
+      reported: {top1: null, source: "edadaltocg/resnet18_cifar10 (HuggingFace)"}
+      finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
+      settings: {search: {ratios: [0.5]}}
 
-  pointnet2:
-    base_onnx:    submodules/vision-onnx-models/submodules/pointnet_pointnet2/log/classification/pointnet2_cls_ssg/onnx/pointnet_cls_ssg_onnx_c40_n1024.onnx
-    nas_onnx:     artifacts/pointnet2/nas/best.onnx
-    finetuned:    artifacts/pointnet2/nas/best_finetuned.onnx
-    artifacts:    artifacts/pointnet2/artifacts
-    model_repo:   submodules/vision-onnx-models/submodules/pointnet_pointnet2
-    dataset:      submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
-    num_classes:  40
-    input_shape:  [1, 3, 1024]
-    task:         classification
+    # -- ImageNet-1k: validation = 10/class of the official val set; no fine-tuning ---
+    mobilenet_v2:
+      description: torchvision MobileNetV2 (IMAGENET1K_V1) exported to ONNX
+      dataset: &imagenet
+        type: imagenet
+        val_root: "${data.imagenet_val}"
+        train_root: "${data.imagenet_train}"
+        test_root2: "${data.imagenetv2}"
+        val_per_class: 10
+        test_per_class: 10
+      reported: {top1: 71.88, source: torchvision IMAGENET1K_V1}
+      finetune: null
+      settings: &imagenet_settings {search: {ratios: [0.3, 0.5]}}
+    resnet18-v1-7: &zoo
+      description: ONNX Model Zoo ImageNet classifier (input preset chosen on validation)
+      dataset: *imagenet
+      reported: {top1: null, source: ONNX Model Zoo}
+      finetune: null
+      settings: *imagenet_settings
+    resnet34-v1-7: *zoo
+    resnet50-v1-12: *zoo
+    resnet101-v1-7: *zoo
+    resnet152-v1-7: *zoo
+    resnet50-v2-7: *zoo
+    resnet101-v2-7: *zoo
+    mobilenetv2-7: *zoo
+    mobilenetv2-12: *zoo
+    squeezenet1.0-12: *zoo
+    squeezenet1.1-7: *zoo
+    vgg16-12: *zoo
+    vgg16-bn-7: *zoo
+    vgg19-7: *zoo
+    vgg19-bn-7: *zoo
+    googlenet-12: *zoo
+    inception-v1-12: *zoo
+    inception-v2-9: *zoo
+    densenet-12: *zoo
+    shufflenet-9: *zoo
+    shufflenet-v2-12: *zoo
+    bvlcalexnet-12: *zoo
+    caffenet-12: *zoo
+    zfnet512-12: *zoo
+    efficientnet-lite4-11: *zoo
+    vit-base-patch16-224:
+      <<: *zoo
+      description: ViT-B/16 (google/vit-base-patch16-224, ONNX by Xenova)
+      reported: {top1: null, source: google/vit-base-patch16-224}
+    deit-base-distilled-224:
+      <<: *zoo
+      description: DeiT-B distilled (facebook/deit-base-distilled-patch16-224, ONNX by Xenova)
+      reported: {top1: null, source: facebook/deit-base-distilled-patch16-224}
 
-  pointmlp:
-    base_onnx:    submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/checkpoints/pointMLP/pointmlp_c40_n1024.onnx
-    nas_onnx:     artifacts/pointmlp/nas/best.onnx
-    finetuned:    artifacts/pointmlp/nas/best_finetuned.onnx
-    artifacts:    artifacts/pointmlp/artifacts
-    model_repo:   submodules/vision-onnx-models/submodules/pointmlp
-    dataset:      submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/data/
-    num_classes:  40
-    input_shape:  [1, 3, 1024]
-    task:         classification
+  classification/3d:
+
+    # -- ModelNet40: validation = 10/class of the official test set ---------------------
+    pointnet:
+      description: PointNet (no normals) on ModelNet40, 1024 points
+      dataset: {type: modelnet40, root: "${data.modelnet40}", val_per_class: 10}
+      reported: {top1: 90.6, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
+      finetune: &points_ft {epochs: 15, lr: 5.0e-4, optimizer: adamw, weight_decay: 1.0e-4}
+    pointnet2:
+      description: PointNet++ SSG (no normals) on ModelNet40, 1024 points
+      dataset: {type: modelnet40, root: "${data.modelnet40}", val_per_class: 10}
+      reported: {top1: 92.2, source: yanx27/Pointnet_Pointnet2_pytorch (SSG, no normals)}
+      finetune: *points_ft
+    pointmlp:
+      description: PointMLP on ModelNet40 (HDF5 release), 1024 points
+      dataset: {type: modelnet40_h5, root: "${data.modelnet40_h5}", val_per_class: 10}
+      reported: {top1: 94.1, source: ma-xu/pointMLP-pytorch (OA, no voting)}
+      finetune: *points_ft
+    pct:
+      description: Point Cloud Transformer on ModelNet40 (HDF5 release), 1024 points
+      dataset: {type: modelnet40_h5, root: "${data.modelnet40_h5}", val_per_class: 10}
+      reported: {top1: 93.2, source: Strawberry-Eat-Mango/PCT_Pytorch}
+      finetune: *points_ft
+
+    # -- ScanObjectNN PB_T50_RS: validation held out of the training set ------------------
+    pointnet_sonn:
+      description: PointNet on ScanObjectNN PB_T50_RS, trained here (no public checkpoint)
+      dataset: {type: scanobjectnn, root: "${data.scanobjectnn}", val_from: train, val_per_class: 20}
+      reported: {top1: null, source: trained here (experiments/train_scanobjectnn.py)}
+      finetune: *points_ft
+
+  classification/text:
+
+    distilbert-sst2:
+      description: DistilBERT fine-tuned on SST-2 (sentiment), evaluated on the GLUE dev set
+      dataset: {type: sst2, dev_parquet: "${data.sst2_dev}", tokenizer_json: "${data.sst2_tokenizer}"}
+      reported: {top1: 91.3, source: distilbert-base-uncased-finetuned-sst-2-english (model card)}
+      finetune: null
+      settings: {search: {ratios: [0.25, 0.5]}}
+
+  segmentation/2d:
+
+    # -- PASCAL VOC 2012, 512x512, mean IoU over 21 classes ----------------------------
+    lraspp_voc:
+      description: torchvision LRASPP-MobileNetV3-Large (COCO subset with VOC labels) on VOC 2012
+      dataset: &voc {type: voc2012, root: "${data.voc2012}", size: 512, val_images: 300}
+      reported: {top1: null, source: "torchvision COCO_WITH_VOC_LABELS_V1 (reported on COCO; VOC measured here)"}
+      finetune: &voc_ft {epochs: 10, lr: 0.002, optimizer: sgd, weight_decay: 1.0e-4}
+    deeplabv3_voc:
+      description: torchvision DeepLabV3-MobileNetV3-Large (COCO subset with VOC labels) on VOC 2012
+      dataset: *voc
+      reported: {top1: null, source: "torchvision COCO_WITH_VOC_LABELS_V1 (reported on COCO; VOC measured here)"}
+      finetune: *voc_ft
+
+  segmentation/3d:
+
+    # -- ShapeNetPart: instance mIoU over each shape's category parts ----------------------
+    pointnet2_shapenetpart:
+      description: PointNet++ MSG part segmentation (yanx27 checkpoint, normals), 2048 points
+      dataset: {type: shapenetpart, root: "${data.shapenetpart}", num_points: 2048, normals: true, val_shapes: 160}
+      reported: {top1: 85.4, source: "yanx27 training log, instance mIoU (farthest point sampling kept)"}
+      finetune: {epochs: 10, lr: 5.0e-4, optimizer: adamw, weight_decay: 1.0e-4}
+
+    # -- S3DIS area 5, 4096 points per 1 m column, mean IoU over 13 classes ------------------
+    pointnet2_s3dis:
+      description: PointNet++ semantic segmentation (yanx27 checkpoint) on S3DIS
+      dataset: &s3dis {type: s3dis, root: "${data.s3dis}", num_points: 4096, test_area: 5, val_blocks: 200}
+      reported: {top1: 53.5, source: "yanx27 eval log, class-average IoU (whole-scene voting; measured here per column)"}
+      finetune: &s3dis_ft {epochs: 10, lr: 1.0e-3, optimizer: adamw, weight_decay: 1.0e-4}
+    pointnet_s3dis:
+      description: PointNet semantic segmentation (yanx27 checkpoint) on S3DIS
+      dataset: *s3dis
+      reported: {top1: 43.7, source: "yanx27 eval log, class-average IoU (whole-scene voting; measured here per column)"}
+      finetune: *s3dis_ft
