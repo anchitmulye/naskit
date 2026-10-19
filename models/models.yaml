@@ -14,142 +14,143 @@
 # A rebuilt file can differ byte-wise from the recorded one (training, library
 # versions); fetch.py reports it, and results recorded with the old file stay tied to its sha256.
 
-classification/2d/imagenet:
-  resnet18-v1-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet18-v1-7.onnx
-    sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
-    size: 46820737
-  resnet34-v1-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet34-v1-7.onnx
-    sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
-    size: 87302588
-  resnet50-v1-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet50-v1-12.onnx
-    sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
-    size: 102576593
-  resnet101-v1-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet101-v1-7.onnx
-    sha256: 760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c
-    size: 178914043
-  resnet152-v1-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet152-v1-7.onnx
-    sha256: b0ec92437bf8c9d0739bf9bafdea9638e13f9e3c1e2fb766ad546cc182fd3f6d
-    size: 241816206
-  resnet50-v2-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet50-v2-7.onnx
-    sha256: 79102261eb6e5fd7af5d27f41316293e388c5cb691e5d25bfb035c4f64fefe31
-    size: 102442452
-  resnet101-v2-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet101-v2-7.onnx
-    sha256: 3a0a819ea0953fb4700b0d98e43540aeee253e5b4c503c552b0c7979fc67767d
-    size: 178682301
-  mobilenetv2-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-7.onnx
-    sha256: c1c513582d56afceff8516c73804e484c81c6a830712ab6d682253f4a3cd042f
-    size: 14246826
-  mobilenetv2-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-12.onnx
-    sha256: c0c3f76d93fa3fd6580652a45618618a220fced18babf65774ed169de0432ad5
-    size: 13964571
-  squeezenet1.0-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/squeezenet/model/squeezenet1.0-12.onnx
-    sha256: dec81a8684617770b3cf13fadc1d92565d1d453d23935fc6388b792d99c992bd
-    size: 4952956
-  squeezenet1.1-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/squeezenet/model/squeezenet1.1-7.onnx
-    sha256: 1eeff551a67ae8d565ca33b572fc4b66e3ef357b0eb2863bb9ff47a918cc4088
-    size: 4956208
-  vgg16-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-12.onnx
-    sha256: 722c42f53ca03a5480296bf8f9c85a151de3eed9ec982d7d2302ff6e2900c67b
-    size: 553437752
-  vgg16-bn-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-bn-7.onnx
-    sha256: 4fdceabf1ef715c9ed3020fa2eac1cb2a448296c086b03633c80cf47e1c5afce
-    size: 553512191
-  vgg19-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg19-7.onnx
-    sha256: 692f9f927f1df1b89033787a77a73eac59fd9b3344f9ecdf0b13221e41c2046f
-    size: 574677321
-  vgg19-bn-7:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg19-bn-7.onnx
-    sha256: ce0987dfa6228ad29708013f38b7f73cbc14ca6066a05fc22ee49b35871c63ed
-    size: 574774380
-  googlenet-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-12.onnx
-    sha256: c99c507058eaf41de8723408fdda7db8325cb57f0a89f2ee07a716d6e963e14e
-    size: 28021836
-  inception-v1-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/inception_and_googlenet/inception_v1/model/inception-v1-12.onnx
-    sha256: 814b31a6316873bd03d2d808415ce1f40a7bf48ad88eab5ecc3cdc8dc6cf38ec
-    size: 28021958
-  inception-v2-9:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/inception_and_googlenet/inception_v2/model/inception-v2-9.onnx
-    sha256: 37ed4aa93f817fd0d1cc19bda045ebd70f18d0887a5f51e66ecd0ed8fd5a65c2
-    size: 45042799
-  densenet-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/densenet-121/model/densenet-12.onnx
-    sha256: 0294e7e88e5b3360de9b0fdc321baf9e6ef18b7f058c4536caae3b9f18ed9ed5
-    size: 32726877
-  shufflenet-9:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/shufflenet/model/shufflenet-9.onnx
-    sha256: 3642c54024f09d35236f325df9822e772596c394cd90fd8e98ca1d2eba309e6f
-    size: 5723770
-  shufflenet-v2-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/shufflenet/model/shufflenet-v2-12.onnx
-    sha256: ea69821b4dd374ae2f33f9710dd1229ac263d0ee5b5a46ca3521f6483e1ba035
-    size: 9218556
-  bvlcalexnet-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/alexnet/model/bvlcalexnet-12.onnx
-    sha256: 6b0da9510f27f234ee96a85dc3809dd210150fdefad87f6850f9788513216945
-    size: 243863787
-  caffenet-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/caffenet/model/caffenet-12.onnx
-    sha256: ea563e5c47d1f58e1717cf1a2d8bf288b8adc07af0ad228b622096cd243aeecb
-    size: 243863798
-  zfnet512-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/zfnet-512/model/zfnet512-12.onnx
-    sha256: c975ca6a24c0a2e1584c6f82667e0ac9c06084fc7769d267f71b4a154d1f1c72
-    size: 349005501
-  efficientnet-lite4-11:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/efficientnet-lite4/model/efficientnet-lite4-11.onnx
-    sha256: d111689907c06eea7c82e4833ddef758da6453b9d4cf60b7e99ca05c7cbd9c12
-    size: 51946641
-  vit-base-patch16-224:
-    url: https://huggingface.co/Xenova/vit-base-patch16-224/resolve/66fef688e8dbe77dd9d5aa256353f9ad8b0ef799/onnx/model.onnx
-    sha256: 4bafe23c7e2650856449a792eafcc1d3bab4a2f41bcf58c9f3eac99d98719fcc
-    size: 346533752
-    note: "google/vit-base-patch16-224, ONNX by Xenova"
-  deit-base-distilled-224:
-    url: https://huggingface.co/Xenova/deit-base-distilled-patch16-224/resolve/0166831ed3f942a02219cbcdf8f0df0d3436efdb/onnx/model.onnx
-    sha256: 7e10d272d8070408ca533f0be5593700a4eae46331693d2f095e24639c86e4ea
-    size: 349622881
-    note: "facebook/deit-base-distilled-patch16-224, ONNX by Xenova"
-  mobilenet_v2:
-    run: ["{scripts}/torchvision_classifier.py", "--model", "mobilenet_v2", "--out", "{out}"]
-    sha256: f5a17550dfad080406ad4f40f4610f332d5b4e83cb6dec0586dd4e55a7b12ec6
-    size: 14224009
-    note: "torchvision MobileNetV2 IMAGENET1K_V1 weights"
+# classification/2d/imagenet:
+#   resnet18-v1-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet18-v1-7.onnx
+#     sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
+#     size: 46820737
+#   resnet34-v1-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet34-v1-7.onnx
+#     sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
+#     size: 87302588
+#   resnet50-v1-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet50-v1-12.onnx
+#     sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
+#     size: 102576593
+#   resnet101-v1-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet101-v1-7.onnx
+#     sha256: 760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c
+#     size: 178914043
+#   resnet152-v1-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet152-v1-7.onnx
+#     sha256: b0ec92437bf8c9d0739bf9bafdea9638e13f9e3c1e2fb766ad546cc182fd3f6d
+#     size: 241816206
+#   resnet50-v2-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet50-v2-7.onnx
+#     sha256: 79102261eb6e5fd7af5d27f41316293e388c5cb691e5d25bfb035c4f64fefe31
+#     size: 102442452
+#   resnet101-v2-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet101-v2-7.onnx
+#     sha256: 3a0a819ea0953fb4700b0d98e43540aeee253e5b4c503c552b0c7979fc67767d
+#     size: 178682301
+#   mobilenetv2-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-7.onnx
+#     sha256: c1c513582d56afceff8516c73804e484c81c6a830712ab6d682253f4a3cd042f
+#     size: 14246826
+#   mobilenetv2-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-12.onnx
+#     sha256: c0c3f76d93fa3fd6580652a45618618a220fced18babf65774ed169de0432ad5
+#     size: 13964571
+#   squeezenet1.0-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/squeezenet/model/squeezenet1.0-12.onnx
+#     sha256: dec81a8684617770b3cf13fadc1d92565d1d453d23935fc6388b792d99c992bd
+#     size: 4952956
+#   squeezenet1.1-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/squeezenet/model/squeezenet1.1-7.onnx
+#     sha256: 1eeff551a67ae8d565ca33b572fc4b66e3ef357b0eb2863bb9ff47a918cc4088
+#     size: 4956208
+#   vgg16-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-12.onnx
+#     sha256: 722c42f53ca03a5480296bf8f9c85a151de3eed9ec982d7d2302ff6e2900c67b
+#     size: 553437752
+#   vgg16-bn-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-bn-7.onnx
+#     sha256: 4fdceabf1ef715c9ed3020fa2eac1cb2a448296c086b03633c80cf47e1c5afce
+#     size: 553512191
+#   vgg19-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg19-7.onnx
+#     sha256: 692f9f927f1df1b89033787a77a73eac59fd9b3344f9ecdf0b13221e41c2046f
+#     size: 574677321
+#   vgg19-bn-7:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg19-bn-7.onnx
+#     sha256: ce0987dfa6228ad29708013f38b7f73cbc14ca6066a05fc22ee49b35871c63ed
+#     size: 574774380
+#   googlenet-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-12.onnx
+#     sha256: c99c507058eaf41de8723408fdda7db8325cb57f0a89f2ee07a716d6e963e14e
+#     size: 28021836
+#   inception-v1-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/inception_and_googlenet/inception_v1/model/inception-v1-12.onnx
+#     sha256: 814b31a6316873bd03d2d808415ce1f40a7bf48ad88eab5ecc3cdc8dc6cf38ec
+#     size: 28021958
+#   inception-v2-9:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/inception_and_googlenet/inception_v2/model/inception-v2-9.onnx
+#     sha256: 37ed4aa93f817fd0d1cc19bda045ebd70f18d0887a5f51e66ecd0ed8fd5a65c2
+#     size: 45042799
+#   densenet-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/densenet-121/model/densenet-12.onnx
+#     sha256: 0294e7e88e5b3360de9b0fdc321baf9e6ef18b7f058c4536caae3b9f18ed9ed5
+#     size: 32726877
+#   shufflenet-9:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/shufflenet/model/shufflenet-9.onnx
+#     sha256: 3642c54024f09d35236f325df9822e772596c394cd90fd8e98ca1d2eba309e6f
+#     size: 5723770
+#   shufflenet-v2-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/shufflenet/model/shufflenet-v2-12.onnx
+#     sha256: ea69821b4dd374ae2f33f9710dd1229ac263d0ee5b5a46ca3521f6483e1ba035
+#     size: 9218556
+#   bvlcalexnet-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/alexnet/model/bvlcalexnet-12.onnx
+#     sha256: 6b0da9510f27f234ee96a85dc3809dd210150fdefad87f6850f9788513216945
+#     size: 243863787
+#   caffenet-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/caffenet/model/caffenet-12.onnx
+#     sha256: ea563e5c47d1f58e1717cf1a2d8bf288b8adc07af0ad228b622096cd243aeecb
+#     size: 243863798
+#   zfnet512-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/zfnet-512/model/zfnet512-12.onnx
+#     sha256: c975ca6a24c0a2e1584c6f82667e0ac9c06084fc7769d267f71b4a154d1f1c72
+#     size: 349005501
+#   efficientnet-lite4-11:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/efficientnet-lite4/model/efficientnet-lite4-11.onnx
+#     sha256: d111689907c06eea7c82e4833ddef758da6453b9d4cf60b7e99ca05c7cbd9c12
+#     size: 51946641
+#   vit-base-patch16-224:
+#     url: https://huggingface.co/Xenova/vit-base-patch16-224/resolve/66fef688e8dbe77dd9d5aa256353f9ad8b0ef799/onnx/model.onnx
+#     sha256: 4bafe23c7e2650856449a792eafcc1d3bab4a2f41bcf58c9f3eac99d98719fcc
+#     size: 346533752
+#     note: "google/vit-base-patch16-224, ONNX by Xenova"
+#   deit-base-distilled-224:
+#     url: https://huggingface.co/Xenova/deit-base-distilled-patch16-224/resolve/0166831ed3f942a02219cbcdf8f0df0d3436efdb/onnx/model.onnx
+#     sha256: 7e10d272d8070408ca533f0be5593700a4eae46331693d2f095e24639c86e4ea
+#     size: 349622881
+#     note: "facebook/deit-base-distilled-patch16-224, ONNX by Xenova"
+#   mobilenet_v2:
+#     run: ["{scripts}/torchvision_classifier.py", "--model", "mobilenet_v2", "--out", "{out}"]
+#     sha256: f5a17550dfad080406ad4f40f4610f332d5b4e83cb6dec0586dd4e55a7b12ec6
+#     size: 14224009
+#     note: "torchvision MobileNetV2 IMAGENET1K_V1 weights"
 
-classification/2d/cifar10:
-  cifar_resnet56:
-    run: ["-m", "experiments.cifar_models", "--model", "resnet56", "--out", "{out}"]
-    sha256: 7a77adf0a63f60f2cfd726e5582b6b55c8bc3a580ed1f50430cc93c6a9282d74
-    size: 3489865
-    note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
-  cifar_vgg16:
-    run: ["-m", "experiments.cifar_models", "--model", "vgg16_bn", "--out", "{out}"]
-    sha256: 1d7ae58e00018249edec83147aadbc5947aa3d003fca7663f868f2d40460eb70
-    size: 61061341
-    note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
-  cifar_resnet18:
-    run: ["{scripts}/cifar_resnet18.py", "--out", "{out}"]
-    sha256: c1edaa4da6e7eb85bb576d433f6eee493bce134c52b6b1610d39f73678825099
-    size: 44748642
-    note: "edadaltocg/resnet18_cifar10 weights (Hugging Face); input mean (0.4914, 0.4822, 0.4465), std (0.2471, 0.2435, 0.2616)"
+# classification/2d/cifar10:
+#   cifar_resnet56:
+#     run: ["-m", "experiments.cifar_models", "--model", "resnet56", "--out", "{out}"]
+#     sha256: 7a77adf0a63f60f2cfd726e5582b6b55c8bc3a580ed1f50430cc93c6a9282d74
+#     size: 3489865
+#     note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
+#   cifar_vgg16:
+#     run: ["-m", "experiments.cifar_models", "--model", "vgg16_bn", "--out", "{out}"]
+#     sha256: 1d7ae58e00018249edec83147aadbc5947aa3d003fca7663f868f2d40460eb70
+#     size: 61061341
+#     note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
+#   cifar_resnet18:
+#     run: ["{scripts}/cifar_resnet18.py", "--out", "{out}"]
+#     sha256: c1edaa4da6e7eb85bb576d433f6eee493bce134c52b6b1610d39f73678825099
+#     size: 44748642
+#     note: "edadaltocg/resnet18_cifar10 weights (Hugging Face); input mean (0.4914, 0.4822, 0.4465), std (0.2471, 0.2435, 0.2616)"
 
 classification/2d/fashion_mnist:
   fashion_mnist:
+    path: models/base/fashion_mnist.onnx
     run: ["{scripts}/fashion_mnist.py", "--data", "{root}/data/fashion_mnist", "--out", "{out}"]
     sha256: f2a222c9e612af4bb4b4df337001ec127a2c3bd085edeca4a617389ba27cd858
     size: 829396
@@ -158,179 +159,180 @@ classification/2d/fashion_mnist:
 classification/3d/modelnet40:
   pointnet:
     local: true
+    path: models/base/pointnet.onnx
     sha256: b5cd9b673552acbe075900c8f4b74a387118c13085a716c573d3914350647489
     size: 13967694
     note: "yanx27/Pointnet_Pointnet2_pytorch checkpoint (no normals), exported with farthest point sampling replaced by index sampling (vision-onnx-models pointnet_pointnet2/onnx/export_classification.py); no public copy yet"
-  pointnet2:
-    local: true
-    sha256: efdeaf3b1ab16e5f5b864901aa9254c10ba554c6179c203b5aa185a4a7ddf63a
-    size: 5979068
-    note: "yanx27 PointNet++ SSG checkpoint (no normals), exported with index sampling (vision-onnx-models pointnet_pointnet2/onnx/export_pointnet2_cls.py); no public copy yet"
-  pointmlp:
-    local: true
-    sha256: 54ab4b3e5b51985cdea0192a47204b2bbc83a2a47e62eb0de9b5869c03d01c33
-    size: 53330876
-    note: "ma-xu/pointMLP-pytorch checkpoint (its host is offline), exported with index sampling (vision-onnx-models pointmlp/.../onnx/export_classification.py); no public copy"
-  pct:
-    local: true
-    sha256: fcb6b42e485cd81780a5567bf01d745397fc374680abb2a0c606ef9796bf481d
-    size: 11552671
-    note: "Strawberry-Eat-Mango/PCT_Pytorch checkpoint (vision-onnx-models pct/export_onnx.py); no public copy yet"
+  # pointnet2:
+  #   local: true
+  #   sha256: efdeaf3b1ab16e5f5b864901aa9254c10ba554c6179c203b5aa185a4a7ddf63a
+  #   size: 5979068
+  #   note: "yanx27 PointNet++ SSG checkpoint (no normals), exported with index sampling (vision-onnx-models pointnet_pointnet2/onnx/export_pointnet2_cls.py); no public copy yet"
+  # pointmlp:
+  #   local: true
+  #   sha256: 54ab4b3e5b51985cdea0192a47204b2bbc83a2a47e62eb0de9b5869c03d01c33
+  #   size: 53330876
+  #   note: "ma-xu/pointMLP-pytorch checkpoint (its host is offline), exported with index sampling (vision-onnx-models pointmlp/.../onnx/export_classification.py); no public copy"
+  # pct:
+  #   local: true
+  #   sha256: fcb6b42e485cd81780a5567bf01d745397fc374680abb2a0c606ef9796bf481d
+  #   size: 11552671
+  #   note: "Strawberry-Eat-Mango/PCT_Pytorch checkpoint (vision-onnx-models pct/export_onnx.py); no public copy yet"
 
-classification/3d/scanobjectnn:
-  pointnet_sonn:
-    run: ["-m", "experiments.train_scanobjectnn", "--epochs", "40", "--out", "{out}"]
-    sha256: null          # not built yet
-    note: "PointNet trained here on ScanObjectNN PB_T50_RS (no public checkpoint)"
+# classification/3d/scanobjectnn:
+#   pointnet_sonn:
+#     run: ["-m", "experiments.train_scanobjectnn", "--epochs", "40", "--out", "{out}"]
+#     sha256: null          # not built yet
+#     note: "PointNet trained here on ScanObjectNN PB_T50_RS (no public checkpoint)"
 
-classification/text/sst2:
-  distilbert-sst2:
-    url: https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english/resolve/714eb0fa89d2f80546fda750413ed43d93601a13/onnx/model.onnx
-    sha256: 252cf7048af94a1599019fef35961b2bd3d6db13df0b0a4b032b92baeae31939
-    size: 267955711
-    note: "distilbert-base-uncased-finetuned-sst-2-english (official ONNX export)"
+# classification/text/sst2:
+#   distilbert-sst2:
+#     url: https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english/resolve/714eb0fa89d2f80546fda750413ed43d93601a13/onnx/model.onnx
+#     sha256: 252cf7048af94a1599019fef35961b2bd3d6db13df0b0a4b032b92baeae31939
+#     size: 267955711
+#     note: "distilbert-base-uncased-finetuned-sst-2-english (official ONNX export)"
 
-segmentation/2d/voc2012:
-  lraspp_voc:
-    run: ["{scripts}/voc_segmentation.py", "--arch", "lraspp", "--out", "{out}"]
-    sha256: 1c6403a698e4d9933e51ec5ac739cccc0786cb69105f60955240e24e375aa9b6
-    size: 13060555
-    note: "torchvision LRASPP-MobileNetV3-Large COCO_WITH_VOC_LABELS_V1, 512x512"
-  deeplabv3_voc:
-    run: ["{scripts}/voc_segmentation.py", "--arch", "deeplabv3", "--out", "{out}"]
-    sha256: 1d169500984cc0026de2026b252ac20c405ab6e1cf1704034a6e38a259025aa0
-    size: 44297115
-    note: "torchvision DeepLabV3-MobileNetV3-Large COCO_WITH_VOC_LABELS_V1, 512x512"
+# segmentation/2d/voc2012:
+#   lraspp_voc:
+#     run: ["{scripts}/voc_segmentation.py", "--arch", "lraspp", "--out", "{out}"]
+#     sha256: 1c6403a698e4d9933e51ec5ac739cccc0786cb69105f60955240e24e375aa9b6
+#     size: 13060555
+#     note: "torchvision LRASPP-MobileNetV3-Large COCO_WITH_VOC_LABELS_V1, 512x512"
+#   deeplabv3_voc:
+#     run: ["{scripts}/voc_segmentation.py", "--arch", "deeplabv3", "--out", "{out}"]
+#     sha256: 1d169500984cc0026de2026b252ac20c405ab6e1cf1704034a6e38a259025aa0
+#     size: 44297115
+#     note: "torchvision DeepLabV3-MobileNetV3-Large COCO_WITH_VOC_LABELS_V1, 512x512"
 
-segmentation/3d/shapenetpart:
-  pointnet2_shapenetpart:
-    run: ["{scripts}/pointnet2_segmentation.py", "--repo", "{root}/submodules/vision-onnx-models/submodules/pointnet_pointnet2", "--model", "partseg", "--out", "{out}"]
-    sha256: 714309a782112bd86e61f20006ad055a2a4f8eac2dffd56fc20f376a5b1971b7
-    size: 9716673
-    note: "yanx27 PointNet++ MSG part segmentation (normals), farthest point sampling kept"
+# segmentation/3d/shapenetpart:
+#   pointnet2_shapenetpart:
+#     run: ["{scripts}/pointnet2_segmentation.py", "--repo", "{root}/submodules/vision-onnx-models/submodules/pointnet_pointnet2", "--model", "partseg", "--out", "{out}"]
+#     sha256: 714309a782112bd86e61f20006ad055a2a4f8eac2dffd56fc20f376a5b1971b7
+#     size: 9716673
+#     note: "yanx27 PointNet++ MSG part segmentation (normals), farthest point sampling kept"
 
-segmentation/3d/s3dis:
-  pointnet2_s3dis:
-    run: ["{scripts}/pointnet2_segmentation.py", "--repo", "{root}/submodules/vision-onnx-models/submodules/pointnet_pointnet2", "--model", "semseg", "--out", "{out}"]
-    sha256: fa9e82a682b8239df32d7882c618949c49b60bc1ed48349819865aeb7e8db906
-    size: 9532154
-    note: "yanx27 PointNet++ semantic segmentation checkpoint"
-  pointnet_s3dis:
-    run: ["{scripts}/pointnet2_segmentation.py", "--repo", "{root}/submodules/vision-onnx-models/submodules/pointnet_pointnet2", "--model", "pointnet_semseg", "--out", "{out}"]
-    sha256: 04f6fe9ffb24e90b265da1d23d5f4800d3ce02885239f51005dc4afe1f89efc8
-    size: 14210585
-    note: "yanx27 PointNet semantic segmentation checkpoint"
+# segmentation/3d/s3dis:
+#   pointnet2_s3dis:
+#     run: ["{scripts}/pointnet2_segmentation.py", "--repo", "{root}/submodules/vision-onnx-models/submodules/pointnet_pointnet2", "--model", "semseg", "--out", "{out}"]
+#     sha256: fa9e82a682b8239df32d7882c618949c49b60bc1ed48349819865aeb7e8db906
+#     size: 9532154
+#     note: "yanx27 PointNet++ semantic segmentation checkpoint"
+#   pointnet_s3dis:
+#     run: ["{scripts}/pointnet2_segmentation.py", "--repo", "{root}/submodules/vision-onnx-models/submodules/pointnet_pointnet2", "--model", "pointnet_semseg", "--out", "{out}"]
+#     sha256: 04f6fe9ffb24e90b265da1d23d5f4800d3ce02885239f51005dc4afe1f89efc8
+#     size: 14210585
+#     note: "yanx27 PointNet semantic segmentation checkpoint"
 
-structural/vision:
-  mnist-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mnist/model/mnist-12.onnx
-    sha256: 5c688690f8bacf667d4c2074af5ad0646ca328d7ab03eccf944a65b320171bdd
-    size: 26143
-  emotion-ferplus-8:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/body_analysis/emotion_ferplus/model/emotion-ferplus-8.onnx
-    sha256: a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c
-    size: 35040571
-  rcnn-ilsvrc13-9:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/rcnn_ilsvrc13/model/rcnn-ilsvrc13-9.onnx
-    sha256: 4aadb5ac806e82f89bac7dea77c838ba828dccbe5d624d8a44ebd513953571d9
-    size: 230753161
-  arcface-resnet100-8:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/body_analysis/arcface/model/arcfaceresnet100-8.onnx
-    sha256: f3a6bc281e72f88862f5748b53be3d76b3b48f8f1ab1f4a537941bdc4e1b01da
-    size: 261036388
-  mobilenetv2-12-int8:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-12-int8.onnx
-    sha256: cc028fe6cae7bc11a4ff53cfc9b79c920e8be65ce33a904ec3e2a8f66d77f95f
-    size: 3655033
-  FasterRCNN-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/faster-rcnn/model/FasterRCNN-12.onnx
-    sha256: 789104f5a47f008450a37e02da8a8d3642766ed10d91238312b1532fe72789a6
-    size: 176713194
-  MaskRCNN-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/mask-rcnn/model/MaskRCNN-12.onnx
-    sha256: 5bf940c124d9117f6fae350c4e0d46df180cbb01981832b35fdbed148078b946
-    size: 177970010
-  retinanet-9:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/retinanet/model/retinanet-9.onnx
-    sha256: 06742923960ec4d9899e6fe407d4d2df013fe6962504f099463ca1b8cba45e44
-    size: 228369343
-  ssd-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/ssd/model/ssd-12.onnx
-    sha256: 5ec1e058e666ef980a6213ac40088877865aafb2b6676b9af204b3828e4bb9d5
-    size: 80366315
-  ssd-12-int8:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/ssd/model/ssd-12-int8.onnx
-    sha256: 56d2c03a8c74c03f704509ccfcd91763991c6e1b92f63da730fb2b3d07565453
-    size: 20485276
-  tinyyolov2-8:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/tiny-yolov2/model/tinyyolov2-8.onnx
-    sha256: 583fb7fdc948435ceac9fa82efc7708701efe8382a859a3dd46526b155f5f2ae
-    size: 63480982
-  yolov3-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/yolov3/model/yolov3-12.onnx
-    sha256: d97d7d5c1bbab2ec1ea197f0b689eb121231d62985ad223fb8aa833f8ef79836
-    size: 247942267
-  ultraface-rfb-320:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/body_analysis/ultraface/models/version-RFB-320.onnx
-    sha256: 34cd7e60aeff28744c657de7a3dc64e872d506741de66987f3426f2b79f88017
-    size: 1270727
-  fcn-resnet50-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/fcn/model/fcn-resnet50-12.onnx
-    sha256: eb5017d1b80372eb0b58552655274698817ba2e774437e2c2d3c0a613d2e99bd
-    size: 141193555
-  duc-resnet101-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/duc/model/ResNet101-DUC-12.onnx
-    sha256: 11ebd46b66706e8bb45e74f67a616f0f61029014e99bd8ea7e55deb74a61e9b6
-    size: 260671144
-  style-candy-9:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/style_transfer/fast_neural_style/model/candy-9.onnx
-    sha256: 9d11a3529d1e547da6ae07201d93484dbab2ec0a3614535752c8f40f0fe2968a
-    size: 6728029
-  style-mosaic-9:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/style_transfer/fast_neural_style/model/mosaic-9.onnx
-    sha256: fa646dedade881243f8d5a2ceb7de2b93675b21fc24f7482894ac4851a9a0a47
-    size: 6728029
-  super-resolution-10:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/super_resolution/sub_pixel_cnn_2016/model/super-resolution-10.onnx
-    sha256: 85f36ff88cc504a24af5e0602148bc56a8aa09a58eca8c0da2756f3e8186035e
-    size: 240078
+# structural/vision:
+#   mnist-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mnist/model/mnist-12.onnx
+#     sha256: 5c688690f8bacf667d4c2074af5ad0646ca328d7ab03eccf944a65b320171bdd
+#     size: 26143
+#   emotion-ferplus-8:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/body_analysis/emotion_ferplus/model/emotion-ferplus-8.onnx
+#     sha256: a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c
+#     size: 35040571
+#   rcnn-ilsvrc13-9:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/rcnn_ilsvrc13/model/rcnn-ilsvrc13-9.onnx
+#     sha256: 4aadb5ac806e82f89bac7dea77c838ba828dccbe5d624d8a44ebd513953571d9
+#     size: 230753161
+#   arcface-resnet100-8:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/body_analysis/arcface/model/arcfaceresnet100-8.onnx
+#     sha256: f3a6bc281e72f88862f5748b53be3d76b3b48f8f1ab1f4a537941bdc4e1b01da
+#     size: 261036388
+#   mobilenetv2-12-int8:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-12-int8.onnx
+#     sha256: cc028fe6cae7bc11a4ff53cfc9b79c920e8be65ce33a904ec3e2a8f66d77f95f
+#     size: 3655033
+#   FasterRCNN-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/faster-rcnn/model/FasterRCNN-12.onnx
+#     sha256: 789104f5a47f008450a37e02da8a8d3642766ed10d91238312b1532fe72789a6
+#     size: 176713194
+#   MaskRCNN-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/mask-rcnn/model/MaskRCNN-12.onnx
+#     sha256: 5bf940c124d9117f6fae350c4e0d46df180cbb01981832b35fdbed148078b946
+#     size: 177970010
+#   retinanet-9:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/retinanet/model/retinanet-9.onnx
+#     sha256: 06742923960ec4d9899e6fe407d4d2df013fe6962504f099463ca1b8cba45e44
+#     size: 228369343
+#   ssd-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/ssd/model/ssd-12.onnx
+#     sha256: 5ec1e058e666ef980a6213ac40088877865aafb2b6676b9af204b3828e4bb9d5
+#     size: 80366315
+#   ssd-12-int8:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/ssd/model/ssd-12-int8.onnx
+#     sha256: 56d2c03a8c74c03f704509ccfcd91763991c6e1b92f63da730fb2b3d07565453
+#     size: 20485276
+#   tinyyolov2-8:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/tiny-yolov2/model/tinyyolov2-8.onnx
+#     sha256: 583fb7fdc948435ceac9fa82efc7708701efe8382a859a3dd46526b155f5f2ae
+#     size: 63480982
+#   yolov3-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/yolov3/model/yolov3-12.onnx
+#     sha256: d97d7d5c1bbab2ec1ea197f0b689eb121231d62985ad223fb8aa833f8ef79836
+#     size: 247942267
+#   ultraface-rfb-320:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/body_analysis/ultraface/models/version-RFB-320.onnx
+#     sha256: 34cd7e60aeff28744c657de7a3dc64e872d506741de66987f3426f2b79f88017
+#     size: 1270727
+#   fcn-resnet50-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/fcn/model/fcn-resnet50-12.onnx
+#     sha256: eb5017d1b80372eb0b58552655274698817ba2e774437e2c2d3c0a613d2e99bd
+#     size: 141193555
+#   duc-resnet101-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/object_detection_segmentation/duc/model/ResNet101-DUC-12.onnx
+#     sha256: 11ebd46b66706e8bb45e74f67a616f0f61029014e99bd8ea7e55deb74a61e9b6
+#     size: 260671144
+#   style-candy-9:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/style_transfer/fast_neural_style/model/candy-9.onnx
+#     sha256: 9d11a3529d1e547da6ae07201d93484dbab2ec0a3614535752c8f40f0fe2968a
+#     size: 6728029
+#   style-mosaic-9:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/style_transfer/fast_neural_style/model/mosaic-9.onnx
+#     sha256: fa646dedade881243f8d5a2ceb7de2b93675b21fc24f7482894ac4851a9a0a47
+#     size: 6728029
+#   super-resolution-10:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/super_resolution/sub_pixel_cnn_2016/model/super-resolution-10.onnx
+#     sha256: 85f36ff88cc504a24af5e0602148bc56a8aa09a58eca8c0da2756f3e8186035e
+#     size: 240078
 
-structural/text:
-  bertsquad-8:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/bert-squad/model/bertsquad-8.onnx
-    sha256: cad65b9807a5e0393e4f84331f9a0c5c844d9cc736e39781a80f9c48ca39447c
-    size: 435882893
-  bertsquad-10:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/bert-squad/model/bertsquad-10.onnx
-    sha256: 5945dee6478abdab2d5e4ce3868b4d969741e3dad2134cc669da65a4f092755b
-    size: 435852734
-  bertsquad-12:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/bert-squad/model/bertsquad-12.onnx
-    sha256: 5f0d96a9e6b8a4a2e59f9636f8bbad09ee8a0c58c8212027cc17c5fcc9659e55
-    size: 435852736
-  bidaf-9:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/bidirectional_attention_flow/model/bidaf-9.onnx
-    sha256: dfc317b56d065a3e297240a9e9b9118ff2260790b5850f4be2bc6ea1bcc65e80
-    size: 43522228
-  roberta-base-11:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/roberta/model/roberta-base-11.onnx
-    sha256: ad476a33a4b227f6e6b2e1c7192df1b61640657f26b390857ab943de66236c0b
-    size: 498649858
-  roberta-seq-cls-9:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/roberta/model/roberta-sequence-classification-9.onnx
-    sha256: 8b28f588889de84ef45918765b25bd0e74179b9be5d9320dafdddcb2553784cc
-    size: 498658080
-  gpt2-10:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/gpt-2/model/gpt2-10.onnx
-    sha256: a4b41071a9fd8fd5591d74d6c7e3a850feaf161f7289148a3b845c84f75c55e0
-    size: 548227537
-  gpt2-lm-head-10:
-    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/gpt-2/model/gpt2-lm-head-10.onnx
-    sha256: 12fbb1ec2d2d70c8ebd21a290a348a4109447b98582af64c6f93b6526d5c8f35
-    size: 664871060
-  minilm-l6-v2:
-    url: https://huggingface.co/Xenova/all-MiniLM-L6-v2/resolve/751bff37182d3f1213fa05d7196b954e230abad9/onnx/model.onnx
-    sha256: 759c3cd2b7fe7e93933ad23c4c9181b7396442a2ed746ec7c1d46192c469c46e
-    size: 90387606
-    note: "sentence-transformers/all-MiniLM-L6-v2, ONNX by Xenova"
+# structural/text:
+#   bertsquad-8:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/bert-squad/model/bertsquad-8.onnx
+#     sha256: cad65b9807a5e0393e4f84331f9a0c5c844d9cc736e39781a80f9c48ca39447c
+#     size: 435882893
+#   bertsquad-10:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/bert-squad/model/bertsquad-10.onnx
+#     sha256: 5945dee6478abdab2d5e4ce3868b4d969741e3dad2134cc669da65a4f092755b
+#     size: 435852734
+#   bertsquad-12:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/bert-squad/model/bertsquad-12.onnx
+#     sha256: 5f0d96a9e6b8a4a2e59f9636f8bbad09ee8a0c58c8212027cc17c5fcc9659e55
+#     size: 435852736
+#   bidaf-9:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/bidirectional_attention_flow/model/bidaf-9.onnx
+#     sha256: dfc317b56d065a3e297240a9e9b9118ff2260790b5850f4be2bc6ea1bcc65e80
+#     size: 43522228
+#   roberta-base-11:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/roberta/model/roberta-base-11.onnx
+#     sha256: ad476a33a4b227f6e6b2e1c7192df1b61640657f26b390857ab943de66236c0b
+#     size: 498649858
+#   roberta-seq-cls-9:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/roberta/model/roberta-sequence-classification-9.onnx
+#     sha256: 8b28f588889de84ef45918765b25bd0e74179b9be5d9320dafdddcb2553784cc
+#     size: 498658080
+#   gpt2-10:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/gpt-2/model/gpt2-10.onnx
+#     sha256: a4b41071a9fd8fd5591d74d6c7e3a850feaf161f7289148a3b845c84f75c55e0
+#     size: 548227537
+#   gpt2-lm-head-10:
+#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/gpt-2/model/gpt2-lm-head-10.onnx
+#     sha256: 12fbb1ec2d2d70c8ebd21a290a348a4109447b98582af64c6f93b6526d5c8f35
+#     size: 664871060
+#   minilm-l6-v2:
+#     url: https://huggingface.co/Xenova/all-MiniLM-L6-v2/resolve/751bff37182d3f1213fa05d7196b954e230abad9/onnx/model.onnx
+#     sha256: 759c3cd2b7fe7e93933ad23c4c9181b7396442a2ed746ec7c1d46192c469c46e
+#     size: 90387606
+#     note: "sentence-transformers/all-MiniLM-L6-v2, ONNX by Xenova"
  

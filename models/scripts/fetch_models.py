@@ -15,7 +15,6 @@ import yaml
 SCRIPTS = Path(__file__).resolve().parent             # models/scripts
 MODELS = SCRIPTS.parent                               # models
 ROOT = MODELS.parent                                  # the naskit folder
-BASE = MODELS / "base"
 H3DNAS = ROOT / "submodules" / "h3dnas"
 
 
@@ -27,6 +26,8 @@ def sources() -> dict:
         for name, e in entries.items():
             if name in out:
                 raise SystemExit(f"models.yaml: {name} listed twice")
+            if not e.get("path"):
+                raise SystemExit(f"models.yaml: {name} has no `path`")
             out[name] = {**e, "category": cat}
     return out
 
@@ -39,12 +40,15 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def target(name: str) -> Path:
-    return BASE / f"{name}.onnx"
+def target(e: dict) -> Path:
+    """An entry's model file (`path`, relative to the naskit folder or absolute)."""
+    p = Path(e["path"]).expanduser()
+    return p if p.is_absolute() else ROOT / p
 
 
 def download(name: str, e: dict) -> None:
-    out = target(name)
+    out = target(e)
+    out.parent.mkdir(parents=True, exist_ok=True)
     part = out.with_suffix(".onnx.part")
     req = urllib.request.Request(e["url"], headers={"User-Agent": "h3dnas-fetch"})
     h = hashlib.sha256()
@@ -66,7 +70,8 @@ def download(name: str, e: dict) -> None:
 
 
 def build(name: str, e: dict) -> None:
-    out = target(name)
+    out = target(e)
+    out.parent.mkdir(parents=True, exist_ok=True)
     subst = {"{out}": str(out), "{scripts}": str(SCRIPTS), "{root}": str(ROOT)}
     args = []
     for a in e["run"]:
@@ -86,12 +91,14 @@ def build(name: str, e: dict) -> None:
 
 
 def record(names: list, src: dict) -> None:
-    """Write the current sha256 and size of base/<name>.onnx into models.yaml,
+    """Write the current sha256 and size of each entry's file into models.yaml,
     editing only those two lines of each entry (comments and layout stay)."""
     path = MODELS / "models.yaml"
-    lines = path.read_text(encoding="utf-8").splitlines()
+    raw = path.read_bytes().decode("utf-8")
+    eol = "\r\n" if "\r\n" in raw else "\n"          # keep the file's line endings
+    lines = raw.splitlines()
     for name in names:
-        e, f = src[name], target(name)
+        e, f = src[name], target(src[name])
         if "url" in e:
             raise SystemExit(f"{name}: a url entry's sha256 is the published file's; not changed")
         if not f.exists():
@@ -104,18 +111,21 @@ def record(names: list, src: dict) -> None:
                     if lines[i].strip() and not lines[i].startswith("    ")), len(lines))
         block = [l for l in lines[start + 1:end]
                  if not l.lstrip().startswith(("sha256:", "size:"))]
-        block[1:1] = [f"    sha256: {sha}", f"    size: {size}"]      # after the source line
+        at = next(i for i, l in enumerate(block)                        # after the source line
+                  if l.lstrip().startswith(("url:", "run:", "local:")))
+        block[at + 1:at + 1] = [f"    sha256: {sha}", f"    size: {size}"]
         lines[start + 1:end] = block
         old = e.get("sha256")
         print(f"  {name}: sha256 {(old or 'none')[:12]} -> {sha[:12]}, size {size:,}")
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        f.write(eol.join(lines) + (eol if raw.endswith(("\n", "\r")) else ""))
     now = sources()                                   # the file still parses, values are in
     for name in names:
-        assert now[name]["sha256"] == sha256(target(name)), name
+        assert now[name]["sha256"] == sha256(target(now[name])), name
 
 
 def status(name: str, e: dict, rehash: bool) -> str:
-    p = target(name)
+    p = target(e)
     if not p.exists():
         return "missing"
     if e.get("sha256") is None:
@@ -134,7 +144,6 @@ def main(argv=None) -> None:
                     help="write the present files' sha256 and size into models.yaml (needs names)")
     a = ap.parse_args(argv)
     src = sources()
-    BASE.mkdir(exist_ok=True)
     if a.record and not a.names:
         raise SystemExit("--record needs model names or categories")
 
@@ -171,8 +180,8 @@ def main(argv=None) -> None:
             download(name, e)
         elif "run" in e:
             build(name, e)
-        elif not target(name).exists():
-            print(f"  {name}: no public source ({e.get('note', '')}); copy the file to {target(name)}")
+        elif not target(e).exists():
+            print(f"  {name}: no public source ({e.get('note', '')}); copy the file to {target(e)}")
         else:
             print(f"  {name}: local file differs from models.yaml sha256")
 

@@ -3,14 +3,15 @@
 root: .
 
 paths:
-  models:  models/base                            # base ONNX files: <model name>.onnx
+  sources: models/models.yaml
   runs:    artifacts                              # outputs: <name>/<settings hash>_seed<N>/ (models, REPORT.md)
 
 data:
   fashion_mnist:  data/fashion_mnist
+  modelnet40:     submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
 
 defaults:
-  seed: 0
+  seed: 105
   device: null                    # a `devices` entry: its limits become the search budget
   objective: {max_drop: 1.0}      # accuracy points the selected model may lose against the base
   search:
@@ -38,7 +39,7 @@ devices:
 models:
 
   classification/2d:
-      # -- Fashion-MNIST (sanity) -------------------------------------------------------
+    # -- Fashion-MNIST (sanity) -------------------------------------------------------
     fashion_mnist:
       description: Small CNN on Fashion-MNIST, trained here (models/scripts/fashion_mnist.py)
       dataset: {type: fashion_mnist, root: "${data.fashion_mnist}", val_per_class: 200}
@@ -46,6 +47,12 @@ models:
       finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
   
   classification/3d:
+    # -- ModelNet40 ---------------------
+    pointnet:
+      description: PointNet (no normals) on ModelNet40, 1024 points
+      dataset: {type: modelnet40, root: "${data.modelnet40}", val_per_class: 10}
+      reported: {top1: 90.6, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
+      finetune: &points_ft {epochs: 25, lr: 5.0e-4, optimizer: adamw, weight_decay: 1.0e-4}
 
   classification/text:
 
