@@ -20,6 +20,7 @@ defaults:
     budgets: null                 # or fractions of the base MACs, e.g. [0.7, 0.5, 0.35, 0.25]
     budget: macs                  # macs | params
     fitness: val_accuracy         # val_accuracy | agreement (label-free)
+    fitness_split: 0.5            # half of validation
     ghost: 0                      # GhostConv variants of the best k candidates
     population: 16
     generations: 10
@@ -50,7 +51,7 @@ models:
     # -- ModelNet40 ---------------------
     pointnet:
       description: PointNet (no normals) on ModelNet40, 1024 points
-      dataset: {type: modelnet40, root: "${data.modelnet40}", val_per_class: 10}
+      dataset: {type: modelnet40, root: "${data.modelnet40}", val_fraction: 0.162}
       reported: {top1: 90.6, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
       finetune: &points_ft {epochs: 25, lr: 5.0e-4, optimizer: adamw, weight_decay: 1.0e-4}
 
