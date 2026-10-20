@@ -5,6 +5,7 @@ root: .
 paths:
   sources: models/models.yaml
   runs:    artifacts                              # outputs: <name>/<settings hash>_seed<N>/ (models, REPORT.md)
+  results: results
 
 data:
   fashion_mnist:  data/fashion_mnist
@@ -27,7 +28,7 @@ defaults:
     channel_multiple: 1           # kept channels rounded up to a multiple (a device can set 8)
   finetune: {candidates: 4, device: cpu}     # candidates fine-tuned per run; torch device
   latency: {threads: 4, rounds: 5, runs_per_round: 20, warmup: 10}
-  runtime:                                   # ONNX Runtime per stage: cpu | cuda | tensorrt
+  runtime:                                   # ONNX Runtime per stage: cpu | cuda | tensorrt | coreml
     search:   {provider: cpu, device_id: 0, threads: null, precision: fp32}
     evaluate: {provider: cpu, device_id: 0, threads: null, precision: fp32}
     latency:  {provider: cpu, device_id: 0, threads: null, precision: fp32}
@@ -51,9 +52,15 @@ models:
     # -- ModelNet40 ---------------------
     pointnet:
       description: PointNet (no normals) on ModelNet40, 1024 points
-      dataset: {type: modelnet40, root: "${data.modelnet40}", val_fraction: 0.162}
-      reported: {top1: 90.6, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
+      dataset: {type: modelnet40, root: "${data.modelnet40}", val_fraction: 0.3}
+      reported: {top1: 90.32, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
       finetune: &points_ft {epochs: 25, lr: 5.0e-4, optimizer: adamw, weight_decay: 1.0e-4}
+
+    pointnet2:
+      description: PointNet++ SSG (no normals) on ModelNet40, 1024 points
+      dataset: {type: modelnet40, root: "${data.modelnet40}", val_fraction: 0.3}
+      reported: {top1: 91.90, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
+      finetune: *points_ft
 
   classification/text:
 
