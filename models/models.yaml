@@ -159,15 +159,16 @@ classification/2d/fashion_mnist:
 classification/3d/modelnet40:
   pointnet:
     local: true
-    path: models/base/pointnet.onnx
     sha256: b5cd9b673552acbe075900c8f4b74a387118c13085a716c573d3914350647489
     size: 13967694
-    note: "yanx27/Pointnet_Pointnet2_pytorch checkpoint (no normals), exported with farthest point sampling replaced by index sampling (vision-onnx-models pointnet_pointnet2/onnx/export_classification.py); no public copy yet"
-  # pointnet2:
-  #   local: true
-  #   sha256: efdeaf3b1ab16e5f5b864901aa9254c10ba554c6179c203b5aa185a4a7ddf63a
-  #   size: 5979068
-  #   note: "yanx27 PointNet++ SSG checkpoint (no normals), exported with index sampling (vision-onnx-models pointnet_pointnet2/onnx/export_pointnet2_cls.py); no public copy yet"
+    path: models/base/pointnet.onnx
+    note: "yanx27/Pointnet_Pointnet2_pytorch PointNet (no normals)"
+  pointnet2:
+    local: true
+    sha256: efdeaf3b1ab16e5f5b864901aa9254c10ba554c6179c203b5aa185a4a7ddf63a
+    size: 5979068
+    path: models/base/pointnet2.onnx
+    note: "yanx27/Pointnet_Pointnet2_pytorch PointNet++ SSG (no normals)"
   # pointmlp:
   #   local: true
   #   sha256: 54ab4b3e5b51985cdea0192a47204b2bbc83a2a47e62eb0de9b5869c03d01c33
