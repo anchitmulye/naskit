@@ -169,16 +169,18 @@ classification/3d/modelnet40:
     size: 5979068
     path: models/base/pointnet2.onnx
     note: "yanx27/Pointnet_Pointnet2_pytorch PointNet++ SSG (no normals)"
-  # pointmlp:
-  #   local: true
-  #   sha256: 54ab4b3e5b51985cdea0192a47204b2bbc83a2a47e62eb0de9b5869c03d01c33
-  #   size: 53330876
-  #   note: "ma-xu/pointMLP-pytorch checkpoint (its host is offline), exported with index sampling (vision-onnx-models pointmlp/.../onnx/export_classification.py); no public copy"
-  # pct:
-  #   local: true
-  #   sha256: fcb6b42e485cd81780a5567bf01d745397fc374680abb2a0c606ef9796bf481d
-  #   size: 11552671
-  #   note: "Strawberry-Eat-Mango/PCT_Pytorch checkpoint (vision-onnx-models pct/export_onnx.py); no public copy yet"
+  pointmlp:
+    local: true
+    sha256: 54ab4b3e5b51985cdea0192a47204b2bbc83a2a47e62eb0de9b5869c03d01c33
+    size: 53330876
+    path: models/base/pointmlp.onnx
+    note: "ma-xu/pointMLP-pytorch"
+  pct:
+    local: true
+    sha256: fcb6b42e485cd81780a5567bf01d745397fc374680abb2a0c606ef9796bf481d
+    size: 11552671
+    path: models/base/pct.onnx
+    note: "Pointcept/PointTransformerV3"
 
 # classification/3d/scanobjectnn:
 #   pointnet_sonn:
