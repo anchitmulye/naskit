@@ -133,20 +133,15 @@
 
 # classification/2d/cifar10:
 #   cifar_resnet56:
-#     run: ["-m", "experiments.cifar_models", "--model", "resnet56", "--out", "{out}"]
+#     local: true
 #     sha256: 7a77adf0a63f60f2cfd726e5582b6b55c8bc3a580ed1f50430cc93c6a9282d74
 #     size: 3489865
 #     note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
 #   cifar_vgg16:
-#     run: ["-m", "experiments.cifar_models", "--model", "vgg16_bn", "--out", "{out}"]
+#     local: true
 #     sha256: 1d7ae58e00018249edec83147aadbc5947aa3d003fca7663f868f2d40460eb70
 #     size: 61061341
 #     note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
-#   cifar_resnet18:
-#     run: ["{scripts}/cifar_resnet18.py", "--out", "{out}"]
-#     sha256: c1edaa4da6e7eb85bb576d433f6eee493bce134c52b6b1610d39f73678825099
-#     size: 44748642
-#     note: "edadaltocg/resnet18_cifar10 weights (Hugging Face); input mean (0.4914, 0.4822, 0.4465), std (0.2471, 0.2435, 0.2616)"
 
 classification/2d/fashion_mnist:
   fashion_mnist:
@@ -180,7 +175,7 @@ classification/3d/modelnet40:
     sha256: fcb6b42e485cd81780a5567bf01d745397fc374680abb2a0c606ef9796bf481d
     size: 11552671
     path: models/base/pct.onnx
-    note: "Pointcept/PointTransformerV3"
+    note: "Strawberry-Eat-Mango/PCT_Pytorch"
 
 # classification/3d/scanobjectnn:
 #   pointnet_sonn:
