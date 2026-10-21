@@ -10,7 +10,7 @@ paths:
 data:
   fashion_mnist:  data/fashion_mnist
   modelnet40:     submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
-  modelnet40_h5:  submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/data/
+  modelnet40_h5:  submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/data/modelnet40_ply_hdf5_2048
 
 defaults:
   seed: 105
