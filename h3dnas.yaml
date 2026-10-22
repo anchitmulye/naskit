@@ -16,14 +16,14 @@ data:
 defaults:
   seed: 105
   device: null                    # a `devices` entry: its limits become the search budget
-  objective: {max_drop: 1.0}      # accuracy points the selected model may lose against the base
+  objective: {max_drop: 0.5}      # accuracy points the selected model may lose against the base
   search:
     strategy: group_evolutionary  # or uniform
     ratios: [0.2, 0.3, 0.4, 0.5]  # uniform candidates; each sets one search budget
     budgets: null                 # or fractions of the base MACs, e.g. [0.7, 0.5, 0.35, 0.25]
     budget: macs                  # macs | params
     fitness: val_accuracy         # val_accuracy | agreement (label-free)
-    fitness_split: 0.3            # 1/3 of validation
+    fitness_split: null           # null | 0.5 | 0.3 of validation
     ghost: 0                      # GhostConv variants of the best k candidates
     population: 16
     generations: 10
@@ -49,12 +49,17 @@ models:
       dataset: {type: fashion_mnist, root: "${data.fashion_mnist}", val_per_class: 200}
       reported: {top1: null, source: trained here}
       finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
-    # # -- CIFAR-10: validation = 200/class of the official test set -----------------
-    # cifar_resnet56:
-    #   description: ResNet-56 on CIFAR-10, chenyaofo/pytorch-cifar-models weights
-    #   dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
-    #   reported: {top1: 94.37, source: chenyaofo/pytorch-cifar-models}
-    #   finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
+    # -- CIFAR-10: validation = 200/class of the official test set -----------------
+    cifar_resnet56:
+      description: ResNet-56 on CIFAR-10, chenyaofo/pytorch-cifar-models weights
+      dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
+      reported: {top1: 94.37, source: chenyaofo/pytorch-cifar-models}
+      finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
+    cifar_vgg16:
+      description: VGG-16-BN on CIFAR-10, chenyaofo/pytorch-cifar-models weights
+      dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
+      reported: {top1: 94.16, source: chenyaofo/pytorch-cifar-models}
+      finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
   
   classification/3d:
     # -- ModelNet40 ---------------------
@@ -84,3 +89,12 @@ models:
   segmentation/2d:
 
   segmentation/3d:
+
+  language_modeling/text:
+    # -- WikiText-2: language modelling perplexity, block size 512 tokens ----------------
+    gpt2-lm-head-10:
+      description: GPT-2 (117M) with LM head from ONNX Model Zoo, evaluated on WikiText-2
+      dataset: {type: wikitext2, root: "${data.wikitext2}", block_size: 512, val_blocks: 200, batch_size: 4}
+      reported: {top1: null, source: "ONNX Model Zoo gpt2-lm-head-10 (perplexity reported separately)"}
+      finetune: {epochs: 10, lr: 5.0e-5, optimizer: adamw, weight_decay: 0.01}
+      settings: {search: {ratios: [0.3, 0.5], fitness_split: null}}

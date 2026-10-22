@@ -14,54 +14,65 @@
 # A rebuilt file can differ byte-wise from the recorded one (training, library
 # versions); fetch.py reports it, and results recorded with the old file stay tied to its sha256.
 
-# classification/2d/imagenet:
-#   resnet18-v1-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet18-v1-7.onnx
-#     sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
-#     size: 46820737
-#   resnet34-v1-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet34-v1-7.onnx
-#     sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
-#     size: 87302588
-#   resnet50-v1-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet50-v1-12.onnx
-#     sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
-#     size: 102576593
-#   mobilenetv2-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-12.onnx
-#     sha256: c0c3f76d93fa3fd6580652a45618618a220fced18babf65774ed169de0432ad5
-#     size: 13964571
-#   vgg16-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-12.onnx
-#     sha256: 722c42f53ca03a5480296bf8f9c85a151de3eed9ec982d7d2302ff6e2900c67b
-#     size: 553437752
-#   vgg16-bn-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-bn-7.onnx
-#     sha256: 4fdceabf1ef715c9ed3020fa2eac1cb2a448296c086b03633c80cf47e1c5afce
-#     size: 553512191
-#   densenet-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/densenet-121/model/densenet-12.onnx
-#     sha256: 0294e7e88e5b3360de9b0fdc321baf9e6ef18b7f058c4536caae3b9f18ed9ed5
-#     size: 32726877
-#   shufflenet-9:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/shufflenet/model/shufflenet-9.onnx
-#     sha256: 3642c54024f09d35236f325df9822e772596c394cd90fd8e98ca1d2eba309e6f
-#     size: 5723770
-#   vit-base-patch16-224:
-#     url: https://huggingface.co/Xenova/vit-base-patch16-224/resolve/66fef688e8dbe77dd9d5aa256353f9ad8b0ef799/onnx/model.onnx
-#     sha256: 4bafe23c7e2650856449a792eafcc1d3bab4a2f41bcf58c9f3eac99d98719fcc
-#     size: 346533752
-#     note: "google/vit-base-patch16-224, ONNX by Xenova"
-#   deit-base-distilled-224:
-#     url: https://huggingface.co/Xenova/deit-base-distilled-patch16-224/resolve/0166831ed3f942a02219cbcdf8f0df0d3436efdb/onnx/model.onnx
-#     sha256: 7e10d272d8070408ca533f0be5593700a4eae46331693d2f095e24639c86e4ea
-#     size: 349622881
-#     note: "facebook/deit-base-distilled-patch16-224, ONNX by Xenova"
-#   mobilenet_v2:
-#     run: ["{scripts}/torchvision_classifier.py", "--model", "mobilenet_v2", "--out", "{out}"]
-#     sha256: f5a17550dfad080406ad4f40f4610f332d5b4e83cb6dec0586dd4e55a7b12ec6
-#     size: 14224009
-#     note: "torchvision MobileNetV2 IMAGENET1K_V1 weights"
+classification/2d/imagenet:
+  resnet18-v1-7:
+    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet18-v1-7.onnx
+    sha256: 4e8f8653e7a2222b3904cc3fe8e304cd8b339ce1d05fd24688162f86fb6df52c
+    size: 46820737
+    path: models/base/resnet18-v1-7.onnx
+  resnet34-v1-7:
+    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet34-v1-7.onnx
+    sha256: 883a41b2e30ddc2e422c108b091b5e70b92d37dc5c345a2c563dcae27971e2cc
+    size: 87302588
+    path: models/base/resnet34-v1-7.onnx
+  resnet50-v1-12:
+    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet50-v1-12.onnx
+    sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
+    size: 102576593
+    path: models/base/resnet50-v1-12.onnx
+  mobilenetv2-12:
+    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-12.onnx
+    sha256: c0c3f76d93fa3fd6580652a45618618a220fced18babf65774ed169de0432ad5
+    size: 13964571
+    path: models/base/mobilenetv2-12.onnx
+  vgg16-12:
+    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-12.onnx
+    sha256: 722c42f53ca03a5480296bf8f9c85a151de3eed9ec982d7d2302ff6e2900c67b
+    size: 553437752
+    path: models/base/vgg16-12.onnx
+  vgg16-bn-7:
+    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-bn-7.onnx
+    sha256: 4fdceabf1ef715c9ed3020fa2eac1cb2a448296c086b03633c80cf47e1c5afce
+    size: 553512191
+    path: models/base/vgg16-bn-7.onnx
+  densenet-12:
+    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/densenet-121/model/densenet-12.onnx
+    sha256: 0294e7e88e5b3360de9b0fdc321baf9e6ef18b7f058c4536caae3b9f18ed9ed5
+    size: 32726877
+    path: models/base/densenet-12.onnx
+  shufflenet-9:
+    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/shufflenet/model/shufflenet-9.onnx
+    sha256: 3642c54024f09d35236f325df9822e772596c394cd90fd8e98ca1d2eba309e6f
+    size: 5723770
+    path: models/base/shufflenet-9onnx
+  vit-base-patch16-224:
+    url: https://huggingface.co/Xenova/vit-base-patch16-224/resolve/66fef688e8dbe77dd9d5aa256353f9ad8b0ef799/onnx/model.onnx
+    sha256: 4bafe23c7e2650856449a792eafcc1d3bab4a2f41bcf58c9f3eac99d98719fcc
+    size: 346533752
+    path: models/base/vit-base-patch16-224.onnx
+    note: "google/vit-base-patch16-224, ONNX by Xenova"
+  deit-base-distilled-224:
+    url: https://huggingface.co/Xenova/deit-base-distilled-patch16-224/resolve/0166831ed3f942a02219cbcdf8f0df0d3436efdb/onnx/model.onnx
+    sha256: 7e10d272d8070408ca533f0be5593700a4eae46331693d2f095e24639c86e4ea
+    size: 349622881
+    path: models/base/deit-base-distilled-224.onnx
+    note: "facebook/deit-base-distilled-patch16-224, ONNX by Xenova"
+  mobilenet_v2:
+    run: ["{scripts}/torchvision_classifier.py", "--model", "mobilenet_v2", "--out", "{out}"]
+    sha256: f5a17550dfad080406ad4f40f4610f332d5b4e83cb6dec0586dd4e55a7b12ec6
+    size: 14224009
+    path: models/base/mobilenet_v2.onnx
+    note: "torchvision MobileNetV2 IMAGENET1K_V1 weights"
 
 classification/2d/cifar10:
   cifar_resnet56:
@@ -268,3 +279,11 @@ classification/3d/modelnet40:
 #     size: 90387606
 #     note: "sentence-transformers/all-MiniLM-L6-v2, ONNX by Xenova"
  
+language_modeling/text/wikitext2:
+  gpt2-lm-head-10:
+    path: models/base/gpt2-lm-head-10.onnx
+    url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/text/machine_comprehension/gpt-2/model/gpt2-lm-head-10.onnx
+    local: true
+    sha256: 12fbb1ec2d2d70c8ebd21a290a348a4109447b98582af64c6f93b6526d5c8f35
+    size: 664871060
+    note: "ONNX Model Zoo GPT-2 with LM head (opset 10); output1 is (B, seq, 50257) logits + 12 KV-cache outputs"
