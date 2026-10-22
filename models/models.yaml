@@ -27,38 +27,10 @@
 #     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet50-v1-12.onnx
 #     sha256: 3f03fdef724b22947eed826f1eef1dc5c34151bb4c37d634f1db89dfa2dd1526
 #     size: 102576593
-#   resnet101-v1-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet101-v1-7.onnx
-#     sha256: 760702f6ec0138f71ebac66f4e95d1c72dc9267a8544f4d4667a53075fd0497c
-#     size: 178914043
-#   resnet152-v1-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet152-v1-7.onnx
-#     sha256: b0ec92437bf8c9d0739bf9bafdea9638e13f9e3c1e2fb766ad546cc182fd3f6d
-#     size: 241816206
-#   resnet50-v2-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet50-v2-7.onnx
-#     sha256: 79102261eb6e5fd7af5d27f41316293e388c5cb691e5d25bfb035c4f64fefe31
-#     size: 102442452
-#   resnet101-v2-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/resnet/model/resnet101-v2-7.onnx
-#     sha256: 3a0a819ea0953fb4700b0d98e43540aeee253e5b4c503c552b0c7979fc67767d
-#     size: 178682301
-#   mobilenetv2-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-7.onnx
-#     sha256: c1c513582d56afceff8516c73804e484c81c6a830712ab6d682253f4a3cd042f
-#     size: 14246826
 #   mobilenetv2-12:
 #     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/mobilenet/model/mobilenetv2-12.onnx
 #     sha256: c0c3f76d93fa3fd6580652a45618618a220fced18babf65774ed169de0432ad5
 #     size: 13964571
-#   squeezenet1.0-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/squeezenet/model/squeezenet1.0-12.onnx
-#     sha256: dec81a8684617770b3cf13fadc1d92565d1d453d23935fc6388b792d99c992bd
-#     size: 4952956
-#   squeezenet1.1-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/squeezenet/model/squeezenet1.1-7.onnx
-#     sha256: 1eeff551a67ae8d565ca33b572fc4b66e3ef357b0eb2863bb9ff47a918cc4088
-#     size: 4956208
 #   vgg16-12:
 #     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-12.onnx
 #     sha256: 722c42f53ca03a5480296bf8f9c85a151de3eed9ec982d7d2302ff6e2900c67b
@@ -67,26 +39,6 @@
 #     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg16-bn-7.onnx
 #     sha256: 4fdceabf1ef715c9ed3020fa2eac1cb2a448296c086b03633c80cf47e1c5afce
 #     size: 553512191
-#   vgg19-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg19-7.onnx
-#     sha256: 692f9f927f1df1b89033787a77a73eac59fd9b3344f9ecdf0b13221e41c2046f
-#     size: 574677321
-#   vgg19-bn-7:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/vgg/model/vgg19-bn-7.onnx
-#     sha256: ce0987dfa6228ad29708013f38b7f73cbc14ca6066a05fc22ee49b35871c63ed
-#     size: 574774380
-#   googlenet-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/inception_and_googlenet/googlenet/model/googlenet-12.onnx
-#     sha256: c99c507058eaf41de8723408fdda7db8325cb57f0a89f2ee07a716d6e963e14e
-#     size: 28021836
-#   inception-v1-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/inception_and_googlenet/inception_v1/model/inception-v1-12.onnx
-#     sha256: 814b31a6316873bd03d2d808415ce1f40a7bf48ad88eab5ecc3cdc8dc6cf38ec
-#     size: 28021958
-#   inception-v2-9:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/inception_and_googlenet/inception_v2/model/inception-v2-9.onnx
-#     sha256: 37ed4aa93f817fd0d1cc19bda045ebd70f18d0887a5f51e66ecd0ed8fd5a65c2
-#     size: 45042799
 #   densenet-12:
 #     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/densenet-121/model/densenet-12.onnx
 #     sha256: 0294e7e88e5b3360de9b0fdc321baf9e6ef18b7f058c4536caae3b9f18ed9ed5
@@ -95,26 +47,6 @@
 #     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/shufflenet/model/shufflenet-9.onnx
 #     sha256: 3642c54024f09d35236f325df9822e772596c394cd90fd8e98ca1d2eba309e6f
 #     size: 5723770
-#   shufflenet-v2-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/shufflenet/model/shufflenet-v2-12.onnx
-#     sha256: ea69821b4dd374ae2f33f9710dd1229ac263d0ee5b5a46ca3521f6483e1ba035
-#     size: 9218556
-#   bvlcalexnet-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/alexnet/model/bvlcalexnet-12.onnx
-#     sha256: 6b0da9510f27f234ee96a85dc3809dd210150fdefad87f6850f9788513216945
-#     size: 243863787
-#   caffenet-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/caffenet/model/caffenet-12.onnx
-#     sha256: ea563e5c47d1f58e1717cf1a2d8bf288b8adc07af0ad228b622096cd243aeecb
-#     size: 243863798
-#   zfnet512-12:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/zfnet-512/model/zfnet512-12.onnx
-#     sha256: c975ca6a24c0a2e1584c6f82667e0ac9c06084fc7769d267f71b4a154d1f1c72
-#     size: 349005501
-#   efficientnet-lite4-11:
-#     url: https://github.com/onnx/models/raw/c5cae0f1942c8d7727372c7b1f6b485aa39e4421/validated/vision/classification/efficientnet-lite4/model/efficientnet-lite4-11.onnx
-#     sha256: d111689907c06eea7c82e4833ddef758da6453b9d4cf60b7e99ca05c7cbd9c12
-#     size: 51946641
 #   vit-base-patch16-224:
 #     url: https://huggingface.co/Xenova/vit-base-patch16-224/resolve/66fef688e8dbe77dd9d5aa256353f9ad8b0ef799/onnx/model.onnx
 #     sha256: 4bafe23c7e2650856449a792eafcc1d3bab4a2f41bcf58c9f3eac99d98719fcc
@@ -131,17 +63,19 @@
 #     size: 14224009
 #     note: "torchvision MobileNetV2 IMAGENET1K_V1 weights"
 
-# classification/2d/cifar10:
-#   cifar_resnet56:
-#     local: true
-#     sha256: 7a77adf0a63f60f2cfd726e5582b6b55c8bc3a580ed1f50430cc93c6a9282d74
-#     size: 3489865
-#     note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
-#   cifar_vgg16:
-#     local: true
-#     sha256: 1d7ae58e00018249edec83147aadbc5947aa3d003fca7663f868f2d40460eb70
-#     size: 61061341
-#     note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
+classification/2d/cifar10:
+  cifar_resnet56:
+    local: true
+    sha256: 6ff597bd732d4867b5d762a51b46e00cdb95ef8ad5cb6e0bb2d622a217cbd933
+    size: 3489864
+    path: models/base/cifar_resnet56.onnx
+    note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
+  cifar_vgg16:
+    local: true
+    sha256: 2f7c8900a770793e408cf5e1c5d13104189adf3d4291c7e1eeb02dbb27ec4d7d
+    size: 61061340
+    path: models/base/cifar_vgg16.onnx
+    note: "chenyaofo/pytorch-cifar-models weights (GitHub release)"
 
 classification/2d/fashion_mnist:
   fashion_mnist:
@@ -172,8 +106,8 @@ classification/3d/modelnet40:
     note: "ma-xu/pointMLP-pytorch"
   pct:
     local: true
-    sha256: fcb6b42e485cd81780a5567bf01d745397fc374680abb2a0c606ef9796bf481d
-    size: 11552671
+    sha256: 8312f95ced68bb8301a5b97adc27f2d34f3b69e42f8e1de74a2613c7ed7df823
+    size: 11608459
     path: models/base/pct.onnx
     note: "Strawberry-Eat-Mango/PCT_Pytorch"
 
