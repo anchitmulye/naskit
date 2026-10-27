@@ -13,6 +13,8 @@ data:
   modelnet40_h5:  submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/data/modelnet40_ply_hdf5_2048
   cifar10:        data/cifar10
   wikitext2:      data/wikitext2
+  imagenet_train: data/imagenet/train
+  imagenet_val:   data/imagenet/val
 
 defaults:
   seed: 105
@@ -61,6 +63,55 @@ models:
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
       reported: {top1: 94.16, source: chenyaofo/pytorch-cifar-models}
       finetune: {epochs: 30, lr: 0.01, optimizer: sgd}
+    # -- ImageNet-1k: validation = 10/class of the official val set; no fine-tuning ---
+    mobilenet_v2:
+      description: torchvision MobileNetV2 (IMAGENET1K_V1) exported to ONNX
+      dataset: &imagenet
+        type: imagenet
+        val_root: "${data.imagenet_val}"
+        train_root: "${data.imagenet_train}"
+        val_per_class: 10
+        test_per_class: 10
+      reported: {top1: 71.88, source: torchvision IMAGENET1K_V1}
+      settings: &imagenet_settings {search: {ratios: [0.3, 0.5]}}
+    resnet18-v1-7: &zoo
+      description: ONNX Model Zoo ImageNet classifier (input preset chosen on validation)
+      dataset: *imagenet
+      reported: {top1: null, source: ONNX Model Zoo}
+      settings: *imagenet_settings
+    resnet34-v1-7: *zoo
+    resnet50-v1-12: *zoo
+    resnet101-v1-7: *zoo
+    resnet152-v1-7: *zoo
+    resnet50-v2-7: *zoo
+    resnet101-v2-7: *zoo
+    mobilenetv2-7: *zoo
+    mobilenetv2-12: *zoo
+    squeezenet1.0-12: *zoo
+    squeezenet1.1-7: *zoo
+    vgg16-12: *zoo
+    vgg16-bn-7: *zoo
+    vgg19-7: *zoo
+    vgg19-bn-7: *zoo
+    googlenet-12: *zoo
+    inception-v1-12: *zoo
+    inception-v2-9: *zoo
+    densenet-12: *zoo
+    shufflenet-9: *zoo
+    shufflenet-v2-12: *zoo
+    bvlcalexnet-12: *zoo
+    caffenet-12: *zoo
+    zfnet512-12: *zoo
+    efficientnet-lite4-11: *zoo
+    vit-base-patch16-224:
+      <<: *zoo
+      description: ViT-B/16 (google/vit-base-patch16-224, ONNX by Xenova)
+      reported: {top1: null, source: google/vit-base-patch16-224}
+      finetune: {epochs: 10, lr: 5.0e-5, optimizer: adamw, weight_decay: 0.01}
+    deit-base-distilled-224:
+      <<: *zoo
+      description: DeiT-B distilled (facebook/deit-base-distilled-patch16-224, ONNX by Xenova)
+      reported: {top1: null, source: facebook/deit-base-distilled-patch16-224}
   
   classification/3d:
     # -- ModelNet40 ---------------------
