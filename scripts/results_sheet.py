@@ -1,6 +1,6 @@
 """The paper's results workbook: models, datasets, and base vs h3dnas per run.
 
-    python -m scripts.results_sheet                       # models in models/models.yaml
+    python -m scripts.results_sheet                       # models in models/sources.yaml
     python -m scripts.results_sheet --all                 # every model of h3dnas.yaml
     python -m scripts.results_sheet --out ../paper/h3dnas_results.xlsx
 
@@ -17,7 +17,7 @@ Sheets
             gets empty rows up to --rows-per-model for the runs still to do
   Summary   per model, formulas over the Results rows marked `done`
 
-Facts come from the files (ONNX, h3dnas.yaml, models.yaml, run folders);
+Facts come from the files (ONNX, h3dnas.yaml, sources.yaml, run folders);
 nothing is typed by hand. Yellow cells are for you to fill, grey cells are
 formulas. Re-running rewrites the file: keep hand-filled numbers in a copy,
 or in the run folders, from which they are read again.
@@ -61,6 +61,18 @@ def _runs(runs_dir: Path) -> List[Dict[str, Any]]:
         audit = json.loads((dbg / "audit.json").read_text()) if (dbg / "audit.json").exists() else {}
         out.append({"dir": d, "res": r, "run": run, "audit": audit})
     return out
+
+
+def _n(x) -> Optional[int]:
+    """A split size: runs recorded ImageNet's as text
+    ("10000 images (10/class) of ..."), so its leading number is taken."""
+    if isinstance(x, bool):
+        return None
+    if isinstance(x, (int, float)):
+        return int(x)
+    if isinstance(x, str) and x.split() and x.split()[0].isdigit():
+        return int(x.split()[0])
+    return None
 
 
 def _model_facts(spec, entry: Dict[str, Any], source: Dict[str, Any]) -> Dict[str, Any]:
@@ -272,8 +284,9 @@ def build(out: Path, include_all: bool, rows_per_model: int, log=print) -> None:
         pick = lambda d: next((d[k] for k in ("1", "top1", "miou", "instance_miou") if k in d), None)
         val, test = pick(v), pick(t)
         dd = a.get("data") or {}
-        full = (100 * (val * dd["val"] + test * dd["test"]) / (dd["val"] + dd["test"])
-                if None not in (val, test) and dd.get("val") and dd.get("test")
+        nv, nt = _n(dd.get("val")), _n(dd.get("test"))
+        full = (100 * (val * nv + test * nt) / (nv + nt)
+                if None not in (val, test) and nv and nt
                 and ds_facts[key].get("metric", "top1") == "top1" else None)
         r = hr + 1 + i
         ft = _recipe(spec)
@@ -324,7 +337,7 @@ def build(out: Path, include_all: bool, rows_per_model: int, log=print) -> None:
     ws, col, hr = sheet("Datasets", DC, "70AD47", groups=True)
     for i, (key, d) in enumerate(ds_facts.items()):
         spec = d["spec"]
-        tr, va, te, vf = d.get("train"), d.get("val"), d.get("test"), d.get("val_from")
+        tr, va, te, vf = _n(d.get("train")), _n(d.get("val")), _n(d.get("test")), d.get("val_from")
         args = {k: v for k, v in spec.data_params.items()}
         put(ws, DC, hr + 1 + i, {
             "dataset": spec.data_type, "task": spec.task, "modality": spec.modality,
@@ -442,7 +455,8 @@ def build(out: Path, include_all: bool, rows_per_model: int, log=print) -> None:
                 "max_drop": (st.get("objective") or {}).get("max_drop"), "device": st.get("device"),
                 "ft_epochs": ft.get("epochs"), "ft_lr": ft.get("lr"), "ft_opt": ft.get("optimizer"),
                 "ft_wd": ft.get("weight_decay"), "rule": res.get("selection"),
-                "n_val": (res.get("data") or {}).get("val"), "n_test": (res.get("data") or {}).get("test"),
+                "n_val": _n((res.get("data") or {}).get("val")),
+                "n_test": _n((res.get("data") or {}).get("test")),
                 "b_params": b.get("params"), "b_macs": b.get("macs"), "b_size": b.get("size_mb"),
                 "b_lat": b.get("latency_ms"), "b_val": b.get("val"), "b_test": b.get("test"),
                 "b_macc": b.get("test_macc"),
