@@ -79,15 +79,18 @@ models:
         val_per_class: 10
         test_per_class: 10
       reported: {top1: null, source: ONNX Model Zoo}
-      finetune: &imagenet_cnn_ft {epochs: 10, lr: 0.01, optimizer: sgd, weight_decay: 1.0e-4, log_every: 500}
-      settings: &imagenet_settings {search: {ratios: [0.3, 0.5]}}
-    mobilenetv2-12: *zoo
-    densenet-12: *zoo
+      finetune: {candidates: 2, epochs: 10, lr: 0.01, optimizer: sgd, weight_decay: 1.0e-4, log_every: 500}
+      settings: {search: {budgets: [0.7, 0.5]}}
+    mobilenetv2-12:
+      <<: *zoo
+      reported: {top1: 71.9, source: ONNX Model Zoo}
+    densenet-12:
+      <<: *zoo
     vit-base-patch16-224:
       <<: *zoo
       description: ViT-B/16 (google/vit-base-patch16-224, ONNX by Xenova)
       reported: {top1: null, source: google/vit-base-patch16-224}
-      finetune: {epochs: 10, lr: 5.0e-5, optimizer: adamw, weight_decay: 0.01}
+      finetune: {candidates: 1, epochs: 10, lr: 5.0e-5, optimizer: adamw, weight_decay: 0.01}
     deit-base-distilled-224:
       <<: *zoo
       description: DeiT-B distilled (facebook/deit-base-distilled-patch16-224, ONNX by Xenova)
@@ -126,7 +129,10 @@ models:
     # -- WikiText-2: language modelling perplexity, block size 512 tokens ----------------
     gpt2-lm-head-10:
       description: GPT-2 (117M) with LM head from ONNX Model Zoo, evaluated on WikiText-2
-      dataset: {type: wikitext2, root: "${data.wikitext2}", block_size: 512, val_blocks: 200, batch_size: 4}
+      dataset: {type: wikitext103, root: "${data.wikitext103}", block_size: 512, val_blocks: 200, 
+                batch_size: 8, train_max_blocks: 60000}
       reported: {top1: null, source: "ONNX Model Zoo gpt2-lm-head-10 (perplexity reported separately)"}
-      finetune: {epochs: 10, lr: 5.0e-5, optimizer: adamw, weight_decay: 0.01}
-      settings: {search: {ratios: [0.3, 0.5], fitness_split: null}}
+      settings: {search: {ratios: [0.2, 0.3, 0.4], fitness_split: null}}
+      finetune: {epochs: 10, lr: 1.0e-4, optimizer: adamw, weight_decay: 0.01, distill: true,
+                 distill_weight: 0.5, distill_temperature: 1.0, warmup_steps: 300, log_every: 500,
+                 candidates: 1}
