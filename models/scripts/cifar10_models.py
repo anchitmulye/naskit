@@ -1,12 +1,20 @@
-"""CIFAR-10 ResNet-56 and VGG-16-BN with the public pretrained weights of
-chenyaofo/pytorch-cifar-models (state-dict compatible definitions).
+"""CIFAR-10 base models with public pretrained weights (state-dict compatible definitions):
+ResNet-56 and VGG-16-BN of chenyaofo/pytorch-cifar-models, and ResNet-18 of
+edadaltocg/resnet18_cifar10 (Hugging Face; the ONNXPruner comparison): a timm ResNet-18
+with the CIFAR stem (3x3 stride-1 first conv, no max-pool) whose layer names match
+torchvision's resnet18; inputs normalised with mean (0.4914, 0.4822, 0.4465) and std
+(0.2023, 0.1994, 0.2010) as in its config.json (the same as chenyaofo's); model card
+94.98% test accuracy (best epoch; last epoch 94.92%).
 
 Used to (1) export the ONNX base models h3dnas compresses and (2) give the
 source-code baselines (Torch-Pruning / DepGraph) the identical PyTorch model.
+
+    python models/scripts/cifar_models.py   # downloads weights, verifies, exports
 """
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 import sys
@@ -23,8 +31,18 @@ sys.path.insert(0, str(H3DNAS))
 WEIGHTS = {
     "resnet56": "https://github.com/chenyaofo/pytorch-cifar-models/releases/download/resnet/cifar10_resnet56-187c023a.pt",
     "vgg16_bn": "https://github.com/chenyaofo/pytorch-cifar-models/releases/download/vgg/cifar10_vgg16_bn-6ee7ea24.pt",
+    "resnet18": "https://huggingface.co/edadaltocg/resnet18_cifar10/resolve/"
+                "ccacbae365101b9bfa45e1f17f4acac30c2601b2/pytorch_model.bin",
 }
-PUBLISHED_TOP1 = {"resnet56": 94.37, "vgg16_bn": 94.16}
+WEIGHTS_SHA256 = {"resnet18": "f656242526b567dbd46857276acbcfcb4ee74a7f8a7ae5e56557b7e8fa5d914a"}
+WEIGHT_FILES = {"resnet18": "edadaltocg_resnet18_cifar10.bin"}    # default: <name>.pt
+IO_NAMES = {"resnet18": ("image", "logits", "batch")}             # default: x, y, n
+PUBLISHED_TOP1 = {"resnet56": 94.37, "vgg16_bn": 94.16, "resnet18": 94.98}
+PUBLISHED_SOURCE = {"resnet56": "chenyaofo", "vgg16_bn": "chenyaofo", "resnet18": "edadaltocg model card"}
+# Input normalisation (mean, std) each checkpoint was trained with.
+NORMALIZE = {"resnet56": ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+             "vgg16_bn": ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+             "resnet18": ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))}   # its config.json
 
 
 class BasicBlock(nn.Module):
@@ -93,22 +111,42 @@ class CifarVGG(nn.Module):
         return self.classifier(torch.flatten(self.features(x), 1))
 
 
+def cifar_resnet18(num_classes=10) -> nn.Module:
+    """torchvision ResNet-18 with the CIFAR stem: 3x3 stride-1 first conv, no max-pool."""
+    import torchvision
+    m = torchvision.models.resnet18(num_classes=num_classes)
+    m.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+    m.maxpool = nn.Identity()
+    return m
+
+
 def load(name: str, weights_dir: Path) -> nn.Module:
-    model = CifarResNet(56) if name == "resnet56" else CifarVGG()
-    path = weights_dir / f"{name}.pt"
+    model = {"resnet56": lambda: CifarResNet(56), "vgg16_bn": CifarVGG,
+             "resnet18": cifar_resnet18}[name]()
+    path = weights_dir / WEIGHT_FILES.get(name, f"{name}.pt")
+    want = WEIGHTS_SHA256.get(name)
     if not path.exists():
         weights_dir.mkdir(parents=True, exist_ok=True)
-        torch.hub.download_url_to_file(WEIGHTS[name], str(path))
+        part = path.with_name(path.name + ".part")
+        torch.hub.download_url_to_file(WEIGHTS[name], str(part))
+        if want and hashlib.sha256(part.read_bytes()).hexdigest() != want:
+            part.unlink()
+            raise ValueError(f"{WEIGHTS[name]}: downloaded file does not match the pinned sha256 "
+                             f"(incomplete download?); run again")
+        part.replace(path)
+    if want and hashlib.sha256(path.read_bytes()).hexdigest() != want:
+        raise ValueError(f"{path}: sha256 does not match the pinned {name} weights")
     model.load_state_dict(torch.load(path, map_location="cpu", weights_only=True), strict=True)
     return model.eval()
 
 
-def export(model: nn.Module, path: Path) -> None:
-    """ONNX opset 13 with BatchNormalization kept as separate nodes (as shipped models do)."""
+def export(model: nn.Module, path: Path, names=("x", "y", "n")) -> None:
+    """ONNX opset 13 with BatchNormalization kept as separate nodes (as shipped models do);
+    names = (input, output, batch axis)."""
     path.parent.mkdir(parents=True, exist_ok=True)
+    i, o, b = names
     torch.onnx.export(model.eval(), torch.zeros(1, 3, 32, 32), str(path), opset_version=13,
-                      input_names=["x"], output_names=["y"],
-                      dynamic_axes={"x": {0: "n"}, "y": {0: "n"}},
+                      input_names=[i], output_names=[o], dynamic_axes={i: {0: b}, o: {0: b}},
                       training=torch.onnx.TrainingMode.PRESERVE, do_constant_folding=False,
                       dynamo=False)
 
@@ -116,16 +154,16 @@ def export(model: nn.Module, path: Path) -> None:
 if __name__ == "__main__":
     import argparse
     here = Path(__file__).resolve().parent                 # models/scripts
-    ap = argparse.ArgumentParser(description="Export the CIFAR-10 base models (chenyaofo weights)")
-    ap.add_argument("--model", choices=["resnet56", "vgg16_bn"], help="default: both")
+    ap = argparse.ArgumentParser(description="Export the CIFAR-10 base models (pretrained weights)")
+    ap.add_argument("--model", choices=list(WEIGHTS), help="default: all")
     ap.add_argument("--out", type=Path, help="output file (with --model); default: its path in models/models.yaml")
     a = ap.parse_args()
-    names = {"resnet56": "cifar_resnet56", "vgg16_bn": "cifar_vgg16"}
+    names = {"resnet56": "cifar_resnet56", "vgg16_bn": "cifar_vgg16", "resnet18": "cifar_resnet18"}
     for arch in ([a.model] if a.model else list(names)):
         if a.out and a.model:
             out = a.out
         else:
             from h3dnas.workspace import load as load_workspace
             out = load_workspace().onnx(names[arch])
-        export(load(arch, here / "weights"), out)
+        export(load(arch, here / "weights"), out, IO_NAMES.get(arch, ("x", "y", "n")))
         print(f"exported {arch} -> {out}")

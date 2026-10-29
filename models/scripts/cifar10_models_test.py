@@ -1,7 +1,9 @@
 """
 Test CIFAR-10 models — PyTorch checkpoint vs ONNX model accuracy.
 
-Uses the chenyaofo/pytorch-cifar-models weights (downloaded automatically).
+Uses the weights of cifar_models.py (downloaded automatically): ResNet-56 and VGG-16-BN
+(chenyaofo/pytorch-cifar-models), ResNet-18 (edadaltocg/resnet18_cifar10), each with the
+input normalisation it was trained with (cifar_models.NORMALIZE).
 CIFAR-10 test set is loaded via torchvision (downloaded to --data-root if absent).
 
 Usage (from naskit/)
@@ -19,6 +21,10 @@ Usage (from naskit/)
     # VGG-16-BN:
     python models/scripts/test_cifar.py --model vgg16_bn \
         --pytorch --onnx models/base/cifar_vgg16.onnx
+
+    # ResNet-18 (edadaltocg):
+    python models/scripts/test_cifar.py --model resnet18 \
+        --pytorch --onnx models/base/cifar_resnet18.onnx
 """
 
 from __future__ import annotations
@@ -46,14 +52,13 @@ CLASS_NAMES = [
 
 # ── Data loader ───────────────────────────────────────────────────────────────
 
-def build_loader(data_root: str, batch_size: int):
+def build_loader(model_name: str, data_root: str, batch_size: int):
     import torchvision
     import torchvision.transforms as T
     import torch.utils.data
+    from cifar10_models import NORMALIZE
 
-    # Normalisation matching chenyaofo training
-    mean = (0.4914, 0.4822, 0.4465)
-    std  = (0.2023, 0.1994, 0.2010)
+    mean, std = NORMALIZE[model_name]          # as the checkpoint was trained
     transform = T.Compose([T.ToTensor(), T.Normalize(mean, std)])
     ds = torchvision.datasets.CIFAR10(root=data_root, train=False,
                                       download=True, transform=transform)
@@ -73,7 +78,7 @@ def eval_pytorch(model_name: str, data_root: str, batch_size: int) -> dict:
     net = net.to(device)
     print(f"  Device: {device}")
 
-    loader = build_loader(data_root, batch_size)
+    loader = build_loader(model_name, data_root, batch_size)
     print(f"  Test samples: {len(loader.dataset)}")
 
     correct = total = 0
@@ -102,7 +107,7 @@ def eval_pytorch(model_name: str, data_root: str, batch_size: int) -> dict:
 
 # ── ONNX evaluation ───────────────────────────────────────────────────────────
 
-def eval_onnx(onnx_path: str, data_root: str, batch_size: int) -> dict:
+def eval_onnx(model_name: str, onnx_path: str, data_root: str, batch_size: int) -> dict:
     import onnxruntime as ort
 
     print(f"\n  Loading ONNX: {onnx_path}")
@@ -115,7 +120,7 @@ def eval_onnx(onnx_path: str, data_root: str, batch_size: int) -> dict:
     print(f"  Input : {inp_name}  shape: {sess.get_inputs()[0].shape}")
     print(f"  Output: {sess.get_outputs()[0].name}")
 
-    loader = build_loader(data_root, batch_size)
+    loader = build_loader(model_name, data_root, batch_size)
     print(f"  Test samples: {len(loader.dataset)}")
 
     correct = total = 0
@@ -147,7 +152,7 @@ def eval_onnx(onnx_path: str, data_root: str, batch_size: int) -> dict:
 # ── Report ────────────────────────────────────────────────────────────────────
 
 def print_report(model_name: str, pt_res, onnx_res) -> None:
-    from cifar10_models import PUBLISHED_TOP1
+    from cifar_models import PUBLISHED_SOURCE, PUBLISHED_TOP1
     published = PUBLISHED_TOP1.get(model_name)
     W = 72
     print("\n" + "=" * W)
@@ -172,7 +177,8 @@ def print_report(model_name: str, pt_res, onnx_res) -> None:
     if published is not None:
         ref = pt_res["top1"] if pt_res else (onnx_res["top1"] if onnx_res else None)
         pub_delta = f"{ref - published:+.2f}pp" if ref is not None else "—"
-        print(f"  {'Published (chenyaofo)':<30} {published:.2f}%{'':>24}  {pub_delta:>8}")
+        label = f"Published ({PUBLISHED_SOURCE.get(model_name, 'source')})"
+        print(f"  {label:<30} {published:.2f}%{'':>24}  {pub_delta:>8}")
 
     if pt_res:
         print(f"  {'Eval time (PyTorch)':<30} {pt_res['elapsed_s']:>11.1f}s")
@@ -201,7 +207,8 @@ def print_report(model_name: str, pt_res, onnx_res) -> None:
 
 def main():
     p = argparse.ArgumentParser(description="CIFAR-10: PyTorch vs ONNX accuracy")
-    p.add_argument("--model",      required=True, choices=["resnet56", "vgg16_bn"])
+    from cifar10_models import WEIGHTS
+    p.add_argument("--model",      required=True, choices=list(WEIGHTS))
     p.add_argument("--pytorch",    action="store_true",
                    help="evaluate the PyTorch checkpoint (downloaded automatically)")
     p.add_argument("--onnx",       default=None,
@@ -226,7 +233,7 @@ def main():
     if args.onnx:
         step = "2/2" if args.pytorch else "1/1"
         print(f"\n[{step}] Evaluating ONNX: {args.onnx}")
-        onnx_res = eval_onnx(args.onnx, data_root, args.batch_size)
+        onnx_res = eval_onnx(args.model, args.onnx, data_root, args.batch_size)
         print(f"  ONNX Top-1: {onnx_res['top1']:.2f}%  "
               f"Class avg: {onnx_res['class_avg']:.2f}%  ({onnx_res['elapsed_s']:.0f}s)")
 

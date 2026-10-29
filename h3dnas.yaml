@@ -28,10 +28,11 @@ defaults:
     fitness: val_accuracy         # val_accuracy | agreement (label-free)
     fitness_split: null           # null | 0.5 | 0.3 of validation
     ghost: 0                      # GhostConv variants of the best k candidates
-    population: 16
-    generations: 10
+    population: 32
+    generations: 30
     channel_multiple: 1           # kept channels rounded up to a multiple (a device can set 8)
-  finetune: {candidates: 4, device: cuda}     # candidates fine-tuned per run; torch device cpu | cuda | mps
+  finetune: {candidates: 4, device: cuda, 
+            distill: true}        # candidates fine-tuned per run; torch device cpu | cuda | mps
   latency: {threads: 4, rounds: 5, runs_per_round: 20, warmup: 10}
   runtime:                                   # ONNX Runtime per stage: cpu | cuda | tensorrt | coreml
     search:   {provider: cuda, device_id: 0, threads: null, precision: fp32}
@@ -63,46 +64,25 @@ models:
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
       reported: {top1: 94.16, source: chenyaofo/pytorch-cifar-models}
       finetune: {epochs: 30, lr: 0.01, optimizer: sgd}
+    cifar_resnet18:
+      description: ResNet-18 on CIFAR-10, edadaltocg/resnet18_cifar10 weights
+      dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
+      reported: {top1: 94.98, source: "edadaltocg/resnet18_cifar10 model card (HuggingFace)"}
+      finetune: {epochs: 30, lr: 0.01, optimizer: sgd}
+      settings: {search: {ratios: [0.5]}}
     # -- ImageNet-1k: validation = 10/class of the official val set; no fine-tuning ---
-    mobilenet_v2:
-      description: torchvision MobileNetV2 (IMAGENET1K_V1) exported to ONNX
+    resnet50-v1-12: &zoo
       dataset: &imagenet
         type: imagenet
         val_root: "${data.imagenet_val}"
         train_root: "${data.imagenet_train}"
         val_per_class: 10
         test_per_class: 10
-      reported: {top1: 71.88, source: torchvision IMAGENET1K_V1}
-      settings: &imagenet_settings {search: {ratios: [0.3, 0.5]}}
-    resnet18-v1-7: &zoo
-      description: ONNX Model Zoo ImageNet classifier (input preset chosen on validation)
-      dataset: *imagenet
       reported: {top1: null, source: ONNX Model Zoo}
-      settings: *imagenet_settings
-    resnet34-v1-7: *zoo
-    resnet50-v1-12: *zoo
-    resnet101-v1-7: *zoo
-    resnet152-v1-7: *zoo
-    resnet50-v2-7: *zoo
-    resnet101-v2-7: *zoo
-    mobilenetv2-7: *zoo
+      finetune: &imagenet_cnn_ft {epochs: 10, lr: 0.01, optimizer: sgd, weight_decay: 1.0e-4, log_every: 500}
+      settings: &imagenet_settings {search: {ratios: [0.3, 0.5]}}
     mobilenetv2-12: *zoo
-    squeezenet1.0-12: *zoo
-    squeezenet1.1-7: *zoo
-    vgg16-12: *zoo
-    vgg16-bn-7: *zoo
-    vgg19-7: *zoo
-    vgg19-bn-7: *zoo
-    googlenet-12: *zoo
-    inception-v1-12: *zoo
-    inception-v2-9: *zoo
     densenet-12: *zoo
-    shufflenet-9: *zoo
-    shufflenet-v2-12: *zoo
-    bvlcalexnet-12: *zoo
-    caffenet-12: *zoo
-    zfnet512-12: *zoo
-    efficientnet-lite4-11: *zoo
     vit-base-patch16-224:
       <<: *zoo
       description: ViT-B/16 (google/vit-base-patch16-224, ONNX by Xenova)
