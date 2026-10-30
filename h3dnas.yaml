@@ -59,7 +59,7 @@ models:
       description: ResNet-56 on CIFAR-10, chenyaofo/pytorch-cifar-models weights
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
       reported: {top1: 94.37, source: chenyaofo/pytorch-cifar-models}
-      finetune: &cifar_ft{epochs: 50, lr: 0.01, optimizer: sgd, distill_temperature: 4.0}
+      finetune: &cifar_ft {epochs: 50, lr: 0.01, optimizer: sgd, distill_temperature: 4.0}
       settings: &cifar_settings
         search: {budgets: [0.7, 0.5, 0.35]}
         finetune: {candidates: 3}
