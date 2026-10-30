@@ -13,6 +13,7 @@ data:
   modelnet40_h5:  submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40/data/modelnet40_ply_hdf5_2048
   cifar10:        data/cifar10
   wikitext2:      data/wikitext2
+  wikitext103:    data/wikitext103
   imagenet_train: data/imagenet/train
   imagenet_val:   data/imagenet/val
 
@@ -59,17 +60,21 @@ models:
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
       reported: {top1: 94.37, source: chenyaofo/pytorch-cifar-models}
       finetune: {epochs: 30, lr: 0.01, optimizer: sgd}
+      settings: &cifar_settings
+        search: {budgets: [0.7, 0.5, 0.35]}
+        finetune: {candidates: 2}
     cifar_vgg16:
       description: VGG-16-BN on CIFAR-10, chenyaofo/pytorch-cifar-models weights
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
       reported: {top1: 94.16, source: chenyaofo/pytorch-cifar-models}
       finetune: {epochs: 30, lr: 0.01, optimizer: sgd}
+      settings: *cifar_settings
     cifar_resnet18:
       description: ResNet-18 on CIFAR-10, edadaltocg/resnet18_cifar10 weights
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
       reported: {top1: 94.98, source: "edadaltocg/resnet18_cifar10 model card (HuggingFace)"}
       finetune: {epochs: 30, lr: 0.01, optimizer: sgd}
-      settings: {search: {ratios: [0.5]}}
+      settings: *cifar_settings
     # -- ImageNet-1k: validation = 10/class of the official val set; no fine-tuning ---
     resnet50-v1-12: &zoo
       dataset: &imagenet
@@ -126,9 +131,9 @@ models:
   segmentation/3d:
 
   language_modeling/text:
-    # -- WikiText-2: language modelling perplexity, block size 512 tokens ----------------
+    # -- WikiText-103: language modelling perplexity, block size 512 tokens ----------------
     gpt2-lm-head-10:
-      description: GPT-2 (117M) with LM head from ONNX Model Zoo, evaluated on WikiText-2
+      description: GPT-2 (117M) with LM head from ONNX Model Zoo, evaluated on WikiText-103
       dataset: {type: wikitext103, root: "${data.wikitext103}", block_size: 512, val_blocks: 200, 
                 batch_size: 8, train_max_blocks: 60000}
       reported: {top1: null, source: "ONNX Model Zoo gpt2-lm-head-10 (perplexity reported separately)"}
