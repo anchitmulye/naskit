@@ -59,21 +59,21 @@ models:
       description: ResNet-56 on CIFAR-10, chenyaofo/pytorch-cifar-models weights
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
       reported: {top1: 94.37, source: chenyaofo/pytorch-cifar-models}
-      finetune: {epochs: 50, lr: 0.01, optimizer: sgd}
+      finetune: &cifar_ft{epochs: 50, lr: 0.01, optimizer: sgd, distill_temperature: 4.0}
       settings: &cifar_settings
         search: {budgets: [0.7, 0.5, 0.35]}
-        finetune: {candidates: 3, distill_temperature: 4.0}
+        finetune: {candidates: 3}
     cifar_vgg16:
       description: VGG-16-BN on CIFAR-10, chenyaofo/pytorch-cifar-models weights
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
       reported: {top1: 94.16, source: chenyaofo/pytorch-cifar-models}
-      finetune: {epochs: 50, lr: 0.01, optimizer: sgd}
+      finetune: *cifar_ft
       settings: *cifar_settings
     cifar_resnet18:
       description: ResNet-18 on CIFAR-10, edadaltocg/resnet18_cifar10 weights
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
       reported: {top1: 94.98, source: "edadaltocg/resnet18_cifar10 model card (HuggingFace)"}
-      finetune: {epochs: 50, lr: 0.01, optimizer: sgd}
+      finetune: *cifar_ft
       settings: *cifar_settings
     # -- ImageNet-1k: validation = 10/class of the official val set; no fine-tuning ---
     resnet50-v1-12: &zoo
