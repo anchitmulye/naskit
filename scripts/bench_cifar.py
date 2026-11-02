@@ -13,16 +13,21 @@ Methods, all starting from the same pretrained weights:
   l1                Torch-Pruning, filter L1 (Li et al. 2017), uniform
 
 Protocol (identical for every method):
-  - MAC target set by h3dnas-uniform at --ratio; source-code pruners are
-    bisected to within 0.5% of it; MACs counted by h3dnas.core.metrics on the
-    exported ONNX of every method
+  - MAC target: --budgets, fractions of the base MACs as in h3dnas.yaml's
+    search.budgets (or the legacy --ratio: the MACs of h3dnas-uniform at that
+    ratio); h3dnas-uniform takes the smallest uniform ratio within it, the
+    source-code pruners are bisected to within 0.5% of it; MACs counted by
+    h3dnas.core.metrics on the exported ONNX of every method
+  - the group search uses the model's search settings (population, generations)
   - BatchNorm re-estimated on the same unlabeled calibration images
-  - fine-tuning by h3dnas.finetune (same code, recipe and seed for all;
-    torch models are exported to ONNX first), last epoch kept
+  - fine-tuning by h3dnas.finetune (same code, recipe and seed for all; the
+    recipe of h3dnas.yaml with its distillation settings, the unpruned model as
+    teacher; torch models are exported to ONNX first), last epoch kept
   - validation split for every search decision; test split read once at the end
   - latency of every final model measured in one interleaved session
 
-    python -m scripts.bench_cifar cifar_resnet56 --seeds 0 1 2
+    python -m scripts.bench_cifar cifar_resnet56 --budgets 0.7 0.5 0.35 --seeds 105 \
+        --methods h3dnas h3dnas_search depgraph l1
 """
 
 from __future__ import annotations
@@ -41,8 +46,9 @@ import torch
 
 ROOT = Path(__file__).resolve().parents[1]
 H3DNAS = ROOT / "submodules" / "h3dnas"
-MODEL_SCRIPTS = ROOT / "models" 
+MODEL_SCRIPTS = ROOT / "models" / "scripts"
 sys.path.insert(0, str(H3DNAS))
+sys.path.insert(0, str(MODEL_SCRIPTS))
 
 from experiments.registry import get, paths
 from experiments.pipeline import parse as _parse, write_json as _write
@@ -51,12 +57,12 @@ METHODS = ["h3dnas", "h3dnas_search", "h3dnas_search_agree", "h3dnas_labelfree",
            "depgraph_global", "l1"]
 
 
-def _onnx_of(model: torch.nn.Module):
-    from cifar10_models import export          # models/scripts
+def _onnx_of(model: torch.nn.Module, arch: str = None):
+    from cifar10_models import IO_NAMES, export          # models/scripts
     import tempfile
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "m.onnx"
-        export(model, p)
+        export(model, p, IO_NAMES.get(arch, ("x", "y", "n")))   # the base model's input / output names
         return _parse(p)
 
 
@@ -77,7 +83,7 @@ def _matched_tp(arch: str, method: str, target_macs: int):
     lo, hi, best = 0.0, 0.95, None
     for _ in range(16):
         mid = (lo + hi) / 2
-        m = _onnx_of(_tp(load(arch, wdir), mid, method))
+        m = _onnx_of(_tp(load(arch, wdir), mid, method), arch)
         best = (mid, m)
         if abs(m.macs - target_macs) / target_macs < 0.005:
             break
@@ -85,8 +91,8 @@ def _matched_tp(arch: str, method: str, target_macs: int):
     return best
 
 
-def run(model_name: str, seeds: List[int], ratio: float, epochs: int = None,
-        methods: List[str] = None) -> None:
+def run(model_name: str, seeds: List[int], ratio: float = None, epochs: int = None,
+        methods: List[str] = None, budget: float = None) -> None:
     from h3dnas.core.latency import measure
     from h3dnas.core.metrics import per_sample_inputs
     from h3dnas.core.inputs import resolve_input_spec
@@ -97,7 +103,7 @@ def run(model_name: str, seeds: List[int], ratio: float, epochs: int = None,
     from h3dnas.modulator.architecture_modulator import ArchitectureModulator
     from h3dnas.modulator.bn_recalib import recalibrate_bn
 
-    arches = {"cifar_resnet56": "resnet56", "cifar_vgg16": "vgg16_bn"}
+    arches = {"cifar_resnet56": "resnet56", "cifar_vgg16": "vgg16_bn", "cifar_resnet18": "resnet18"}
     if model_name not in arches:
         raise SystemExit(f"bench_cifar supports {sorted(arches)} (it rebuilds the PyTorch model for "
                          f"the source-code pruners), not {model_name!r}")
@@ -111,9 +117,11 @@ def run(model_name: str, seeds: List[int], ratio: float, epochs: int = None,
     # distillation as in the pipeline (defaults.finetune.distill, a recipe's own value wins),
     # applied to every method alike with the unpruned model as teacher
     recipe["distill"] = bool(recipe.get("distill", spec.resolved()["finetune"].get("distill", False)))
+    search = spec.resolved()["search"]
+    point = f"b{int(round(budget * 100))}" if budget is not None else f"r{int(ratio * 100)}"
     for seed in seeds:
         tag = "" if methods == METHODS else "_" + "-".join(methods)
-        out = paths().results / "bench_cifar" / f"{model_name}_r{int(ratio * 100)}_seed{seed}{tag}.json"
+        out = paths().results / "bench_cifar" / f"{model_name}_{point}_seed{seed}{tag}.json"
         if out.exists():
             print(f"[bench] {out.name}: done")
             continue
@@ -126,10 +134,22 @@ def run(model_name: str, seeds: List[int], ratio: float, epochs: int = None,
 
         mod = ArchitectureModulator()
         mod.initialize()
-        uni = mod.execute(base, SearchSpace(prune_ratios=[ratio]), calib_feeds=calib)[0]
-        target = uni.macs
+        if budget is not None:                      # as run_nas: the least-pruned uniform model within it
+            from h3dnas.core.nas_pipeline import _uniform_within
+            target = int(budget * base.macs)
+            mod.execute(base, SearchSpace(prune_ratios=[0.0]), calib_feeds=calib)   # prepares the model
+            r_uni = _uniform_within(mod, base, SearchSpace(prune_ratios=[0.0]), {"max_macs": target})
+            if r_uni is None:
+                raise SystemExit(f"budget {budget}: even uniform ratio 0.95 exceeds {target:,} MACs")
+            uni = mod.execute(base, SearchSpace(prune_ratios=[0.0]), calib_feeds=calib,
+                              group_ratios={k: r_uni for k in mod.search_keys()},
+                              reuse_preparation=True)[0]
+        else:
+            uni = mod.execute(base, SearchSpace(prune_ratios=[ratio]), calib_feeds=calib)[0]
+            target = uni.macs
         pruned = {"h3dnas": uni}
-        cfg = GroupSearchConfig(population=16, generations=10, seed=seed)   # = run_nas defaults
+        cfg = GroupSearchConfig(population=search["population"], generations=search["generations"],
+                                seed=seed)                      # the model's search settings
         if "h3dnas_search" in methods:
             best, _ = search_group_ratios(base, max_macs=target, config=cfg, calib_feeds=calib,
                                           eval_fn=lambda m: eval_accuracy(m, val))
@@ -149,7 +169,9 @@ def run(model_name: str, seeds: List[int], ratio: float, epochs: int = None,
             recalibrate_bn(m, calib)
             pruned[meth], tp_ratio[meth] = m, r
 
-        rec = {"model": model_name, "seed": seed, "ratio": ratio, "recipe": recipe,
+        rec = {"model": model_name, "seed": seed, "ratio": ratio, "budget": budget,
+               "target_macs": target, "search": {k: search[k] for k in ("population", "generations")},
+               "recipe": recipe,
                "finetune_device": device,
                "base": {"params": base.parameters, "macs": base.macs,
                         "val": eval_accuracy(base, val)},
@@ -187,8 +209,17 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("model")
     ap.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
-    ap.add_argument("--ratio", type=float, default=0.3)
-    ap.add_argument("--epochs", type=int, default=None)
+    ap.add_argument("--budgets", type=float, nargs="+",
+                    help="MAC targets as fractions of the base (default: the model's search.budgets)")
+    ap.add_argument("--ratio", type=float, help="legacy target: the MACs of h3dnas-uniform at this ratio")
+    ap.add_argument("--epochs", type=int, default=None, help="override the recipe's epochs")
     ap.add_argument("--methods", nargs="+", default=None, choices=METHODS)
     a = ap.parse_args()
-    run(a.model, a.seeds, a.ratio, a.epochs, a.methods)
+    if a.ratio is not None:
+        run(a.model, a.seeds, ratio=a.ratio, epochs=a.epochs, methods=a.methods)
+    else:
+        budgets = a.budgets or get(a.model).resolved()["search"]["budgets"]
+        if not budgets:
+            raise SystemExit(f"{a.model}: no search.budgets in h3dnas.yaml; pass --budgets or --ratio")
+        for b in budgets:
+            run(a.model, a.seeds, epochs=a.epochs, methods=a.methods, budget=b)
