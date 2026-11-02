@@ -31,6 +31,7 @@ import argparse
 import io
 import json
 import time
+import sys
 from pathlib import Path
 from typing import Dict, List
 
@@ -38,16 +39,20 @@ import numpy as np
 import onnx
 import torch
 
+ROOT = Path(__file__).resolve().parents[1]
+H3DNAS = ROOT / "submodules" / "h3dnas"
+MODEL_SCRIPTS = ROOT / "models" 
+sys.path.insert(0, str(H3DNAS))
+
 from experiments.registry import get, paths
 from experiments.pipeline import parse as _parse, write_json as _write
-from scripts import MODEL_SCRIPTS
 
 METHODS = ["h3dnas", "h3dnas_search", "h3dnas_search_agree", "h3dnas_labelfree", "depgraph",
            "depgraph_global", "l1"]
 
 
 def _onnx_of(model: torch.nn.Module):
-    from cifar_models import export          # models/scripts
+    from cifar10_models import export          # models/scripts
     import tempfile
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "m.onnx"
@@ -67,7 +72,7 @@ def _tp(model, ratio: float, method: str):
 
 
 def _matched_tp(arch: str, method: str, target_macs: int):
-    from cifar_models import load
+    from cifar10_models import load
     wdir = MODEL_SCRIPTS / "weights"
     lo, hi, best = 0.0, 0.95, None
     for _ in range(16):
