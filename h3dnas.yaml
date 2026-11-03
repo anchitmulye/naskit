@@ -91,6 +91,8 @@ models:
       reported: {top1: 71.9, source: ONNX Model Zoo}
     densenet-12:
       <<: *zoo
+      dataset: {<<: *imagenet, batch_size: 1}
+      reported: {top1: null, source: ONNX Model Zoo}
     vit-base-patch16-224:
       <<: *zoo
       description: ViT-B/16 (google/vit-base-patch16-224, ONNX by Xenova)
