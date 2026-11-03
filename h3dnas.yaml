@@ -84,7 +84,8 @@ models:
         val_per_class: 10
         test_per_class: 10
       reported: {top1: 74.45, source: ONNX Model Zoo}
-      finetune: {epochs: 10, lr: 0.01, optimizer: sgd, weight_decay: 1.0e-4, log_every: 500}
+      finetune: {epochs: 10, lr: 0.002, optimizer: sgd, weight_decay: 1.0e-4, warmup_steps: 500,
+                 log_every: 500}
       settings: {search: {budgets: [0.7, 0.5]}, finetune: {candidates: 2}}
     mobilenetv2-12:
       <<: *zoo
