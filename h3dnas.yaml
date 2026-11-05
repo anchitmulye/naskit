@@ -43,7 +43,16 @@ defaults:
 devices:
   edge_small: {max_macs: 2_000_000_000, max_parameters: 20_000_000, max_model_size_mb: 80}
   edge_large: {max_macs: 8_000_000_000, max_parameters: 60_000_000, max_model_size_mb: 250}
-  jetson_orin_nano: {channel_multiple: 8}
+  jetson_orin_nano: 
+    channel_multiple: 8
+    max_macs: 11_170_000_000
+    max_parameters: 1_717_000_000
+    max_model_size_mb: 6_554
+  jetson_orin_nx_16gb: 
+    channel_multiple: 8
+    max_macs: 26_170_000_000
+    max_parameters: 3_436_000_000
+    max_model_size_mb: 13_107 
 
 models:
 
@@ -52,13 +61,13 @@ models:
     fashion_mnist:
       description: Small CNN on Fashion-MNIST, trained here (models/scripts/fashion_mnist.py)
       dataset: {type: fashion_mnist, root: "${data.fashion_mnist}", val_per_class: 200}
-      reported: {top1: null, source: trained here}
+      reported: {top1: 91.26, source: trained here}
       finetune: {epochs: 10, lr: 0.01, optimizer: sgd}
     # -- CIFAR-10: validation = 200/class of the official test set -----------------
     cifar_resnet56:
       description: ResNet-56 on CIFAR-10, chenyaofo/pytorch-cifar-models weights
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
-      reported: {top1: 94.37, source: chenyaofo/pytorch-cifar-models}
+      reported: {top1: 94.16, source: chenyaofo/pytorch-cifar-models}
       finetune: &cifar_ft {epochs: 50, lr: 0.01, optimizer: sgd, distill_temperature: 4.0}
       settings: &cifar_settings
         search: {budgets: [0.7, 0.5, 0.35]}
@@ -66,13 +75,13 @@ models:
     cifar_vgg16:
       description: VGG-16-BN on CIFAR-10, chenyaofo/pytorch-cifar-models weights
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
-      reported: {top1: 94.16, source: chenyaofo/pytorch-cifar-models}
+      reported: {top1: 93.95, source: chenyaofo/pytorch-cifar-models}
       finetune: *cifar_ft
       settings: *cifar_settings
     cifar_resnet18:
       description: ResNet-18 on CIFAR-10, edadaltocg/resnet18_cifar10 weights
       dataset: {type: cifar10, root: "${data.cifar10}", val_per_class: 200}
-      reported: {top1: 94.98, source: "edadaltocg/resnet18_cifar10 model card (HuggingFace)"}
+      reported: {top1: 94.91, source: "edadaltocg/resnet18_cifar10 model card (HuggingFace)"}
       finetune: *cifar_ft
       settings: *cifar_settings
     # -- ImageNet-1k: validation = 10/class of the official val set; no fine-tuning ---
@@ -110,12 +119,12 @@ models:
     pointnet:
       description: PointNet (no normals) on ModelNet40, 1024 points
       dataset: {type: modelnet40, root: "${data.modelnet40}", val_fraction: 0.3}
-      reported: {top1: 90.32, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
+      reported: {top1: 90.50, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
       finetune: &points_ft {epochs: 50, lr: 5.0e-4, optimizer: adamw, weight_decay: 1.0e-4, keep: last}
     pointnet2:
       description: PointNet++ SSG (no normals) on ModelNet40, 1024 points
       dataset: {type: modelnet40, root: "${data.modelnet40}", val_fraction: 0.3}
-      reported: {top1: 91.90, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
+      reported: {top1: 92.01, source: yanx27/Pointnet_Pointnet2_pytorch (no normals)}
       finetune: *points_ft
     pointmlp:
       description: PointMLP on ModelNet40 (HDF5 release), 1024 points
