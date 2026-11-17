@@ -54,14 +54,19 @@ def collect(run: Path) -> Optional[Dict[str, Any]]:
     pop, gens = int(s.get("population") or 0), int(s.get("generations") or 0)
     slots = max(0, pop - ELITES)
     prun = (audit or {}).get("prunability") or {}
+    unit_parts = {k: prun.get(k) for k in ("prunable_groups", "ffn_blocks", "attention_blocks")}
+    units = (sum(v for v in unit_parts.values() if isinstance(v, int))
+             if any(isinstance(v, int) for v in unit_parts.values()) else None)
     secs = float(search["search_seconds"])
     scored = pop + (gens - 1) * slots if pop and gens else None
     rt = ((search.get("protocol") or {}).get("runtime") or {})
     return {
         "model": (meta or {}).get("example") or run.parent.name,
         "run": run.name,
-        "units": prun.get("prunable_groups"),
-        "groups": prun.get("groups"),
+        "units": units,
+        "groups": prun.get("prunable_groups"),
+        "ffn": prun.get("ffn_blocks"),
+        "attn": prun.get("attention_blocks"),
         "population": pop or None,
         "generations": gens or None,
         "scored": scored,
@@ -99,8 +104,8 @@ def main() -> None:
     if not rows:
         raise SystemExit(f"no finished searches under {root}")
 
-    cols = ["model", "run", "units", "population", "generations", "scored", "screened",
-            "minutes", "sec_per_scored", "provider"]
+    cols = ["model", "run", "units", "groups", "ffn", "attn", "population", "generations",
+            "scored", "screened", "minutes", "sec_per_scored", "provider"]
     if a.tsv:
         print("\t".join(cols))
         for r in rows:
