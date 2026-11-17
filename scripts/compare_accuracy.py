@@ -44,7 +44,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from scripts.compare_models import H3DNAS, _change, _num, versions
+from compare_models import H3DNAS, _change, _num, versions
 
 ROOT = Path(__file__).resolve().parents[1]
 H3DNAS = ROOT / "submodules" / "h3dnas"
