@@ -27,8 +27,14 @@ import argparse
 import json
 import platform
 import time
+import sys
 from pathlib import Path
 from typing import Dict, List
+
+ROOT = Path(__file__).resolve().parents[1]
+H3DNAS = ROOT / "submodules" / "h3dnas"
+H3DNAS_MODELS = ROOT / "models" / "h3dnas"
+sys.path.insert(0, str(H3DNAS))
 
 from experiments.registry import get, paths
 from experiments.pipeline import parse as _parse, write_json as _write
@@ -55,6 +61,32 @@ def _fit_batch(calib: List[Dict], want: int) -> List[Dict]:
     return out
 
 
+def _upgraded(src: Path, tmpdir: Path, min_opset: int = 13) -> Path:
+    """Raise the default opset to `min_opset` if the graph is below it, else return `src`.
+
+    Per-channel quantization writes an `axis` attribute on QuantizeLinear/DequantizeLinear,
+    which only exists from opset 13. Quantizing an older graph therefore produces a model the
+    runtime refuses to load ("Unrecognized attribute: axis for operator DequantizeLinear") --
+    the quantization itself succeeds, so the failure only shows up later, at session creation.
+    """
+    import onnx
+    m = onnx.load(str(src))
+    cur = max((o.version for o in m.opset_import if o.domain in ("", "ai.onnx")), default=0)
+    if cur >= min_opset:
+        return src
+    out = tmpdir / "opset13.onnx"
+    try:
+        from onnx import version_converter
+        onnx.save(version_converter.convert_version(m, min_opset), str(out))
+        print(f"    [quantize] {src.name}: opset {cur} -> {min_opset} for per-channel QDQ",
+              flush=True)
+        return out
+    except Exception as e:
+        print(f"    [quantize] {src.name}: opset {cur} < {min_opset} and conversion failed "
+              f"({type(e).__name__}); will fall back to per-tensor", flush=True)
+        return src
+
+
 def quantize(src: Path, dst: Path, calib: List[Dict], method: str) -> Path:
     from onnxruntime.quantization import (CalibrationDataReader, CalibrationMethod, QuantFormat,
                                           QuantType, quantize_static)
@@ -75,7 +107,13 @@ def quantize(src: Path, dst: Path, calib: List[Dict], method: str) -> Path:
         # graph only serializes with external data, so quantize here and save one file below
         pre, q = Path(d) / "pre.onnx", Path(d) / "q.onnx"
 
-        def _quantize_from(model_path, feeds):
+        # Per-channel QDQ needs opset >= 13 (the `axis` attribute); raise it when we can.
+        src = _upgraded(src, Path(d))
+        per_channel_ok = max(
+            (o.version for o in onnx.load(str(src)).opset_import
+             if o.domain in ("", "ai.onnx")), default=0) >= 13
+
+        def _quantize_from(model_path, feeds, per_channel=None):
             class R(CalibrationDataReader):
                 def __init__(self):
                     self.it = iter(feeds)
@@ -83,12 +121,17 @@ def quantize(src: Path, dst: Path, calib: List[Dict], method: str) -> Path:
                 def get_next(self):
                     return next(self.it, None)
 
+            pc = per_channel_ok if per_channel is None else per_channel
             quantize_static(str(model_path), str(q), R(), quant_format=QuantFormat.QDQ,
-                            per_channel=True, activation_type=QuantType.QInt8,
+                            per_channel=pc, activation_type=QuantType.QInt8,
                             weight_type=QuantType.QInt8, use_external_data_format=True,
                             calibrate_method={"minmax": CalibrationMethod.MinMax,
                                               "entropy": CalibrationMethod.Entropy,
                                               "percentile": CalibrationMethod.Percentile}[method])
+            # quantize_static succeeds on a graph the runtime will later refuse, so load the
+            # result here: a failure must be attributed to this attempt, not to evaluation.
+            import onnxruntime as _ort
+            _ort.InferenceSession(str(q), providers=["CPUExecutionProvider"])
 
         # Pre-processing folds BatchNorm into the convolutions, but it is an optimisation, not a
         # requirement -- quantize_static runs its own shape inference. Point networks defeat it
@@ -107,6 +150,9 @@ def quantize(src: Path, dst: Path, calib: List[Dict], method: str) -> Path:
         # Calibration batch is the second axis of the retry: a graph that only runs at batch 1
         # fails the same way at every pre-processing stage, so trying batch 1 is what rescues it.
         batches = [("loader", calib), ("one", _fit_batch(calib, 1))]
+        if not per_channel_ok:
+            print(f"    [quantize] {Path(src).name}: opset < 13, using per-tensor weights",
+                  flush=True)
         last, done = None, False
         for bname, feeds in batches:
             for stage, build in attempts:
