@@ -1,33 +1,33 @@
-"""CIFAR-10: h3dnas (ONNX only) vs source-code pruners at matched MACs.
+"""CIFAR-10: swan (ONNX only) vs source-code pruners at matched MACs.
 
 Methods, all starting from the same pretrained weights:
-  h3dnas            uniform group ratio (ONNX graph only)
-  h3dnas_search     per-group search, fitness = validation accuracy (run_nas
+  swan            uniform group ratio (ONNX graph only)
+  swan_search     per-group search, fitness = validation accuracy (run_nas
                     default)
-  h3dnas_search_agree per-group search, fitness = top-1 agreement with the base
+  swan_search_agree per-group search, fitness = top-1 agreement with the base
                     model on 2000 unlabeled training images (label-free)
-  h3dnas_labelfree  per-group search, fitness = output fidelity (cosine) on
+  swan_labelfree  per-group search, fitness = output fidelity (cosine) on
                     unlabeled calibration images
   depgraph          Torch-Pruning, group L2 importance, uniform per layer
   depgraph_global   Torch-Pruning, group L2 importance, global ranking
   l1                Torch-Pruning, filter L1 (Li et al. 2017), uniform
 
 Protocol (identical for every method):
-  - MAC target: --budgets, fractions of the base MACs as in h3dnas.yaml's
-    search.budgets (or the legacy --ratio: the MACs of h3dnas-uniform at that
-    ratio); h3dnas-uniform takes the smallest uniform ratio within it, the
+  - MAC target: --budgets, fractions of the base MACs as in swan.yaml's
+    search.budgets (or the legacy --ratio: the MACs of swan-uniform at that
+    ratio); swan-uniform takes the smallest uniform ratio within it, the
     source-code pruners are bisected to within 0.5% of it; MACs counted by
-    h3dnas.core.metrics on the exported ONNX of every method
+    swan.core.metrics on the exported ONNX of every method
   - the group search uses the model's search settings (population, generations)
   - BatchNorm re-estimated on the same unlabeled calibration images
-  - fine-tuning by h3dnas.finetune (same code, recipe and seed for all; the
-    recipe of h3dnas.yaml with its distillation settings, the unpruned model as
+  - fine-tuning by swan.finetune (same code, recipe and seed for all; the
+    recipe of swan.yaml with its distillation settings, the unpruned model as
     teacher; torch models are exported to ONNX first), last epoch kept
   - validation split for every search decision; test split read once at the end
   - latency of every final model measured in one interleaved session
 
     python -m scripts.bench_cifar cifar_resnet56 --budgets 0.7 0.5 0.35 --seeds 105 \
-        --methods h3dnas h3dnas_search depgraph l1
+        --methods swan swan_search depgraph l1
 """
 
 from __future__ import annotations
@@ -45,15 +45,15 @@ import onnx
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
-H3DNAS = ROOT / "submodules" / "h3dnas"
+SWAN = ROOT / "submodules" / "swan"
 MODEL_SCRIPTS = ROOT / "models" / "scripts"
-sys.path.insert(0, str(H3DNAS))
+sys.path.insert(0, str(SWAN))
 sys.path.insert(0, str(MODEL_SCRIPTS))
 
 from experiments.registry import get, paths
 from experiments.pipeline import parse as _parse, write_json as _write
 
-METHODS = ["h3dnas", "h3dnas_search", "h3dnas_search_agree", "h3dnas_labelfree", "depgraph",
+METHODS = ["swan", "swan_search", "swan_search_agree", "swan_labelfree", "depgraph",
            "depgraph_global", "l1"]
 
 
@@ -93,15 +93,15 @@ def _matched_tp(arch: str, method: str, target_macs: int):
 
 def run(model_name: str, seeds: List[int], ratio: float = None, epochs: int = None,
         methods: List[str] = None, budget: float = None) -> None:
-    from h3dnas.core.latency import measure
-    from h3dnas.core.metrics import per_sample_inputs
-    from h3dnas.core.inputs import resolve_input_spec
-    from h3dnas.core.types import SearchSpace
-    from h3dnas.datapipe import eval_accuracy, feeds_from_loader
-    from h3dnas.finetune import finetune
-    from h3dnas.generator.group_evolution import GroupSearchConfig, search_group_ratios
-    from h3dnas.modulator.architecture_modulator import ArchitectureModulator
-    from h3dnas.modulator.bn_recalib import recalibrate_bn
+    from swan.core.latency import measure
+    from swan.core.metrics import per_sample_inputs
+    from swan.core.inputs import resolve_input_spec
+    from swan.core.types import SearchSpace
+    from swan.datapipe import eval_accuracy, feeds_from_loader
+    from swan.finetune import finetune
+    from swan.generator.group_evolution import GroupSearchConfig, search_group_ratios
+    from swan.modulator.architecture_modulator import ArchitectureModulator
+    from swan.modulator.bn_recalib import recalibrate_bn
 
     arches = {"cifar_resnet56": "resnet56", "cifar_vgg16": "vgg16_bn", "cifar_resnet18": "resnet18"}
     if model_name not in arches:
@@ -110,7 +110,7 @@ def run(model_name: str, seeds: List[int], ratio: float = None, epochs: int = No
     spec = get(model_name)
     arch = arches[model_name]
     methods = methods or METHODS
-    device = spec.resolved()["finetune"]["device"]          # fine-tune where h3dnas.yaml says
+    device = spec.resolved()["finetune"]["device"]          # fine-tune where swan.yaml says
     recipe = dict(spec.recipe)
     if epochs:
         recipe["epochs"] = epochs
@@ -135,7 +135,7 @@ def run(model_name: str, seeds: List[int], ratio: float = None, epochs: int = No
         mod = ArchitectureModulator()
         mod.initialize()
         if budget is not None:                      # as run_nas: the least-pruned uniform model within it
-            from h3dnas.core.nas_pipeline import _uniform_within
+            from swan.core.nas_pipeline import _uniform_within
             target = int(budget * base.macs)
             mod.execute(base, SearchSpace(prune_ratios=[0.0]), calib_feeds=calib)   # prepares the model
             r_uni = _uniform_within(mod, base, SearchSpace(prune_ratios=[0.0]), {"max_macs": target})
@@ -147,22 +147,22 @@ def run(model_name: str, seeds: List[int], ratio: float = None, epochs: int = No
         else:
             uni = mod.execute(base, SearchSpace(prune_ratios=[ratio]), calib_feeds=calib)[0]
             target = uni.macs
-        pruned = {"h3dnas": uni}
+        pruned = {"swan": uni}
         cfg = GroupSearchConfig(population=search["population"], generations=search["generations"],
                                 seed=seed)                      # the model's search settings
-        if "h3dnas_search" in methods:
+        if "swan_search" in methods:
             best, _ = search_group_ratios(base, max_macs=target, config=cfg, calib_feeds=calib,
                                           eval_fn=lambda m: eval_accuracy(m, val))
-            pruned["h3dnas_search"] = best.model
-        if "h3dnas_search_agree" in methods:
-            from h3dnas.core.fidelity import AgreementScorer
+            pruned["swan_search"] = best.model
+        if "swan_search_agree" in methods:
+            from swan.core.fidelity import AgreementScorer
             agree = AgreementScorer(base, feeds_from_loader(base, dm.pool_loader(), n_samples=2000))
             best, _ = search_group_ratios(base, max_macs=target, config=cfg, calib_feeds=calib,
                                           eval_fn=agree.score)
-            pruned["h3dnas_search_agree"] = best.model
-        if "h3dnas_labelfree" in methods:
+            pruned["swan_search_agree"] = best.model
+        if "swan_labelfree" in methods:
             best, _ = search_group_ratios(base, max_macs=target, config=cfg, calib_feeds=calib)
-            pruned["h3dnas_labelfree"] = best.model
+            pruned["swan_labelfree"] = best.model
         tp_ratio = {}
         for meth in [m for m in ("depgraph", "depgraph_global", "l1") if m in methods]:
             r, m = _matched_tp(arch, meth, target)
@@ -211,7 +211,7 @@ if __name__ == "__main__":
     ap.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
     ap.add_argument("--budgets", type=float, nargs="+",
                     help="MAC targets as fractions of the base (default: the model's search.budgets)")
-    ap.add_argument("--ratio", type=float, help="legacy target: the MACs of h3dnas-uniform at this ratio")
+    ap.add_argument("--ratio", type=float, help="legacy target: the MACs of swan-uniform at this ratio")
     ap.add_argument("--epochs", type=int, default=None, help="override the recipe's epochs")
     ap.add_argument("--methods", nargs="+", default=None, choices=METHODS)
     a = ap.parse_args()
@@ -220,6 +220,6 @@ if __name__ == "__main__":
     else:
         budgets = a.budgets or get(a.model).resolved()["search"]["budgets"]
         if not budgets:
-            raise SystemExit(f"{a.model}: no search.budgets in h3dnas.yaml; pass --budgets or --ratio")
+            raise SystemExit(f"{a.model}: no search.budgets in swan.yaml; pass --budgets or --ratio")
         for b in budgets:
             run(a.model, a.seeds, epochs=a.epochs, methods=a.methods, budget=b)

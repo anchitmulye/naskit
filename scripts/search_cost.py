@@ -9,7 +9,7 @@ Reads three files already written by every run, so nothing has to be re-run:
   debug/run.json     settings.search.population / .generations
   debug/search.json  search_seconds, protocol.runtime
 
-Genome counts are derived from the search's own rules (h3dnas.generator.
+Genome counts are derived from the search's own rules (swan.generator.
 group_evolution): each generation keeps `elites` and opens
 `slots = population - elites`; with screening on it breeds up to
 `screen x slots` children, keeps the ones the ridge surrogate ranks highest
@@ -94,10 +94,10 @@ def main() -> None:
     if root is None:
         try:                                  # the workspace knows where runs live
             import sys
-            sys.path.insert(0, str(ROOT / "submodules" / "h3dnas"))
+            sys.path.insert(0, str(ROOT / "submodules" / "swan"))
             from experiments.registry import paths
             root = paths().runs
-        except Exception as e:                # a broken h3dnas.yaml must not stop a read-only report
+        except Exception as e:                # a broken swan.yaml must not stop a read-only report
             root = ROOT / "artifacts"
             print(f"[search_cost] workspace not loadable ({type(e).__name__}); using {root}\n")
     rows = [r for r in (collect(p) for p in runs_under(Path(root), a.model)) if r]

@@ -14,7 +14,7 @@ Figures
 Needs matplotlib. The schematic figures (pipeline overview, coupled-group illustration,
 head-axis tracing) are not here: they are vector drawings, not plots of data.
 
-Everything is read from ../h3dnas_paper_tables.xlsx, except `width`, which reads the
+Everything is read from ../swan_paper_tables.xlsx, except `width`, which reads the
 ONNX files directly so that the profile is the one actually emitted rather than a
 reconstruction. A figure whose inputs are missing is skipped with a message, never
 drawn from partial data.
@@ -27,7 +27,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 FIG = HERE / "fig"
-BOOK = HERE.parent / "results" / "h3dnas_results.xlsx"
+BOOK = HERE.parent / "results" / "swan_results.xlsx"
 # the compressed graphs whose per-layer widths the `width` figure draws
 NASKIT = HERE.parent.parent / "naskit"
 

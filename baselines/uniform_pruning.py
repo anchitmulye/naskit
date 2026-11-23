@@ -4,14 +4,14 @@ Baseline 1 — Uniform L1 Channel Pruning.
 Applies the same L1 importance pruning ratio to every free Conv/Gemm node.
 No sensitivity analysis, no width multipliers, no NAS search.
 This is the simplest possible structured pruning baseline:
-  - identify free nodes via TopologyAnalyser (same as h3dnas)
+  - identify free nodes via TopologyAnalyser (same as swan)
   - select top-(1-prune_ratio) channels by L1 norm of weights
-  - propagate Cin indices downstream (same graph surgery as h3dnas)
+  - propagate Cin indices downstream (same graph surgery as swan)
   - fine-tune for N epochs
   - report accuracy
 
 Reference comparison point: shows what plain uniform pruning achieves at
-the same parameter budget as h3dnas. If h3dnas beats it, the NAS search
+the same parameter budget as swan. If swan beats it, the NAS search
 and sensitivity-guided allocation are justified.
 
 This is a fair comparison because:
@@ -26,21 +26,21 @@ import argparse, sys, time, math
 from pathlib import Path
 
 NASKIT_ROOT   = Path(__file__).parent.parent
-H3DNAS_ROOT   = NASKIT_ROOT / "submodules/h3dnas"
+SWAN_ROOT   = NASKIT_ROOT / "submodules/swan"
 POINTNET_REPO = NASKIT_ROOT / "submodules/vision-onnx-models/submodules/pointnet_pointnet2"
 MODELNET_DATA = POINTNET_REPO / "data/modelnet40_normal_resampled"
 
-sys.path.insert(0, str(H3DNAS_ROOT))
+sys.path.insert(0, str(SWAN_ROOT))
 sys.path.insert(0, str(POINTNET_REPO))
 
 import numpy as np
 import onnx, onnxruntime as ort
 from onnx import numpy_helper
 
-from h3dnas.parser.onnx_parser import ONNXParser
-from h3dnas.modulator.topology_analyser import TopologyAnalyser
-from h3dnas.core.nas_pipeline import _eval_fn
-from h3dnas.utils.logger import get_logger
+from swan.parser.onnx_parser import ONNXParser
+from swan.modulator.topology_analyser import TopologyAnalyser
+from swan.core.nas_pipeline import _eval_fn
+from swan.utils.logger import get_logger
 
 
 def _wrap_loader(loader, sample_input):
@@ -66,21 +66,21 @@ def uniform_prune_onnx(base_onnx: Path, prune_ratio: float) -> "ONNXModel":
       1. Parse ONNX → ONNXModel with shape inference
       2. TopologyAnalyser → identify free nodes
       3. For each free node: select top-(1-prune_ratio) channels by L1 norm
-      4. Propagate Cin indices downstream (exact same logic as h3dnas)
+      4. Propagate Cin indices downstream (exact same logic as swan)
       5. Return pruned ONNXModel
 
-    This reuses h3dnas's own modulator with use_sensitivity=False and
+    This reuses swan's own modulator with use_sensitivity=False and
     a single prune_ratio — giving a fair apples-to-apples comparison.
     """
-    from h3dnas.core.nas_pipeline import run_nas, NASConfig
-    from h3dnas.core.types import SearchSpace
+    from swan.core.nas_pipeline import run_nas, NASConfig
+    from swan.core.types import SearchSpace
     import argparse as _ap
     from torch.utils.data import DataLoader, Subset
     from data_utils.ModelNetDataLoader import ModelNetDataLoader
 
     logger.info(f"Uniform pruning: {base_onnx.name}  ratio={prune_ratio}")
 
-    # Use h3dnas pipeline with single candidate, no width scaling, no sensitivity
+    # Use swan pipeline with single candidate, no width scaling, no sensitivity
     args = _ap.Namespace(num_point=1024, use_uniform_sample=False,
                          use_normals=False, num_category=10)
     ds = ModelNetDataLoader(root=str(MODELNET_DATA), args=args,
@@ -103,7 +103,7 @@ def uniform_prune_onnx(base_onnx: Path, prune_ratio: float) -> "ONNXModel":
         enable_zero_shot  = False,
     )
 
-    from h3dnas.core.nas_pipeline import run_nas
+    from swan.core.nas_pipeline import run_nas
     result = run_nas(config)
 
     if not result.candidates:

@@ -9,7 +9,7 @@
 # Each entry: file models/base/<name>.onnx, its sha256 and size, and one source:
 #   url:    pinned download (ONNX Model Zoo at commit c5cae0f, Hugging Face at a revision)
 #   run:    a script that builds the file ({out} = the target file, {scripts} = models/scripts,
-#           {root} = the naskit folder; -m modules run from submodules/h3dnas)
+#           {root} = the naskit folder; -m modules run from submodules/swan)
 #   local:  built here earlier with no public copy; keep the file (sha256 below)
 # A rebuilt file can differ byte-wise from the recorded one (training, library
 # versions); fetch.py reports it, and results recorded with the old file stay tied to its sha256.

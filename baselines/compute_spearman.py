@@ -1,7 +1,7 @@
 """
 Compute Spearman rank correlation between SWAP-Score and post-finetune accuracy.
 
-This validates h3dnas's zero-shot proxy claim: if SWAP-Score ranks correlate
+This validates swan's zero-shot proxy claim: if SWAP-Score ranks correlate
 with finetuned accuracy, the proxy is valid and SWAP pre-screening is justified.
 
 Method:
@@ -29,19 +29,19 @@ NASKIT_ROOT   = Path(__file__).parent.parent
 POINTNET_REPO = NASKIT_ROOT / "submodules/vision-onnx-models/submodules/pointnet_pointnet2"
 MODELNET_DATA = POINTNET_REPO / "data/modelnet40_normal_resampled"
 
-sys.path.insert(0, str(NASKIT_ROOT / "submodules/h3dnas"))
+sys.path.insert(0, str(NASKIT_ROOT / "submodules/swan"))
 sys.path.insert(0, str(POINTNET_REPO))
 
 import numpy as np
 
-from h3dnas.utils.logger import get_logger
-from h3dnas.parser.onnx_parser import ONNXParser
-from h3dnas.generator.architecture_generator import ArchitectureGenerator
-from h3dnas.modulator.architecture_modulator import ArchitectureModulator
-from h3dnas.evaluator.zero_shot_evaluator import ZeroShotEvaluator
-from h3dnas.evaluator.hardware_evaluator import HardwareEvaluator
-from h3dnas.core.types import SearchSpace, ONNXModel
-from h3dnas.datapipe.evaluators import eval_accuracy
+from swan.utils.logger import get_logger
+from swan.parser.onnx_parser import ONNXParser
+from swan.generator.architecture_generator import ArchitectureGenerator
+from swan.modulator.architecture_modulator import ArchitectureModulator
+from swan.evaluator.zero_shot_evaluator import ZeroShotEvaluator
+from swan.evaluator.hardware_evaluator import HardwareEvaluator
+from swan.core.types import SearchSpace, ONNXModel
+from swan.datapipe.evaluators import eval_accuracy
 
 logger = get_logger(__name__)
 

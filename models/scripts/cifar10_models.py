@@ -6,7 +6,7 @@ torchvision's resnet18; inputs normalised with mean (0.4914, 0.4822, 0.4465) and
 (0.2023, 0.1994, 0.2010) as in its config.json (the same as chenyaofo's); model card
 94.98% test accuracy (best epoch; last epoch 94.92%).
 
-Used to (1) export the ONNX base models h3dnas compresses and (2) give the
+Used to (1) export the ONNX base models swan compresses and (2) give the
 source-code baselines (Torch-Pruning / DepGraph) the identical PyTorch model.
 
     python models/scripts/cifar_models.py   # downloads weights, verifies, exports
@@ -24,9 +24,9 @@ import torch.nn as nn
 SCRIPTS = Path(__file__).resolve().parent             # models/scripts
 MODELS = SCRIPTS.parent                               # models
 ROOT = MODELS.parent
-H3DNAS = ROOT / "submodules" / "h3dnas"    
+SWAN = ROOT / "submodules" / "swan"    
 DATA = ROOT / "data/cifar10"       # set by --data
-sys.path.insert(0, str(H3DNAS))
+sys.path.insert(0, str(SWAN))
 
 WEIGHTS = {
     "resnet56": "https://github.com/chenyaofo/pytorch-cifar-models/releases/download/resnet/cifar10_resnet56-187c023a.pt",
@@ -163,7 +163,7 @@ if __name__ == "__main__":
         if a.out and a.model:
             out = a.out
         else:
-            from h3dnas.workspace import load as load_workspace
+            from swan.workspace import load as load_workspace
             out = load_workspace().onnx(names[arch])
         export(load(arch, here / "weights"), out, IO_NAMES.get(arch, ("x", "y", "n")))
         print(f"exported {arch} -> {out}")

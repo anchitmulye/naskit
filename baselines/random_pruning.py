@@ -2,7 +2,7 @@
 Baseline 1 — Random Channel Pruning.
 
 Randomly selects which channels to prune with no importance scoring.
-This is the weakest possible structured pruning baseline — if h3dnas
+This is the weakest possible structured pruning baseline — if swan
 cannot beat random channel selection, the NAS search adds no value.
 
 Why include this:
@@ -20,15 +20,15 @@ import argparse, sys, time
 from pathlib import Path
 
 NASKIT_ROOT   = Path(__file__).parent.parent
-H3DNAS_ROOT   = NASKIT_ROOT / "submodules/h3dnas"
+SWAN_ROOT   = NASKIT_ROOT / "submodules/swan"
 POINTNET_REPO = NASKIT_ROOT / "submodules/vision-onnx-models/submodules/pointnet_pointnet2"
 MODELNET_DATA = POINTNET_REPO / "data/modelnet40_normal_resampled"
 
-sys.path.insert(0, str(H3DNAS_ROOT))
+sys.path.insert(0, str(SWAN_ROOT))
 sys.path.insert(0, str(POINTNET_REPO))
 
 import numpy as np
-from h3dnas.utils.logger import get_logger
+from swan.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -43,14 +43,14 @@ def random_prune_onnx(base_onnx: Path, prune_ratio: float, seed: int = 42):
       - Random:     shuffles channel indices randomly, prunes first N%
       This is the absolute lower bound — no signal, pure chance.
 
-    Implementation: monkey-patches h3dnas's _l1_importance_idx with a random
+    Implementation: monkey-patches swan's _l1_importance_idx with a random
     version so the graph pruner handles all structural propagation correctly
     (BN, residuals, coupled groups) while using random channel selection.
     """
-    import h3dnas.modulator.pruner_ops as _pruner_ops
-    from h3dnas.parser.onnx_parser import ONNXParser
-    from h3dnas.modulator.architecture_modulator import ArchitectureModulator
-    from h3dnas.core.types import SearchSpace
+    import swan.modulator.pruner_ops as _pruner_ops
+    from swan.parser.onnx_parser import ONNXParser
+    from swan.modulator.architecture_modulator import ArchitectureModulator
+    from swan.core.types import SearchSpace
 
     rng = np.random.default_rng(seed)
     logger.info(f"Random pruning: {base_onnx.name}  ratio={prune_ratio}  seed={seed}")

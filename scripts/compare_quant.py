@@ -1,4 +1,4 @@
-"""h3dnas models vs the INT8-quantized base model (and h3dnas + INT8), on one data split.
+"""swan models vs the INT8-quantized base model (and swan + INT8), on one data split.
 
     python -m scripts.compare_quant cifar_resnet56 --seed 105 \
         --ours runs/.../models/cifar_resnet56_gs_70pct_ft.onnx runs/.../models/cifar_resnet56_gs_50pct_ft.onnx
@@ -10,8 +10,8 @@ quantization (QDQ, signed 8-bit activations and per-channel weights, MinMax cali
 images without augmentation, so neither validation nor test data is read for it.
 
 Columns: parameters (an INT8 model: those of its source) and MACs (an INT8 model has the same
-MACs, in 8-bit), file size, CPU latency (batch 1, interleaved, h3dnas.core.latency, the `latency` runtime of
-h3dnas.yaml), validation and test top-1. The split is the model's data module at --seed: pass the
+MACs, in 8-bit), file size, CPU latency (batch 1, interleaved, swan.core.latency, the `latency` runtime of
+swan.yaml), validation and test top-1. The split is the model's data module at --seed: pass the
 seed of the run the --ours models come from, so the test images are the run's test images.
 The test split is read once, after everything else.
 INT8 latency depends on the CPU: without int8 dot-product instructions (VNNI; e.g. AMD Zen 2) a
@@ -32,9 +32,9 @@ from pathlib import Path
 from typing import Dict, List
 
 ROOT = Path(__file__).resolve().parents[1]
-H3DNAS = ROOT / "submodules" / "h3dnas"
-H3DNAS_MODELS = ROOT / "models" / "h3dnas"
-sys.path.insert(0, str(H3DNAS))
+SWAN = ROOT / "submodules" / "swan"
+SWAN_MODELS = ROOT / "models" / "swan"
+sys.path.insert(0, str(SWAN))
 
 from experiments.registry import get, paths
 from experiments.pipeline import parse as _parse, write_json as _write
@@ -178,10 +178,10 @@ def quantize(src: Path, dst: Path, calib: List[Dict], method: str) -> Path:
 
 def run(name: str, ours: List[Path], seed: int, calib_samples: int, method: str,
         int8_ours: bool, threads: int) -> Dict:
-    from h3dnas.core.inputs import resolve_input_spec
-    from h3dnas.core.latency import measure
-    from h3dnas.core.metrics import per_sample_inputs
-    from h3dnas.datapipe import eval_accuracy, feeds_from_loader
+    from swan.core.inputs import resolve_input_spec
+    from swan.core.latency import measure
+    from swan.core.metrics import per_sample_inputs
+    from swan.datapipe import eval_accuracy, feeds_from_loader
 
     spec = get(name)
     base = _parse(spec.onnx)
@@ -236,7 +236,7 @@ def table(rec: Dict) -> str:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("model")
-    ap.add_argument("--ours", type=Path, nargs="+", required=True, help="h3dnas ONNX files of this model")
+    ap.add_argument("--ours", type=Path, nargs="+", required=True, help="swan ONNX files of this model")
     ap.add_argument("--seed", type=int, required=True, help="seed of the run the --ours models come from")
     ap.add_argument("--calib-samples", type=int, default=1024)
     ap.add_argument("--calibrate", choices=["minmax", "entropy", "percentile"], default="minmax")

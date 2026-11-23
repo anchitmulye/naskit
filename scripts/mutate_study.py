@@ -27,9 +27,9 @@ from pathlib import Path
 from typing import Dict, List
 
 ROOT = Path(__file__).resolve().parents[1]
-H3DNAS = ROOT / "submodules" / "h3dnas"
-H3DNAS_MODELS = ROOT / "models" / "h3dnas"
-sys.path.insert(0, str(H3DNAS))
+SWAN = ROOT / "submodules" / "swan"
+SWAN_MODELS = ROOT / "models" / "swan"
+sys.path.insert(0, str(SWAN))
 
 from experiments.registry import get, paths
 from experiments.pipeline import parse as _parse
@@ -56,11 +56,11 @@ OFF = {k: False for k in ("activation_search", "pooling_search", "aggregation_se
 def run(name: str, seed: int, n_variants: int, calib_samples: int, threads: int,
         ft_epochs: int, ft_lr: float, device: str,
         families: list | None) -> Dict:
-    from h3dnas.core.types import SearchSpace
-    from h3dnas.generator.graph_mutator import GraphMutator
-    from h3dnas.modulator.bn_recalib import recalibrate_bn
-    from h3dnas.datapipe import eval_accuracy, feeds_from_loader
-    from h3dnas.finetune import finetune
+    from swan.core.types import SearchSpace
+    from swan.generator.graph_mutator import GraphMutator
+    from swan.modulator.bn_recalib import recalibrate_bn
+    from swan.datapipe import eval_accuracy, feeds_from_loader
+    from swan.finetune import finetune
 
     spec = get(name)
     base = _parse(spec.onnx)
@@ -152,7 +152,7 @@ def run(name: str, seed: int, n_variants: int, calib_samples: int, threads: int,
 
 def _parse_proto(g):
     """Parse an in-memory ONNXModel/ModelProto for its parameter and MAC counts."""
-    from h3dnas.parser import ONNXParser
+    from swan.parser import ONNXParser
     p = ONNXParser()
     return p.parse(g) if hasattr(p, "parse") else g
 

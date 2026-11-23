@@ -1,12 +1,12 @@
 """Compare the base models of models/sources.yaml (each at its `path`) with
-their h3dnas versions in models/h3dnas: parameters, MACs, file size and latency on this machine.
+their swan versions in models/swan: parameters, MACs, file size and latency on this machine.
 
 No dataset and no accuracy: parameters, MACs and size are properties of the
 file, and latency is timed on a synthesized input, so the script runs on any
-machine with the h3dnas library - run it on the target device (e.g. the
+machine with the swan library - run it on the target device (e.g. the
 Jetson) for that device's latency.
 
-    python -m scripts.compare_models                          # every model with an h3dnas version
+    python -m scripts.compare_models                          # every model with an swan version
     python -m scripts.compare_models cifar_resnet56 pointnet  # only these
     python -m scripts.compare_models --all                    # also base models without a version
     python -m scripts.compare_models --provider tensorrt --precision fp16
@@ -14,16 +14,16 @@ Jetson) for that device's latency.
     python -m scripts.compare_models --no-latency             # counts only (fast)
     python -m scripts.compare_models --providers cpu cuda tensorrt tensorrt:fp16   # all runtimes, one table
 
-The h3dnas versions of base model <name> are models/h3dnas/<name>.onnx,
-models/h3dnas/<name>_<tag>.onnx and models/h3dnas/<name>/<file>.onnx; the
+The swan versions of base model <name> are models/swan/<name>.onnx,
+models/swan/<name>_<tag>.onnx and models/swan/<name>/<file>.onnx; the
 longest matching base name wins (pointnet2_s3dis_x.onnx belongs to
 pointnet2_s3dis, not pointnet2). A file that matches no base model is listed
 on its own.
 
 Latency: batch 1, the same input for a base model and its versions, timed
-interleaved after warm-up (h3dnas.core.latency: median and IQR over rounds).
+interleaved after warm-up (swan.core.latency: median and IQR over rounds).
 Threads, rounds and the provider default to `defaults.latency` and
-`defaults.runtime.latency` of h3dnas.yaml. MACs are per sample; a `*` marks a
+`defaults.runtime.latency` of swan.yaml. MACs are per sample; a `*` marks a
 count with nodes whose shape could not be resolved.
 
 Output: the table on screen and results/compare/<host>_<provider>[_fp16].md
@@ -42,19 +42,19 @@ from typing import Dict, List, Optional
 
 
 ROOT = Path(__file__).resolve().parents[1]
-H3DNAS = ROOT / "submodules" / "h3dnas"
-H3DNAS_MODELS = ROOT / "models" / "h3dnas"
-sys.path.insert(0, str(H3DNAS))
+SWAN = ROOT / "submodules" / "swan"
+SWAN_MODELS = ROOT / "models" / "swan"
+sys.path.insert(0, str(SWAN))
 
 
 # -- which files to compare -------------------------------------------------------
 
-def versions(names, h3dnas_dir: Path) -> Dict[Optional[str], List[Path]]:
-    """{base model name: [h3dnas files]}; key None holds files with no base model."""
+def versions(names, swan_dir: Path) -> Dict[Optional[str], List[Path]]:
+    """{base model name: [swan files]}; key None holds files with no base model."""
     names = set(names)
     out: Dict[Optional[str], List[Path]] = {}
-    for p in sorted(h3dnas_dir.rglob("*.onnx")) if h3dnas_dir.exists() else []:
-        rel = p.relative_to(h3dnas_dir)
+    for p in sorted(swan_dir.rglob("*.onnx")) if swan_dir.exists() else []:
+        rel = p.relative_to(swan_dir)
         if len(rel.parts) > 1 and rel.parts[0] in names:
             base: Optional[str] = rel.parts[0]
         else:
@@ -67,7 +67,7 @@ def versions(names, h3dnas_dir: Path) -> Dict[Optional[str], List[Path]]:
 # -- measurements -----------------------------------------------------------------
 
 def _counts(proto, shapes, feed) -> Dict:
-    from h3dnas.core.metrics import count
+    from swan.core.metrics import count
     c = count(proto, input_shapes=shapes, feed=feed)
     return {"params": c.params, "macs": c.macs, "macs_complete": c.complete}
 
@@ -75,9 +75,9 @@ def _counts(proto, shapes, feed) -> Dict:
 def measure_group(files: Dict[str, Path], latency: Optional[Dict], counts: bool = True) -> Dict[str, Dict]:
     """Counts (and latency) of one base model and its versions, on one input."""
     import onnx
-    from h3dnas.core.inputs import resolve_input_spec
-    from h3dnas.core.latency import measure
-    from h3dnas.core.metrics import per_sample_inputs
+    from swan.core.inputs import resolve_input_spec
+    from swan.core.latency import measure
+    from swan.core.metrics import per_sample_inputs
 
     protos, rows = {}, {}
     for label, path in files.items():
@@ -134,7 +134,7 @@ def markdown(groups: List[Dict], device: Dict, settings: Optional[Dict]) -> str:
             "params vs base", "MACs vs base", "speedup"]
     timing = ("batch 1, " + ", ".join(f"{k} {v}" for k, v in settings.items())
               if settings else "not measured (--no-latency)")
-    lines = ["# ONNX models: base vs h3dnas", "",
+    lines = ["# ONNX models: base vs swan", "",
              "Device: " + ", ".join(f"{k} {v}" for k, v in device.items()), "",
              "Latency: " + timing, "",
              "| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
@@ -162,7 +162,7 @@ def markdown_multi(groups: List[Dict], providers: List[str], devices: Dict[str, 
     """One table: counts once, latency and speed-up per provider."""
     head = (["model", "version", "params", "MACs", "size MB", "params vs base", "MACs vs base"]
             + [h for p in providers for h in (f"{p} ms (IQR)", f"{p} speedup")])
-    lines = ["# ONNX models: base vs h3dnas, latency per runtime", "",
+    lines = ["# ONNX models: base vs swan, latency per runtime", "",
              f"Host: {platform.node()}. Latency: batch 1, " + ", ".join(f"{k} {v}" for k, v in lat.items()), ""]
     for p in providers:
         d = devices.get(p) or {}
@@ -194,8 +194,8 @@ def markdown_multi(groups: List[Dict], providers: List[str], devices: Dict[str, 
 def run_providers(plan, providers: List[str], base_rt: Dict, lat: Dict) -> tuple:
     """Counts once per file, then latency of every group on each provider ('name[:precision]')."""
     import onnxruntime as ort
-    from h3dnas.core import runtime
-    from h3dnas.core.latency import device_info
+    from swan.core import runtime
+    from swan.core.latency import device_info
     EP = {"cpu": "CPUExecutionProvider", "cuda": "CUDAExecutionProvider",
           "tensorrt": "TensorrtExecutionProvider", "coreml": "CoreMLExecutionProvider"}
     have = set(ort.get_available_providers())
@@ -242,8 +242,8 @@ def main(argv=None) -> None:
     ap = argparse.ArgumentParser(prog="python -m scripts.compare_models",
                                  description=__doc__.splitlines()[0])
     ap.add_argument("names", nargs="*", help="base model names (default: every one with a version)")
-    ap.add_argument("--all", action="store_true", help="also base models without an h3dnas version")
-    ap.add_argument("--h3dnas", type=Path, default=H3DNAS_MODELS)
+    ap.add_argument("--all", action="store_true", help="also base models without an swan version")
+    ap.add_argument("--swan", type=Path, default=SWAN_MODELS)
     ap.add_argument("--no-latency", action="store_true")
     ap.add_argument("--provider", choices=["cpu", "cuda", "tensorrt", "coreml"])
     ap.add_argument("--providers", nargs="+", metavar="PROVIDER[:PRECISION]",
@@ -261,8 +261,8 @@ def main(argv=None) -> None:
     a = ap.parse_args(argv)
 
     from experiments.registry import paths
-    from h3dnas.core import runtime
-    from h3dnas.core.latency import device_info
+    from swan.core import runtime
+    from swan.core.latency import device_info
     ws = paths()
     s = ws.settings()
     rt = {**s["runtime"]["latency"], **{k: v for k, v in {
@@ -275,20 +275,20 @@ def main(argv=None) -> None:
         lat["threads"] = rt["threads"]
 
     files = {n: f for n, f in ws.model_files.items() if f.exists()}   # models/sources.yaml paths
-    found = versions(files, a.h3dnas)
+    found = versions(files, a.swan)
     bases = sorted(files)
     chosen = a.names or (bases if a.all else sorted(n for n in found if n))
     unknown = [n for n in chosen if n not in files]
     if unknown:
         raise SystemExit(f"not in {ws.sources} (or file missing): {unknown}")
     plan = [(n, {"base": files[n],
-                 **{str(p.relative_to(a.h3dnas).with_suffix("")).replace("\\", "/"): p
+                 **{str(p.relative_to(a.swan).with_suffix("")).replace("\\", "/"): p
                     for p in found.get(n, [])}}) for n in chosen]
     if not a.names:
-        plan += [(p.stem, {str(p.relative_to(a.h3dnas).with_suffix("")).replace("\\", "/"): p})
+        plan += [(p.stem, {str(p.relative_to(a.swan).with_suffix("")).replace("\\", "/"): p})
                  for p in found.get(None, [])]
     if not plan:
-        raise SystemExit(f"nothing to compare: no ONNX files in {a.h3dnas} "
+        raise SystemExit(f"nothing to compare: no ONNX files in {a.swan} "
                          f"(name them <base name>[_<tag>].onnx or put them in <base name>/)")
 
     if a.providers:

@@ -24,11 +24,11 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 NASKIT_ROOT   = Path(__file__).parent.parent
-H3DNAS_ROOT   = NASKIT_ROOT / "submodules/h3dnas"
+SWAN_ROOT   = NASKIT_ROOT / "submodules/swan"
 POINTNET_REPO = NASKIT_ROOT / "submodules/vision-onnx-models/submodules/pointnet_pointnet2"
 MODELNET_DATA = POINTNET_REPO / "data/modelnet40_normal_resampled"
 
-sys.path.insert(0, str(H3DNAS_ROOT))
+sys.path.insert(0, str(SWAN_ROOT))
 sys.path.insert(0, str(POINTNET_REPO))
 
 import numpy as np
@@ -36,10 +36,10 @@ import onnx
 from onnx import numpy_helper
 import onnxruntime as ort
 
-from h3dnas.parser.onnx_parser import ONNXParser
-from h3dnas.modulator.topology_analyser import TopologyAnalyser
-from h3dnas.core.types import ONNXModel
-from h3dnas.utils.logger import get_logger
+from swan.parser.onnx_parser import ONNXParser
+from swan.modulator.topology_analyser import TopologyAnalyser
+from swan.core.types import ONNXModel
+from swan.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -195,12 +195,12 @@ def hrank_prune_onnx(
        (with spatial dims preserved)
     3. Compute average feature-map rank per channel per free node
     4. Select top-(1-prune_ratio) channels by HRank score
-    5. Apply same graph surgery as h3dnas (Cin propagation, BN alignment)
+    5. Apply same graph surgery as swan (Cin propagation, BN alignment)
     """
     import argparse as _ap
     from torch.utils.data import DataLoader
     from data_utils.ModelNetDataLoader import ModelNetDataLoader
-    from h3dnas.core.nas_pipeline import run_nas, NASConfig, _eval_fn
+    from swan.core.nas_pipeline import run_nas, NASConfig, _eval_fn
 
     logger.info(f"HRank pruning: {base_onnx.name}  ratio={prune_ratio}  "
                 f"n_samples={n_samples}")
@@ -233,7 +233,7 @@ def hrank_prune_onnx(
             logger.debug(f"  No activations for {node_name} — L1 fallback")
 
     # Inject HRank scores by patching the pruner's importance function
-    import h3dnas.modulator.pruner_ops as pruner_ops
+    import swan.modulator.pruner_ops as pruner_ops
     original_l1 = pruner_ops._l1_importance_idx
 
     def hrank_importance_idx(W: np.ndarray, k: int,

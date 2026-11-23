@@ -1,12 +1,12 @@
-"""Compare the accuracy of the base models of models/sources.yaml with their h3dnas
-versions in models/h3dnas, next to parameters, MACs and file size.
+"""Compare the accuracy of the base models of models/sources.yaml with their swan
+versions in models/swan, next to parameters, MACs and file size.
 
 The counterpart of scripts.compare_models (which has latency and needs no data):
 this one evaluates every model on the validation and test split of the dataset
-h3dnas.yaml gives it, with the pipeline's own data modules and metrics, so the
+swan.yaml gives it, with the pipeline's own data modules and metrics, so the
 numbers are the ones of `python -m examples <name> all`.
 
-    python -m scripts.compare_accuracy --seed 105                  # every model with an h3dnas version
+    python -m scripts.compare_accuracy --seed 105                  # every model with an swan version
     python -m scripts.compare_accuracy pointnet pointmlp --seed 105 # only these
     python -m scripts.compare_accuracy --all                       # also base models without a version
     python -m scripts.compare_accuracy --splits test               # test only (val, test, imagenetv2)
@@ -14,17 +14,17 @@ numbers are the ones of `python -m examples <name> all`.
     python -m scripts.compare_accuracy --providers cpu cuda tensorrt:fp16 # every runtime, one table
     python -m scripts.compare_accuracy --quick                     # a few batches per split (smoke run)
 
-Files are matched to base models as in compare_models: models/h3dnas/<name>.onnx,
+Files are matched to base models as in compare_models: models/swan/<name>.onnx,
 <name>_<tag>.onnx and <name>/<file>.onnx. Files that match no base model are
 skipped (their dataset is unknown), as are base models without a `models:` entry
-in h3dnas.yaml.
+in swan.yaml.
 
 --seed matters. The validation split (and therefore the test split, the rest of
 the official test set) is drawn with the seed. A model chosen on one seed's validation
 split was never trained or selected on that seed's test split; evaluated with another
 seed, part of its test split is the validation data it was selected on. Pass the
-seed of the run that produced the h3dnas models (the run's `results.json` names it);
-the default is `defaults.seed` of h3dnas.yaml. The whole validation split is used
+seed of the run that produced the swan models (the run's `results.json` names it);
+the default is `defaults.seed` of swan.yaml. The whole validation split is used
 (no search/selection halves), so Val here is every validation sample.
 
 Metrics per task: classification top-1 (ImageNet also top-5) and mean class accuracy
@@ -44,12 +44,12 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from compare_models import H3DNAS, _change, _num, versions
+from compare_models import SWAN, _change, _num, versions
 
 ROOT = Path(__file__).resolve().parents[1]
-H3DNAS = ROOT / "submodules" / "h3dnas"
-H3DNAS_MODELS = ROOT / "models" / "h3dnas"
-sys.path.insert(0, str(H3DNAS))
+SWAN = ROOT / "submodules" / "swan"
+SWAN_MODELS = ROOT / "models" / "swan"
+sys.path.insert(0, str(SWAN))
 
 SPLITS = ("val", "test", "imagenetv2")
 LABEL = {"top1": "top-1 %", "top5": "top-5 %", "macc": "mean class acc. %", "miou": "mIoU %",
@@ -67,10 +67,10 @@ def evaluate_group(name: str, files: Dict[str, Path], seed: int, splits, quick: 
     """Counts and metrics of one base model and its versions on the model's data."""
     import onnx
     from experiments import pipeline, registry
-    from h3dnas.core.inputs import resolve_input_spec
-    from h3dnas.core.metrics import count
-    from h3dnas.core.types import ONNXModel
-    from h3dnas.datapipe import evaluate
+    from swan.core.inputs import resolve_input_spec
+    from swan.core.metrics import count
+    from swan.core.types import ONNXModel
+    from swan.datapipe import evaluate
 
     spec = registry.get(name)
     settings = spec.resolved({"search": {"fitness_split": None}})        # all of validation
@@ -132,7 +132,7 @@ def _columns(groups: List[Dict], primary: str, splits) -> List[tuple]:
 
 def markdown(groups: List[Dict], splits, settings: Dict, quick: bool) -> str:
     runtime = ", ".join(f"{k} {v}" for k, v in settings.items())
-    lines = ["# ONNX models: accuracy of base vs h3dnas", "",
+    lines = ["# ONNX models: accuracy of base vs swan", "",
              f"Evaluated with: {runtime}" + (" (quick: a few batches per split)" if quick else ""), "",
              "Data (split seed in brackets; Val = the whole validation split):", ""]
     for g in groups:
@@ -176,7 +176,7 @@ def run_providers(plan, providers: List[str], base_rt: Dict, seed: int, splits, 
     (counts, data) with the metrics of each provider under rows[label]['by_provider'][spec]."""
     import copy
     import onnxruntime as ort
-    from h3dnas.core import runtime
+    from swan.core import runtime
     have = set(ort.get_available_providers())
     groups: Dict[str, Dict] = {}
     devices: Dict[str, Dict] = {}
@@ -218,7 +218,7 @@ def run_providers(plan, providers: List[str], base_rt: Dict, seed: int, splits, 
 
 def markdown_multi(groups: List[Dict], splits, providers: List[str], devices: Dict, seed: int,
                    quick: bool) -> str:
-    lines = ["# ONNX models: accuracy of base vs h3dnas, per runtime", "",
+    lines = ["# ONNX models: accuracy of base vs swan, per runtime", "",
              f"Host {platform.node()}, split seed {seed}" + (" (quick: a few batches per split)" if quick else ""), ""]
     for p in providers:
         d = devices.get(p) or {}
@@ -271,10 +271,10 @@ def main(argv=None) -> None:
     ap = argparse.ArgumentParser(prog="python -m scripts.compare_accuracy",
                                  description=__doc__.splitlines()[0])
     ap.add_argument("names", nargs="*", help="base model names (default: every one with a version)")
-    ap.add_argument("--all", action="store_true", help="also base models without an h3dnas version")
-    ap.add_argument("--h3dnas", type=Path, default=H3DNAS_MODELS)
-    ap.add_argument("--seed", type=int, help="data split seed (default: defaults.seed of h3dnas.yaml); "
-                                             "use the seed of the run that made the h3dnas models")
+    ap.add_argument("--all", action="store_true", help="also base models without an swan version")
+    ap.add_argument("--swan", type=Path, default=SWAN_MODELS)
+    ap.add_argument("--seed", type=int, help="data split seed (default: defaults.seed of swan.yaml); "
+                                             "use the seed of the run that made the swan models")
     ap.add_argument("--splits", nargs="+", choices=SPLITS, default=["val", "test"])
     ap.add_argument("--quick", action="store_true", help="a few batches per split (smoke run)")
     ap.add_argument("--provider", choices=["cpu", "cuda", "tensorrt", "coreml"])
@@ -287,7 +287,7 @@ def main(argv=None) -> None:
     a = ap.parse_args(argv)
 
     from experiments.registry import paths
-    from h3dnas.core import runtime
+    from swan.core import runtime
     ws = paths()
     s = ws.settings()
     seed = s["seed"] if a.seed is None else a.seed
@@ -296,7 +296,7 @@ def main(argv=None) -> None:
         if v is not None}}
 
     files = {n: f for n, f in ws.model_files.items() if f.exists()}
-    found = versions(files, a.h3dnas)
+    found = versions(files, a.swan)
     chosen = a.names or (sorted(files) if a.all else sorted(n for n in found if n))
     unknown = [n for n in chosen if n not in files]
     if unknown:
@@ -309,10 +309,10 @@ def main(argv=None) -> None:
     if stray and not a.names:
         print(f"skipped, matching no base model: {', '.join(stray)}")
     plan = [(n, {"base": files[n],
-                 **{str(p.relative_to(a.h3dnas).with_suffix("")).replace("\\", "/"): p
+                 **{str(p.relative_to(a.swan).with_suffix("")).replace("\\", "/"): p
                     for p in found.get(n, [])}}) for n in chosen]
     if not plan:
-        raise SystemExit(f"nothing to compare: no ONNX files in {a.h3dnas} "
+        raise SystemExit(f"nothing to compare: no ONNX files in {a.swan} "
                          f"(name them <base name>[_<tag>].onnx or put them in <base name>/)")
 
     if a.providers:

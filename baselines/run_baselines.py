@@ -1,14 +1,14 @@
 """
 Unified baseline runner — produces paper comparison table.
 
-Runs both baselines at the same prune_ratio as h3dnas and compares:
+Runs both baselines at the same prune_ratio as swan and compares:
   1. Uniform L1 Pruning         (simplest possible baseline)
   2. Screening Methods Pruning  (Wang et al., arXiv:2502.07189, Feb 2025)
-  3. h3dnas-Base two-stage NAS  (ours — from existing finetuned ONNX)
+  3. swan-Base two-stage NAS  (ours — from existing finetuned ONNX)
 
 All methods:
   - Same model (PointNet on ModelNet40)
-  - Same prune ratio target (~32% param reduction matching h3dnas stage1)
+  - Same prune ratio target (~32% param reduction matching swan stage1)
   - Same fine-tuning setup (AdamW, lr=3e-4, 50 epochs, warmup+cosine LR)
   - Same ORT evaluation (2468 test samples, intra_op_num_threads=1)
 
@@ -23,15 +23,15 @@ import argparse, json, sys, time
 from pathlib import Path
 
 NASKIT_ROOT   = Path(__file__).parent.parent          # naskit/
-H3DNAS_ROOT   = NASKIT_ROOT / "submodules/h3dnas"
+SWAN_ROOT   = NASKIT_ROOT / "submodules/swan"
 POINTNET_REPO = NASKIT_ROOT / "submodules/vision-onnx-models/submodules/pointnet_pointnet2"
 MODELNET_DATA = POINTNET_REPO / "data/modelnet40_normal_resampled"
 
-sys.path.insert(0, str(H3DNAS_ROOT))
+sys.path.insert(0, str(SWAN_ROOT))
 sys.path.insert(0, str(POINTNET_REPO))
 sys.path.insert(0, str(Path(__file__).parent))
 
-from h3dnas.utils.logger import get_logger
+from swan.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -45,12 +45,12 @@ BASE_ONNX = NASKIT_ROOT / "models/pointnet/pointnet_cls_c40_n1024.onnx"
 # ModelNet40 dataset (normal-resampled format)
 MODELNET_DATA = POINTNET_REPO / "data/modelnet40_normal_resampled"
 
-# h3dnas finetuned ONNX (from your NAS + finetune run)
-# Set to None to skip h3dnas comparison and run only baselines
-# Finetuned h3dnas model — 89.75% on ModelNet40 c40 (2468 test samples)
+# swan finetuned ONNX (from your NAS + finetune run)
+# Set to None to skip swan comparison and run only baselines
+# Finetuned swan model — 89.75% on ModelNet40 c40 (2468 test samples)
 # From CDG-targeted run: prune=0.5, width=0.75 → 65.1% param reduction, −0.57pp
-H3DNAS_ONNX = NASKIT_ROOT / "artifacts/pointnet_c40/pointnet_cdg_target/models/best_stage1_finetuned.onnx"
-# H3DNAS_ONNX = None   # ← uncomment to run baselines only
+SWAN_ONNX = NASKIT_ROOT / "artifacts/pointnet_c40/pointnet_cdg_target/models/best_stage1_finetuned.onnx"
+# SWAN_ONNX = None   # ← uncomment to run baselines only
 
 NUM_CLASSES  = 40
 EVAL_SAMPLES = 2468   # full ModelNet40 test set
@@ -58,21 +58,21 @@ OUT_DIR      = Path(__file__).parent / "outputs"
 
 
 # ---------------------------------------------------------------------------
-# h3dnas result reader (from existing finetuned model)
+# swan result reader (from existing finetuned model)
 # ---------------------------------------------------------------------------
 
-def get_h3dnas_result(onnx_path: Path) -> dict:
-    """Evaluate the already-finetuned h3dnas model on full test set."""
+def get_swan_result(onnx_path: Path) -> dict:
+    """Evaluate the already-finetuned swan model on full test set."""
     import argparse as _ap
     import numpy as np
     import onnx as _onnx
     from torch.utils.data import DataLoader
     from data_utils.ModelNetDataLoader import ModelNetDataLoader
-    from h3dnas.parser.onnx_parser import ONNXParser
-    from h3dnas.core.nas_pipeline import _eval_fn
-    from h3dnas.core.types import ONNXModel
+    from swan.parser.onnx_parser import ONNXParser
+    from swan.core.nas_pipeline import _eval_fn
+    from swan.core.types import ONNXModel
 
-    logger.info(f"  Evaluating h3dnas model: {onnx_path.name}")
+    logger.info(f"  Evaluating swan model: {onnx_path.name}")
     parser = ONNXParser(); parser.initialize()
     model  = parser.execute(str(onnx_path))
 
@@ -92,7 +92,7 @@ def get_h3dnas_result(onnx_path: Path) -> dict:
     flops_red = (1 - model.flops / base.flops) * 100 if base.flops else 0
 
     return {
-        "method":    "h3dnas two-stage NAS (ours)",
+        "method":    "swan two-stage NAS (ours)",
         "reference": "this work",
         "base_acc":  base_acc * 100,
         "zero_shot": None,   # not applicable for finetuned
@@ -145,30 +145,30 @@ def print_table(results: list, base_acc: float) -> None:
 def main(prune_ratio: float, epochs: int, lr: float, batch_size: int,
          n_samples: int, skip_finetune: bool, seed: int = 42) -> list:
     """
-    Run all 3 baselines + h3dnas and produce the paper comparison table.
+    Run all 3 baselines + swan and produce the paper comparison table.
 
     Baselines (all source-free, ONNX-native, same compression target):
       1. Random Pruning         — lower bound, random channel selection
       2. Uniform L1 Pruning     — standard baseline, L1 weight importance
       3. Activation Rank        — inspired by HRank (Lin et al., CVPR 2020)
-      4. h3dnas (ours)          — NAS-guided, SWAP-ranked, two-stage search
+      4. swan (ours)          — NAS-guided, SWAP-ranked, two-stage search
     """
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     all_results = []
 
-    # ── 0. h3dnas result ─────────────────────────────────────────────────────────
-    if H3DNAS_ONNX and Path(H3DNAS_ONNX).exists():
+    # ── 0. swan result ─────────────────────────────────────────────────────────
+    if SWAN_ONNX and Path(SWAN_ONNX).exists():
         logger.info("\n" + "=" * 70)
-        logger.info("[0] h3dnas Two-Stage NAS (ours)")
+        logger.info("[0] swan Two-Stage NAS (ours)")
         logger.info("=" * 70)
-        h3dnas_result = get_h3dnas_result(Path(H3DNAS_ONNX))
-        base_acc = h3dnas_result["base_acc"]
-        logger.info(f"  h3dnas: {h3dnas_result['finetuned']:.2f}%  "
-                    f"Δ={h3dnas_result['finetuned']-base_acc:+.2f}pp  "
-                    f"param_red={h3dnas_result['param_red']:.1f}%")
-        all_results.append(h3dnas_result)
+        swan_result = get_swan_result(Path(SWAN_ONNX))
+        base_acc = swan_result["base_acc"]
+        logger.info(f"  swan: {swan_result['finetuned']:.2f}%  "
+                    f"Δ={swan_result['finetuned']-base_acc:+.2f}pp  "
+                    f"param_red={swan_result['param_red']:.1f}%")
+        all_results.append(swan_result)
     else:
-        logger.warning(f"  h3dnas ONNX not found: {H3DNAS_ONNX} — skipping")
+        logger.warning(f"  swan ONNX not found: {SWAN_ONNX} — skipping")
         base_acc = 90.32  # PointNet ModelNet40 verified baseline
 
     # ── 1. Random Pruning ─────────────────────────────────────────────────────
@@ -241,10 +241,10 @@ def main(prune_ratio: float, epochs: int, lr: float, batch_size: int,
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(
-        description="Baseline comparison for h3dnas paper — PointNet ModelNet40"
+        description="Baseline comparison for swan paper — PointNet ModelNet40"
     )
     p.add_argument("--prune-ratio",   type=float, default=0.32,
-                   help="Compression target matching h3dnas stage1 (default: 32%)")
+                   help="Compression target matching swan stage1 (default: 32%)")
     p.add_argument("--epochs",        type=int,   default=50,
                    help="Finetune epochs per baseline (default: 50)")
     p.add_argument("--lr",            type=float, default=3e-4)

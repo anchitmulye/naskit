@@ -1,8 +1,8 @@
 """
-h3dnas CLI - dataset-agnostic subcommands.
+swan CLI - dataset-agnostic subcommands.
 
 Registered as a console script via pyproject.toml:
-    h3dnas = "h3dnas.cli:main"
+    swan = "swan.cli:main"
 
 Subcommands
 -----------
@@ -16,9 +16,9 @@ NAS runs are launched directly from example entry points:
     python examples/pointnet/run_nas.py
 
 Usage (after pip/poetry install):
-    h3dnas analyse --base model.onnx --nas nas_best.onnx
-    h3dnas prove   --model examples/pointnet/pointnet_base.onnx
-    h3dnas info
+    swan analyse --base model.onnx --nas nas_best.onnx
+    swan prove   --model examples/pointnet/pointnet_base.onnx
+    swan info
 """
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ NAS_ROOT = _HERE.parent
 if str(NAS_ROOT) not in sys.path:
     sys.path.insert(0, str(NAS_ROOT))
 
-from h3dnas.utils.logger import get_logger
+from swan.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -49,10 +49,10 @@ def _cmd_analyse(args) -> None:
         python examples/pointnet/analyse.py
 
     These scripts pass the loader and sample_input directly to run_analysis()
-    in h3dnas.analysis.model_analyser, keeping the library dataset-agnostic.
+    in swan.analysis.model_analyser, keeping the library dataset-agnostic.
     """
     print(
-        "\n  h3dnas analyse is not a standalone command - dataset loading lives\n"
+        "\n  swan analyse is not a standalone command - dataset loading lives\n"
         "  in each example. Run the example's analyse.py instead:\n\n"
         "      python examples/fashion_mnist/analyse.py\n"
         "      python examples/pointnet/analyse.py\n"
@@ -64,8 +64,8 @@ def _cmd_analyse(args) -> None:
 
 def _cmd_prove(args) -> None:
     """Execute Theorem 1 CDG proof on an ONNX model."""
-    from h3dnas.parser.onnx_parser import ONNXParser
-    from h3dnas.parser.channel_dependency_graph import validate_theorem1
+    from swan.parser.onnx_parser import ONNXParser
+    from swan.parser.channel_dependency_graph import validate_theorem1
 
     parser = ONNXParser()
     parser.initialize()
@@ -95,8 +95,8 @@ def _cmd_prove(args) -> None:
 
 def _cmd_info(_args) -> None:
     """Print version and environment info."""
-    import h3dnas
-    print(f"h3dnas version : {h3dnas.__version__}")
+    import swan
+    print(f"swan version : {swan.__version__}")
     print(f"Python         : {sys.version.split()[0]}")
     for pkg, attr in [
         ("onnxruntime", "__version__"),
@@ -118,15 +118,15 @@ def _cmd_info(_args) -> None:
             print(f"  python {ep.relative_to(NAS_ROOT)}")
 
     print("\nUsage:")
-    print("  h3dnas analyse --base model.onnx --nas nas_best.onnx")
-    print("  h3dnas prove   --model examples/pointnet/pointnet_base.onnx")
+    print("  swan analyse --base model.onnx --nas nas_best.onnx")
+    print("  swan prove   --model examples/pointnet/pointnet_base.onnx")
 
 
 # Main - argument parsing and dispatch
 
 def main() -> None:
     p = argparse.ArgumentParser(
-        prog="h3dnas",
+        prog="swan",
         description="Hardware-Aware ONNX-Native Neural Architecture Search",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
@@ -135,9 +135,9 @@ def main() -> None:
             "  python examples/resnet/run_nas.py\n"
             "  python examples/pointnet/run_nas.py\n\n"
             "Analysis / proof:\n"
-            "  h3dnas analyse --base model.onnx --nas best.onnx\n"
-            "  h3dnas prove   --model examples/pointnet/pointnet_base.onnx\n"
-            "  h3dnas info\n"
+            "  swan analyse --base model.onnx --nas best.onnx\n"
+            "  swan prove   --model examples/pointnet/pointnet_base.onnx\n"
+            "  swan info\n"
         ),
     )
     sub = p.add_subparsers(dest="command", metavar="COMMAND")

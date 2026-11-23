@@ -1,4 +1,4 @@
-# h3dnas: the one configuration file.
+# swan: the one configuration file.
 
 root: .
 
@@ -32,13 +32,13 @@ defaults:
     population: 32
     generations: 30
     channel_multiple: 1           # kept channels rounded up to a multiple (a device can set 8)
-  finetune: {candidates: 4, device: cuda, 
+  finetune: {candidates: 4, device: cpu, 
             distill: true}        # candidates fine-tuned per run; torch device cpu | cuda | mps
   latency: {threads: 4, rounds: 5, runs_per_round: 20, warmup: 10}
   runtime:                                   # ONNX Runtime per stage: cpu | cuda | tensorrt | coreml
-    search:   {provider: cuda, device_id: 0, threads: null, precision: fp32}
-    evaluate: {provider: cuda, device_id: 0, threads: null, precision: fp32}
-    latency:  {provider: cuda, device_id: 0, threads: null, precision: fp32}
+    search:   {provider: cpu, device_id: 0, threads: null, precision: fp32}
+    evaluate: {provider: cpu, device_id: 0, threads: null, precision: fp32}
+    latency:  {provider: cpu, device_id: 0, threads: null, precision: fp32}
 
 devices:
   edge_small: {max_macs: 2_000_000_000, max_parameters: 20_000_000, max_model_size_mb: 80}

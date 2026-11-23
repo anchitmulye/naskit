@@ -24,8 +24,8 @@ from pathlib import Path
 from typing import Dict, List
 
 ROOT = Path(__file__).resolve().parents[1]
-H3DNAS = ROOT / "submodules" / "h3dnas"
-sys.path.insert(0, str(H3DNAS))
+SWAN = ROOT / "submodules" / "swan"
+sys.path.insert(0, str(SWAN))
 
 from experiments.registry import paths
 

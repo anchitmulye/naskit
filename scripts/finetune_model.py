@@ -11,7 +11,7 @@ directly instead: same data module, same recipe and same protocol as the pipelin
 but its own output folder, so the run's records stay untouched.
 
 Protocol, as in experiments.pipeline.finetune:
-  - the model's recipe from h3dnas.yaml (--epochs / --lr / --device override it)
+  - the model's recipe from swan.yaml (--epochs / --lr / --device override it)
   - distillation from the *base* ONNX when the recipe or settings ask for it
   - validation for every reading during training; the test split is read once at
     the end, for the fine-tuned model and the base
@@ -29,8 +29,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-H3DNAS = ROOT / "submodules" / "h3dnas"
-sys.path.insert(0, str(H3DNAS))
+SWAN = ROOT / "submodules" / "swan"
+sys.path.insert(0, str(SWAN))
 
 from experiments.registry import get, paths
 from experiments.pipeline import apply_runtime, datamodule_for, parse, scores, write_json
@@ -39,11 +39,11 @@ from experiments.pipeline import apply_runtime, datamodule_for, parse, scores, w
 def run(name: str, candidate: Path, seed: int | None = None, epochs: int | None = None,
         lr: float | None = None, device: str | None = None, distill: bool | None = None,
         provider: str | None = None, force: bool = False) -> dict:
-    from h3dnas.finetune import finetune as ft
+    from swan.finetune import finetune as ft
 
     spec = get(name)
     if not spec.recipe:
-        raise SystemExit(f"{name}: no fine-tuning recipe in h3dnas.yaml")
+        raise SystemExit(f"{name}: no fine-tuning recipe in swan.yaml")
     if not candidate.exists():
         raise SystemExit(f"{candidate} not found")
     over = {} if seed is None else {"seed": seed}
@@ -102,7 +102,7 @@ def run(name: str, candidate: Path, seed: int | None = None, epochs: int | None 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("model", help="model name in h3dnas.yaml (gives the data module and recipe)")
+    ap.add_argument("model", help="model name in swan.yaml (gives the data module and recipe)")
     ap.add_argument("candidate", type=Path, help="the candidate's ONNX file (any saved model)")
     ap.add_argument("--seed", type=int, help="default: the model's resolved seed")
     ap.add_argument("--epochs", type=int, help="override the recipe's epochs")

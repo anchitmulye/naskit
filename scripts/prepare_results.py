@@ -198,7 +198,7 @@ def main():
     rows = collect_rows()
     out  = Path(args.out)
 
-    content = f"""# h3dnas — Experimental Results
+    content = f"""# swan — Experimental Results
 
 Auto-generated from `results/*/analysis.json`. Run `python generate_results_readme.py` to update.
 

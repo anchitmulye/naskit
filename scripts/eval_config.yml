@@ -19,9 +19,9 @@ models:
 
   fashion_mnist:
     base_onnx:   models/fashion_mnist/fashion_mnist.onnx
-    nas_onnx:    models/fashion_mnist/fashion_mnist_h3dnas.onnx
+    nas_onnx:    models/fashion_mnist/fashion_mnist_swan.onnx
     dataloader:
-      module:    submodules/h3dnas/examples/fashion_mnist/datamodule.py
+      module:    submodules/swan/examples/fashion_mnist/datamodule.py
       class:     FashionMNISTDataModule
       args:
         seed: 105
@@ -41,9 +41,9 @@ models:
 
   pointnet:
     base_onnx:   models/pointnet/pointnet_cls_c40_n1024.onnx
-    nas_onnx:    models/pointnet/pointnet_cls_c40_n1024_h3dnas.onnx
+    nas_onnx:    models/pointnet/pointnet_cls_c40_n1024_swan.onnx
     dataloader:
-      module:    submodules/h3dnas/examples/pointnet/datamodule.py
+      module:    submodules/swan/examples/pointnet/datamodule.py
       class:     ModelNetDataModule
       args:
         data_root:   submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
@@ -55,9 +55,9 @@ models:
 
   pointnet2:
     base_onnx:   models/pointnet2/pointnet2_cls_ssg_c40_n1024.onnx
-    nas_onnx:    models/pointnet2/pointnet2_cls_ssg_c40_n1024_h3dnas.onnx
+    nas_onnx:    models/pointnet2/pointnet2_cls_ssg_c40_n1024_swan.onnx
     dataloader:
-      module:    submodules/h3dnas/examples/pointnet2/datamodule.py
+      module:    submodules/swan/examples/pointnet2/datamodule.py
       class:     ModelNetDataModule
       args:
         data_root:   submodules/vision-onnx-models/submodules/pointnet_pointnet2/data/modelnet40_normal_resampled
@@ -69,9 +69,9 @@ models:
 
   pointmlp:
     base_onnx:   models/pointmlp/pointmlp_c40_n1024.onnx
-    nas_onnx:    models/pointmlp/pointmlp_c40_n1024_h3dnas.onnx
+    nas_onnx:    models/pointmlp/pointmlp_c40_n1024_swan.onnx
     dataloader:
-      module:    submodules/h3dnas/examples/pointmlp/datamodule.py
+      module:    submodules/swan/examples/pointmlp/datamodule.py
       class:     PointMLPDataModule
       args:
         pointmlp_dir: submodules/vision-onnx-models/submodules/pointmlp/classification_ModelNet40
@@ -80,13 +80,13 @@ models:
     notes: PointMLP 
 
   mobilenet_v2:
-    base_onnx:   submodules/h3dnas/examples/mobilenet/mobilenet_v2.onnx
+    base_onnx:   submodules/swan/examples/mobilenet/mobilenet_v2.onnx
     nas_onnx:    artifacts/mobilenet_v2/paper_run/models/best_finetuned.onnx
     dataloader:
-      module:    submodules/h3dnas/examples/mobilenet/datamodule.py
+      module:    submodules/swan/examples/mobilenet/datamodule.py
       class:     ImageNetDataModule
       args:
-        val_dir:      submodules/h3dnas/examples/mobilenet/data/imagenet/val
+        val_dir:      submodules/swan/examples/mobilenet/data/imagenet/val
         eval_samples: 10000
         batch_size:   16
         seed:         105

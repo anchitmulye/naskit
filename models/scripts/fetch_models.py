@@ -15,7 +15,7 @@ import yaml
 SCRIPTS = Path(__file__).resolve().parent             # models/scripts
 MODELS = SCRIPTS.parent                               # models
 ROOT = MODELS.parent                                  # the naskit folder
-H3DNAS = ROOT / "submodules" / "h3dnas"
+SWAN = ROOT / "submodules" / "swan"
 
 
 def sources() -> dict:
@@ -50,7 +50,7 @@ def download(name: str, e: dict) -> None:
     out = target(e)
     out.parent.mkdir(parents=True, exist_ok=True)
     part = out.with_suffix(".onnx.part")
-    req = urllib.request.Request(e["url"], headers={"User-Agent": "h3dnas-fetch"})
+    req = urllib.request.Request(e["url"], headers={"User-Agent": "swan-fetch"})
     h = hashlib.sha256()
     done = 0
     with urllib.request.urlopen(req, timeout=120) as r, open(part, "wb") as f:
@@ -78,10 +78,10 @@ def build(name: str, e: dict) -> None:
         for k, v in subst.items():
             a = a.replace(k, v)
         args.append(a)
-    env = {**os.environ, "PYTHONPATH": os.pathsep.join(filter(None, [str(H3DNAS),
+    env = {**os.environ, "PYTHONPATH": os.pathsep.join(filter(None, [str(SWAN),
                                                                     os.environ.get("PYTHONPATH")]))}
     print(f"  {name}: {' '.join([Path(sys.executable).name, *args])}")
-    subprocess.check_call([sys.executable, *args], cwd=H3DNAS, env=env)
+    subprocess.check_call([sys.executable, *args], cwd=SWAN, env=env)
     if not out.exists():
         raise SystemExit(f"{name}: the script did not write {out}")
     got = sha256(out)

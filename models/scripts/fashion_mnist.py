@@ -22,10 +22,10 @@ MODELS = SCRIPTS.parent                               # models
 ROOT = MODELS.parent    
 _DATA = ROOT / "data/fashion_mnist"       # set by --data
 
-# The h3dnas package (fetch.py also puts it on PYTHONPATH)
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "submodules" / "h3dnas"))
+# The swan package (fetch.py also puts it on PYTHONPATH)
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "submodules" / "swan"))
 
-from h3dnas.utils.logger import get_logger
+from swan.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
