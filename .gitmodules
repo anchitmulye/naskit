@@ -1,6 +1,6 @@
-[submodule "submodules/h3dnas"]
-	path = submodules/h3dnas
-	url = https://github.com/anchitmulye/h3dnas.git
+[submodule "submodules/swan"]
+	path = submodules/swan
+	url = https://github.com/anchitmulye/swan.git
 	branch = main
 [submodule "submodules/vision-onnx-models"]
 	path = submodules/vision-onnx-models
